@@ -1,5 +1,5 @@
-export async function textConversion() {
-    const response = await fetch('api/textConversion', {
+export async function GET() {
+    const response = await fetch('api/test/textConversion/textConversion', {
       method: 'GET'
     });
   

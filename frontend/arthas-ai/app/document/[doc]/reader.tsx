@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { textConversion } from "./textConversionFetch";
+import { GET } from "./api/test/textConversion/route";
 
 function Reader() {
   const [htmlContent, setHtmlContent] = useState("");
 
   useEffect(() => {
-    textConversion()
-      .then(html => setHtmlContent(html))
-      .catch(error => console.error('Error fetching content:', error))
-  }, []);
+    const fetchContent = async () => {
+       try{
+        const htmlContent = await GET();
+        setHtmlContent(htmlContent)
+       } catch (error){
+         console.error('Failed to fetch content:',error)
+       }
+    };
+
+    fetchContent();
+  })
 
   return (
     <div>
