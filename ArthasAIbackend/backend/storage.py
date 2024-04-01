@@ -98,3 +98,40 @@ def load_embeddings_from_s3(user_id: str, paper_id: str) -> List[List[float]]:
         return embeddings
     except botocore.exceptions.ClientError as e:
         raise HTTPException(status_code=404, detail="Embeddings not found")
+
+def get_user_paper_ids(user_id: str) -> List[str]:
+    """
+    Retrieves all paper IDs associated with the given user ID from an AWS S3 bucket.
+
+    Parameters:
+    - user_id (str): The user's ID.
+    - s3_client (boto3.client): The boto3 S3 client instance.
+
+    Returns:
+    - List[str]: A list of paper IDs associated with the user.
+
+    Raises:
+    - HTTPException: If there is an error accessing the S3 bucket.
+    """
+    try:
+        # Initialize an empty list to hold the paper IDs
+        paper_ids = []
+        
+        # Use the paginator to handle buckets with many objects
+        paginator = s3_client.get_paginator('list_objects_v2')
+        page_iterator = paginator.paginate(Bucket=settings.bucket, Prefix=f"{user_id}-")
+        
+        # Iterate through each page of results
+        for page in page_iterator:
+            if "Contents" in page:
+                # Extract paper IDs from the object keys
+                for obj in page["Contents"]:
+                    key_parts = obj['Key'].split('-')
+                    if len(key_parts) >= 2:
+                        paper_id = key_parts[1]
+                        if paper_id not in paper_ids:
+                            paper_ids.append(paper_id)
+        
+        return paper_ids
+    except botocore.exceptions.ClientError as e:
+        raise HTTPException(status_code=500, detail=str(e))
