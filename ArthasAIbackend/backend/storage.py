@@ -3,14 +3,14 @@ from fastapi import HTTPException
 import pickle
 import datetime
 import botocore.exceptions
-from typing import List
-import sys
 from pathlib import Path
-from dotenv import load_dotenv
-import os, sys, inspect
-
+from botocore.exceptions import ClientError
 from config import Settings
 from dependencies import get_s3_client, get_together_client
+from dotenv import load_dotenv
+from typing import List
+import json
+
 
 def configure():
     load_dotenv()
@@ -136,42 +136,62 @@ def get_user_paper_ids(user_id: str) -> List[str]:
     except botocore.exceptions.ClientError as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
-"""
-def convert_pickle_to_json_and_save(user_id: str, paper_id: str):
-    
-    Converts a specified pickle file for a user and paper ID from S3 to JSON
-    and saves the JSON back to S3.
+def list_and_retrieve_mmd_files(Bucket: str, prefix: str) -> List[dict]:
+    """
+    Retrieves all .mmd files under the specified prefix in an S3 bucket and returns their contents.
 
     Parameters:
-    - user_id (str): The ID of the user.
-    - paper_id (str): The ID of the paper.
-    
-    s3_client = get_s3_client()
-    bucket_name = settings.bucket
-    
-    pickle_key = f"{user_id}-{paper_id}-context.pkl"
-    json_key = f"{user_id}-{paper_id}-context.json"
-    
-    # Load the pickle file from S3
-    try:
-        response = s3_client.get_object(Bucket=bucket_name, Key=pickle_key)
-        pickle_data = pickle.loads(response['Body'].read())
-    except botocore.exceptions.ClientError as e:
-        print(f"Error loading pickle file: {e}")
-        return
+    - bucket_name (str): The name of the S3 bucket.
+    - prefix (str): The prefix where the .mmd files are stored.
 
-    # Convert the data to JSON
+    Returns:
+    - List[dict]: A list of dictionaries with the file key and content.
+    """
     try:
-        json_data = json.dumps(pickle_data, default=str)  # Use default=str to handle non-serializable data
-    except TypeError as e:
-        print(f"Error converting data to JSON: {e}")
-        return
+        s3_client = boto3.client('s3')
+        paginator = s3_client.get_paginator('list_objects_v2')
+        mmd_contents = []
+
+        for page in paginator.paginate(Bucket=Bucket, Prefix=prefix):
+            for obj in page.get('Contents', []):
+                key = obj['Key']
+                if key.endswith('.mmd'):
+                    response = s3_client.get_object(Bucket=Bucket, Key=key)
+                    content = response['Body'].read().decode('utf-8')
+                    mmd_contents.append({'key': key, 'content': content})
+
+        return mmd_contents
+    except ClientError as e:
+        raise HTTPException(status_code=500, detail=str(e.response['Error']['Message']))
+
+def convert_mmd_to_jsonl_and_save(s3_client, Bucket: str, mmd_contents: List[dict]):
+    """
+    Converts a list of .mmd file contents to JSONL format and saves the copies back to the S3 bucket.
+
+    Parameters:
+    - s3_client (boto3.client): The boto3 S3 client instance.
+    - bucket_name (str): The name of the S3 bucket.
+    - mmd_contents (List[dict]): A list of dictionaries with the file key and content.
+    """
+    for mmd in mmd_contents:
+        # Define the new key for the JSONL file
+        jsonl_key = mmd['key'].replace('.mmd', '.jsonl')
+        
+        # Convert the MultiMarkdown content to the JSONL format
+        jsonl_content = json.dumps({'text': mmd['content']}) + '\n'
+        
+        # Save the JSONL formatted data back to the S3 bucket
+        try:
+            s3_client.put_object(Bucket=Bucket, Key=jsonl_key, Body=jsonl_content)
+            print(f"Saved JSONL copy: {jsonl_key}")
+        except ClientError as e:
+            raise HTTPException(status_code=500, detail=str(e.response['Error']['Message']))
+
+def mmd_to_json():
     
-    # Save the JSON back to S3
-    try:
-        s3_client.put_object(Bucket=bucket_name, Key=json_key, Body=json_data)
-        print(f"Successfully converted and saved: {json_key}")
-    except botocore.exceptions.ClientError as e:
-        print(f"Error saving JSON to S3: {e}")
-"""
+    Bucket=settings.bucket
+    mmd_prefix = 'arxiv_markdown/'
+
+    mmd_files_contents = list_and_retrieve_mmd_files(Bucket, mmd_prefix)
+
+    convert_mmd_to_jsonl_and_save(s3_client, Bucket, mmd_files_contents)

@@ -13,6 +13,3 @@ def get_s3_client():
 def get_together_client():
     return settings.together_api_key
 
-
-def numbers(x,y):
-    return x + y
