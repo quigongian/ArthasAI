@@ -137,15 +137,16 @@ def get_user_paper_ids(user_id: str) -> List[str]:
         raise HTTPException(status_code=500, detail=str(e))
 
 
+"""
 def convert_pickle_to_json_and_save(user_id: str, paper_id: str):
-    """
+    
     Converts a specified pickle file for a user and paper ID from S3 to JSON
     and saves the JSON back to S3.
 
     Parameters:
     - user_id (str): The ID of the user.
     - paper_id (str): The ID of the paper.
-    """
+    
     s3_client = get_s3_client()
     bucket_name = settings.bucket
     
@@ -173,3 +174,4 @@ def convert_pickle_to_json_and_save(user_id: str, paper_id: str):
         print(f"Successfully converted and saved: {json_key}")
     except botocore.exceptions.ClientError as e:
         print(f"Error saving JSON to S3: {e}")
+"""
