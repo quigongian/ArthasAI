@@ -15,7 +15,8 @@ const About = () => {
       <header></header>
       <main>
         {/* Banner */}
-        <div className="p-10 w-1440px h-291px bg-custom-gradient">
+        <div className="pt-9"></div>
+        <div className="p-10 w-1440px h-210px bg-custom-gradient">
           <h1 className="text-center font-medium text-3xl pb-4">
             About Arthas AI
           </h1>
@@ -24,6 +25,7 @@ const About = () => {
             research papers based on your curiousity.
           </p>
         </div>
+        <div className = "pb-2"></div>
 
         <div className="flex w-full min-h-screen">
           {/* SideBar */}
@@ -65,18 +67,19 @@ const About = () => {
             <h2 id="section-1" className="text-left font-medium text-2xl pb-4">
               What is Arthas AI?
             </h2>
-            <p className="text-left pb-4">
+            <p className="text-left pb-12">
               Arthas AI is an AI search engine platform created from scratch
               focused on efficiently searching for AI research papers. It uses
               an AI first approach towards building a search engine that can
               more intelligently find, organize, and deliver the information
               that piques our curiosity.
             </p>
+        
 
             <h2 id="section-2" className="text-left font-medium text-2xl pb-4">
               Our Mission
             </h2>
-            <p className="text-left pb-4">
+            <p className="text-left pb-12">
               {`Since the 1990s, search engines have revolutionized access to
               information. Yet, three decades on, their fundamental mechanics
               have scarcely evolved. With Arthas AI, we're pioneering a search
@@ -91,7 +94,7 @@ const About = () => {
             <h2 id="section-3" className="text-left font-medium text-2xl pb-4">
               Audience
             </h2>
-            <p className="text-left pb-4">
+            <p className="text-left pb-12">
               Designed specifically for the academia, our platform reimagines
               the research process. At its core, an AI-driven search engine
               adeptly suggests research papers that align closely with your
@@ -107,9 +110,7 @@ const About = () => {
               Features
             </h2>
 
-            <h2 className="text-left  text-xl font-medium pb-4 px-4">
-              Search
-            </h2>
+            <h2 className="text-left  text-xl font-medium pb-4 px-4">Search</h2>
 
             <p className="text-left pb-4 px-4">
               {`Dive into a world of research articles with our AI-enhanced
@@ -147,7 +148,7 @@ const About = () => {
               Visualization Graph
             </h2>
 
-            <p className="text-left pb-5 px-4">
+            <p className="text-left pb-12 px-4">
               Our Visualization Graph transforms your search into a visual map
               of connected research topics. Each graph represents a research
               paper and represnts how they are related with each other.
@@ -175,6 +176,7 @@ const About = () => {
                   a curated list of relevant research.
                 </AccordionContent>
               </AccordionItem>
+              <div className = "pt-8"></div>
               <AccordionItem
                 className="border-box rounded-2xl shadow-lg p-4 px-4"
                 value="item-2"
@@ -187,9 +189,10 @@ const About = () => {
                   and manage your research papers directly within the platform
                 </AccordionContent>
               </AccordionItem>
+              <div className = "pt-8"></div>
               <AccordionItem
                 className="border-box rounded-2xl shadow-lg p-4 px-4"
-                value="item-2"
+                value="item-3"
               >
                 <AccordionTrigger>
                   Is Arthas AI suitable for all academic disciplines?
@@ -199,7 +202,9 @@ const About = () => {
                   fields, offering extensive coverage of diverse research areas
                   to support comprehensive scholarly work.
                 </AccordionContent>
+                
               </AccordionItem>
+              <div className = "pb-8"></div>
             </Accordion>
           </div>
         </div>
