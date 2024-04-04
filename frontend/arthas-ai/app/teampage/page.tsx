@@ -65,45 +65,44 @@ const TeamPage = () => {
           </div>
         </div>
         {/* Team Leads */}
-        <div className="pb-9 m-12 ">
-          <div className="box border bg-gray-200 p-1 rounded-[calc(1.5rem-1.5px)]">
-            <div className="flex flex-col items-center justify-center p-8">
-              <h1 className="text-center text-3xl font-medium">Team Leads</h1>
-              {/* Team Leads Grid */}
-              <div className="grid grid-cols-2 gap-12 max-w-6xl pt-10">
-                {teamLeads.map((lead: TeamMember) => (
-                  <Teamcard key={lead.id} {...lead} />
-                ))}
-              </div>
+        <div className="pb-9">
+          <div className="flex flex-col items-center justify-center p-8">
+            {/* Team Leads Grid */}
+            <div className="box-border bg-gray-200 p-12 rounded-[calc(1.5rem-1.5px)] grid grid-cols-2 gap-12 max-w-6xl pt-10">
+              <h1 className="text-center text-3xl font-medium col-span-2">Team Leads</h1>
+              {teamLeads.map((lead: TeamMember) => (
+                <Teamcard key={lead.id} {...lead} />
+              ))}
             </div>
-          </div>
         </div>
+      </div>
         {/* Frontend Team */}
         <div className="flex flex-col h-full items-center justify-center p-4">
-          <h1 className="text-center text-3xl font-medium pb-10">
-            Frontend Team
-          </h1>
-          {/* Frontend Team Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-12 mx-auto max-w-7xl">
-            {frontend.map((frontend: TeamMember) => (
-              <Teamcard key={frontend.id} {...frontend} />
-            ))}
+          <div className="box-border bg-gray-200 p-12 rounded-[calc(1.5rem-1.5px)]">
+            <h1 className="text-center text-3xl font-medium pb-10">Frontend Team</h1>
+            {/* Frontend Team Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-12 mx-auto max-w-7xl">
+              {frontend.map((frontend: TeamMember) => (
+                <Teamcard key={frontend.id} {...frontend} />
+              ))}
+            </div>
           </div>
         </div>
         {/* Backend Team */}
         <div className="p-9">
           <div className="flex flex-col h-full items-center justify-center p-4">
-            <h1 className="text-center text-3xl font-medium pb-10">
-              Backend Team
-            </h1>
-            {/* Backend Team Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-12 mx-auto max-w-7xl">
-              {backend.map((backend: TeamMember) => (
-                <Teamcard key={backend.id} {...backend} />
-              ))}
-            </div>
+              <div className="box-border bg-gray-200 p-12 rounded-[calc(1.5rem-1.5px)]">
+                <h1 className="text-center text-3xl font-medium pb-10">Backend Team</h1>
+                {/* Backend Team Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-12 mx-auto max-w-7xl">
+                  {backend.map((backend: TeamMember) => (
+                    <Teamcard key={backend.id} {...backend} />
+                  ))}
+                </div>
+              </div>
           </div>
         </div>
+
       </main>
     </>
   );
