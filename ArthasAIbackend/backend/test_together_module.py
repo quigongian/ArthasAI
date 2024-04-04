@@ -112,11 +112,12 @@ def combine_jsonl_files(bucket_name: str, prefix: str, combined_file_path: str, 
 jsonl_prefix = 'arxiv_jsonl/'
 local_combined_file_path = 'combined.jsonl'
 
-combine_jsonl_files(Bucket, jsonl_prefix, local_combined_file_path, s3_client)
+#combine_jsonl_files(Bucket, jsonl_prefix, local_combined_file_path, s3_client)
 
-def remove_newlines_from_jsonl(file_path: str):
+def clean_jsonl_file(file_path: str):
     """
-    Reads a .jsonl file, removes all newline characters within JSON strings, and writes the contents back to the file.
+    Reads a .jsonl file, removes all newline characters within JSON strings, 
+    replaces instances of '\eq' with '\eq', and writes the contents back to the file.
 
     Parameters:
     - file_path (str): The path to the .jsonl file.
@@ -124,17 +125,64 @@ def remove_newlines_from_jsonl(file_path: str):
     try:
         # Read the content of the file
         with open(file_path, 'r', encoding='utf-8') as file:
-            lines = file.readlines()
+            content = file.read()
         
-        # Remove newline characters within each JSON object string
-        cleaned_lines = [line.replace("\\n", "") for line in lines]
+        # Remove newline characters within JSON strings and replace \eq with \\eq
+        updated_content = content.replace("\\n", "").replace("\\eq", "\\\\eq")
         
-        # Write the cleaned content back to the file
+        # Write the updated content back to the file
         with open(file_path, 'w', encoding='utf-8') as file:
-            file.writelines(cleaned_lines)
-            
-        print(f"Newlines removed from {file_path}")
+            file.write(updated_content)
+
+        print(f"File cleaned and saved to {file_path}")
     except Exception as e:
-        raise Exception(f"Error occurred while removing newlines: {e}")
-    
-remove_newlines_from_jsonl(local_combined_file_path)
+        raise Exception(f"Error occurred during file cleaning: {e}")
+
+"""# Run the cleaning function
+#clean_jsonl_file(local_combined_file_path)
+
+# Read the content of the first line of the file
+with open('combined.jsonl', 'r', encoding='utf-8') as file:
+    first_line = file.readline().strip()
+
+# Check if the first line is a valid JSON
+try:
+    json_object = json.loads(first_line)
+    print("First line is valid JSON:", json_object)
+except json.JSONDecodeError as e:
+    print("First line is not valid JSON:", e)
+
+# If it's not valid, you'll need to investigate the contents and structure of your file
+# and correct any issues to ensure each line is a valid JSON object.
+"""
+
+#resp = together.Files.check(file="test.jsonl")
+
+
+
+#together.Files.upload(file="test.jsonl")
+
+"""resp = together.Files.upload(file="test.jsonl")
+file_id = resp["id"]
+print(resp["id"])"""
+
+#file-cf5c3d5a-7fa6-458d-8074-5804156bf986
+
+resp = together.Finetune.create(
+  training_file = 'file-cf5c3d5a-7fa6-458d-8074-5804156bf986',
+  model = 'togethercomputer/RedPajama-INCITE-Chat-3B-v1',
+  n_epochs = 3,
+  n_checkpoints = 1,
+  batch_size = 4,
+  learning_rate = 1e-5,
+  suffix = 'my-demo-finetune',
+  wandb_api_key = '80a8015a25a92f787f20580e2ddc73d6a835ce9a',
+)
+
+fine_tune_id = resp['id']
+print(fine_tune_id)
+
+print(together.Finetune.retrieve(fine_tune_id=fine_tune_id)) # retrieves information on finetune event
+print(together.Finetune.get_job_status(fine_tune_id=fine_tune_id)) # pending, running, completed
+print(together.Finetune.is_final_model_available(fine_tune_id=fine_tune_id)) # True, False
+print(together.Finetune.get_checkpoints(fine_tune_id=fine_tune_id)) # list of checkpoints
