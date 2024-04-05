@@ -4,9 +4,8 @@ import uuid
 def create_workspace(user_id: str, workspace_name: str, workspace_description: str):
     QUREY = """
     MATCH (u:User {user_id: $user_id})
-    WITH u as user
     MERGE (w:Workspace {workspace_id: $workspace_id, workspace_name: $workspace_name, workspace_description: $workspace_description})
-    MERGE (user)-[:HAS_WORKSPACE]->(w)
+    MERGE (u)-[:HAS_WORKSPACE]->(w)
     return w.workspace_id as workspace_id
     """
 
