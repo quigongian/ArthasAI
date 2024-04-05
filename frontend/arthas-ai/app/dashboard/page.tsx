@@ -25,13 +25,13 @@ const handleClick3 = () => {
 
 const Home = () => {
   return (
-    <div id="main">
+    <div id="main" className = "bg-stone-200 ">
       <Pagetab />
       {/* Start Melvin - Search bar */}
 
-      <div className=" top-0 flex h-[120px] items-center border-b px-8 md:px-14">
+      <div className="top-0 flex h-[120px] items-center border-b px-8 md:px-14">
         {/* Title */}
-        <div className="hidden flex-col  text-lg font-medium md:flex md:flex-row">
+        <div className="hidden flex-col text-lg font-medium md:flex md:flex-row">
           <h1 className=" text-3xl text-foreground transition-colors">
             {" "}
             Dashboard{" "}
@@ -51,19 +51,20 @@ const Home = () => {
           </form>
         </div>
       </div>
+      
       {/* Header End */}
-
-      <main className="flex flex-1 flex-col px-8 gap-4 md:gap-8 bg-gray-50">
-        <div className="flex flex-col gap-2 pb-4">
+      <div className="pt-10 bg-stone-100 w-screen "></div>
+      <main className="flex flex-1 flex-col px-2 gap-4 md:gap-8 bg-stone-100" >
+        <div className="flex flex-col gap-2 pb-4 ">
           {/* Doc Section Start */}
-          <div>
+          <div className = "box-border bg-stone-200 rounded-[calc(1rem-1px)] ">
             <CardHeader>
               <CardTitle className="text-[20px] font-medium">
                 Recent Viewed Docs
               </CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-4 gap-6">
-              <Card className="flex flex-col justify-start border-none h-60 bg-gray-200">
+            <CardContent className="grid grid-cols-4 gap-6 ">
+              <Card className="flex flex-col justify-start border-none h-60 bg-gray-200 ">
                 <CardHeader className="flex-row gap-4 ">
                   <CardTitle className="text-base font-medium">
                     Document One
@@ -92,10 +93,13 @@ const Home = () => {
                 </CardHeader>
               </Card>
             </CardContent>
-          </div>{" "}
+          </div>{" "} 
+          <div className = "pb-8">
+
+          </div>
           {/* Docs Section End */}
           {/* Collection Section Start*/}
-          <div className="xl:col-span-2 border-none">
+          <div className="xl:col-span-2 border-none bg-stone-200 rounded-[calc(1rem-1px)]">
             <CardHeader className="flex flex-row items-center">
               <div className="grid gap-2">
                 <CardTitle className="text-[20px] font-medium">
@@ -106,7 +110,7 @@ const Home = () => {
             </CardHeader>
             <CardContent className="grid grid-cols-4 gap-6">
               <Link href={"#"}>
-                <Card className="flex flex-col justify-center items-center border-none bg-gray-200 hover:bg-gray-300">
+                <Card className="flex flex-col justify-center items-center border-none bg-white hover:bg-gray-300 rounded-[calc(1rem-1px)]">
                   <CardHeader className="flex-row gap-4">
                     {/* <Image
                       src="/assets/folder.png"
@@ -121,7 +125,7 @@ const Home = () => {
                 </Card>
               </Link>
               <Link href={"#"}>
-                <Card className="flex flex-col justify-center items-center border-none bg-gray-200 hover:bg-gray-300">
+                <Card className="flex flex-col justify-center items-center border-none bg-white hover:bg-gray-300 rounded-[calc(1rem-1px)]">
                   <CardHeader className="flex-row gap-4">
                     {/* <Image
                       src="/assets/folder.png"
@@ -136,7 +140,7 @@ const Home = () => {
                 </Card>
               </Link>
               <Link href={"#"}>
-                <Card className="flex flex-col justify-center items-center border-none bg-gray-200 hover:bg-gray-300">
+                <Card className="flex flex-col justify-center items-center border-none bg-white hover:bg-gray-300 rounded-[calc(1rem-1px)]">
                   <CardHeader className="flex-row gap-4">
                     {/* <Image
                       src="/assets/folder.png"
@@ -151,7 +155,7 @@ const Home = () => {
                 </Card>
               </Link>
               <Link href={"#"}>
-                <Card className="flex flex-col justify-center items-center border-none bg-gray-200 hover:bg-gray-300">
+                <Card className="flex flex-col justify-center items-center border-none bg-white hover:bg-gray-300 rounded-[calc(1rem-1px)]">
                   <CardHeader className="flex-row gap-4">
                     {/* <Image
                       src="/assets/folder.png"
@@ -166,7 +170,7 @@ const Home = () => {
                 </Card>
               </Link>
               <Link href={"#"}>
-                <Card className="flex flex-col justify-center items-center border-none bg-gray-200 hover:bg-gray-300">
+                <Card className="flex flex-col justify-center items-center border-none bg-white hover:bg-gray-300 rounded-[calc(1rem-1px)]">
                   <CardHeader className="flex-row gap-4">
                     {/* <Image
                       src="/assets/folder.png"
@@ -182,6 +186,7 @@ const Home = () => {
               </Link>
             </CardContent>
           </div>
+          <div className="pb-40"></div>
           {/* Collection Section End*/}
         </div>
       </main>
