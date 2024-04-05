@@ -53,7 +53,7 @@ const TeamPage = () => {
             <h1 className="text-center font-medium pt-4 text-4xl">
               Meet The Arthas AI Team!
             </h1>
-            <p className="p-4 text-center text-sm">
+            <p className="text-center font-sm p-4">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
               ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
