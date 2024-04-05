@@ -2,7 +2,7 @@ import os
 import requests
 import boto3
 from models.dto_models import Paper
-from db.neo4j import driver
+from utils.db.neo4j import driver
 
 # BEGIN CODE FROM DAVID TO GET METADATA
 def only_id(filename):

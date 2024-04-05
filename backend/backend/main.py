@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 import dotenv
 import os
-from utils.workspace import create_workspace, add_paper_to_workspace, get_all_workspaces, get_workspace
+from utils.api.workspace import create_workspace, add_paper_to_workspace, get_all_workspaces, get_workspace
 from models.request_models import Workspace
 from models.dto_models import Paper
-from utils.paper import upload_paper_with_metadata, get_all_papers
+from utils.api.paper import upload_paper_with_metadata, get_all_papers
 
 dotenv.load_dotenv()
 

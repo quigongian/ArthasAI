@@ -1,4 +1,4 @@
-from request_models import Paper
+from models.request_models import Paper
 
 class Paper(Paper):
     cite_count: int

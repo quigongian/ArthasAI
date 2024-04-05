@@ -1,4 +1,4 @@
-from db.neo4j import driver
+from utils.db.neo4j import driver
 import uuid
 
 def create_workspace(user_id: str, workspace_name: str, workspace_description: str):
