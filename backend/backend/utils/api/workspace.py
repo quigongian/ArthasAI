@@ -4,11 +4,15 @@ import uuid
 def create_workspace(user_id: str, workspace_name: str, workspace_description: str):
     QUREY = """
     MATCH (u:User {user_id: $user_id})
-    CREATE (w:Workspace {workspace_id: $workspace_id, workspace_name: $workspace_name, workspace_description: $workspace_description})
-    CREATE (u)-[:HAS_WORKSPACE]->(w)
+    WITH u as user
+    MERGE (w:Workspace {workspace_id: $workspace_id, workspace_name: $workspace_name, workspace_description: $workspace_description})
+    MERGE (user)-[:HAS_WORKSPACE]->(w)
+    return w.workspace_id as workspace_id
     """
 
     workspace_id = str(uuid.uuid4())
+
+    print(workspace_id, user_id)
 
     with driver.session() as session:
         result = session.run(QUREY, user_id=user_id, workspace_name=workspace_name, workspace_description=workspace_description, workspace_id=workspace_id)

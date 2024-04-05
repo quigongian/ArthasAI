@@ -52,12 +52,12 @@ def route_add_paper_to_workspace(workspace_id: str, paper_id: str):
 
 @app.get("/workspace/{workspace_id}")
 def route_get_workspace_by_id(workspace_id: str):
-    res = get_workspace(workspace_id, user_id="test_user")
+    res = get_workspace(workspace_id, user_id="test user")
     return {"message": "Workspace retrieved successfully", "data": res}
 
 @app.get("/workspace")
 def route_get_all_workspaces_for_user():
-    res = get_all_workspaces(user_id="test_user")
+    res = get_all_workspaces(user_id="test user")
     return {"message": "Workspaces retrieved successfully", "data": res}
 
 @app.get("/chat")

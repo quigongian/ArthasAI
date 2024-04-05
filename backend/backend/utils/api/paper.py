@@ -3,6 +3,7 @@ import requests
 import boto3
 from models.dto_models import Paper
 from utils.db.neo4j import driver
+from utils.embeddings import get_embeddings
 
 # BEGIN CODE FROM DAVID TO GET METADATA
 def only_id(filename):
@@ -62,7 +63,8 @@ def upload_paper_with_metadata(paper: Paper):
     Inserts the paper + metadata into the database
     """
 
-    #TODO: compute embeddings for searching
+    #compute the abstract embedding;
+    abstract_embedding = get_embeddings([paper.abstract], model='togethercomputer/m2-bert-80M-8k-retrieval')[0]
 
     QUERY = """
     MERGE (p:Paper {arxiv_id: $arxiv_id})
@@ -73,10 +75,11 @@ def upload_paper_with_metadata(paper: Paper):
     p.inf_cite_count = $inf_cite_count
     p.pdf_blob = $pdf_blob
     p.raw_markdown = $raw_markdown
+    p.abstract_embedding = $abstract_embedding
     """
 
     with driver.session() as session:
-        result = session.run(QUERY, arxiv_id=paper.arxiv_id, title=paper.title, abstract=paper.abstract, publication_date=paper.publication_date, cite_count=paper.cite_count, inf_cite_count=paper.inf_cite_count, pdf_blob=paper.pdf_blob, raw_markdown=paper.raw_markdown)
+        result = session.run(QUERY, arxiv_id=paper.arxiv_id, title=paper.title, abstract=paper.abstract, publication_date=paper.publication_date, cite_count=paper.cite_count, inf_cite_count=paper.inf_cite_count, pdf_blob=paper.pdf_blob, raw_markdown=paper.raw_markdown, abstract_embedding=abstract_embedding)
         return result.data()
 
 def get_all_papers():
