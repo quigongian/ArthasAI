@@ -77,10 +77,10 @@ def upload_paper_with_metadata(paper: Paper):
     p.raw_markdown = $raw_markdown
     p.abstract_embedding = $abstract_embedding
     """
-
-    with driver.session() as session:
-        result = session.run(QUERY, arxiv_id=paper.arxiv_id, title=paper.title, abstract=paper.abstract, publication_date=paper.publication_date, cite_count=paper.cite_count, inf_cite_count=paper.inf_cite_count, pdf_blob=paper.pdf_blob, raw_markdown=paper.raw_markdown, abstract_embedding=abstract_embedding)
-        return result.data()
+    return abstract_embedding
+    # with driver.session() as session:
+    #     result = session.run(QUERY, arxiv_id=paper.arxiv_id, title=paper.title, abstract=paper.abstract, publication_date=paper.publication_date, cite_count=paper.cite_count, inf_cite_count=paper.inf_cite_count, pdf_blob=paper.pdf_blob, raw_markdown=paper.raw_markdown, abstract_embedding=abstract_embedding)
+    #     return result.data()
 
 def get_all_papers():
     """

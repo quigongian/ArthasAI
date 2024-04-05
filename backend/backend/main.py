@@ -5,8 +5,10 @@ from utils.api.workspace import create_workspace, add_paper_to_workspace, get_al
 from models.request_models import Workspace
 from models.dto_models import Paper
 from utils.api.paper import upload_paper_with_metadata, get_all_papers
+import together
 
 dotenv.load_dotenv()
+together.api_key = os.getenv("TOGETHER_API_KEY")
 
 app = FastAPI()
 
@@ -24,12 +26,13 @@ def search_results():
     res = get_all_papers()
     return {"message": "Papers retrieved successfully", "data": res}
 
-@app.post("/upload")
+@app.post("/paper")
 def route_upload_paper(paper: Paper):
     """
     NOTE: right now this route takes in a markdown paper, with all the metadata already in the request
     in the future, we will have this route take in a pdf + doi, hit semetic scholar api to get metadata, and then convert the pdf to markdown
     """
+    # print(os.getenv("TOGETHER_API_KEY"))
 
     res = upload_paper_with_metadata(paper)
 
