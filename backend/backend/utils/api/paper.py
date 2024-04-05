@@ -68,19 +68,20 @@ def upload_paper_with_metadata(paper: Paper):
 
     QUERY = """
     MERGE (p:Paper {arxiv_id: $arxiv_id})
-    SET p.title = $title
-    p.abstract = $abstract
-    p.publication_date = $publication_date
-    p.cite_count = $cite_count
-    p.inf_cite_count = $inf_cite_count
-    p.pdf_blob = $pdf_blob
-    p.raw_markdown = $raw_markdown
+    ON CREATE SET p.title = $title,
+    p.abstract = $abstract,
+    p.publication_date = $publication_date,
+    p.cite_count = $cite_count,
+    p.inf_cite_count = $inf_cite_count,
+    p.pdf_blob = $pdf_blob,
+    p.raw_markdown = $raw_markdown,
     p.abstract_embedding = $abstract_embedding
+    RETURN p
     """
-    return abstract_embedding
-    # with driver.session() as session:
-    #     result = session.run(QUERY, arxiv_id=paper.arxiv_id, title=paper.title, abstract=paper.abstract, publication_date=paper.publication_date, cite_count=paper.cite_count, inf_cite_count=paper.inf_cite_count, pdf_blob=paper.pdf_blob, raw_markdown=paper.raw_markdown, abstract_embedding=abstract_embedding)
-    #     return result.data()
+
+    with driver.session() as session:
+        result = session.run(QUERY, arxiv_id=paper.arxiv_id, title=paper.title, abstract=paper.abstract, publication_date=paper.publication_date, cite_count=paper.cite_count, inf_cite_count=paper.inf_cite_count, pdf_blob=paper.pdf_blob, raw_markdown=paper.raw_markdown, abstract_embedding=abstract_embedding)
+        return result.data()
 
 def get_all_papers():
     """
