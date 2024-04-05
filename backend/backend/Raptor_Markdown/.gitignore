@@ -1,2 +1,4 @@
 *.md
 *.mmd
+./paper
+./papers/*
