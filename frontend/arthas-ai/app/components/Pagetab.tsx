@@ -2,8 +2,13 @@
 import React from "react";
 import Link from "next/link";
 
-export default function Pagetab({ currentView, setCurrentView }) {
-  const handleLinkClick = (view) => {
+type PagetabProps = {
+  currentView: string;
+  setCurrentView: React.Dispatch<React.SetStateAction<string>>;
+};
+
+const Pagetab: React.FC<PagetabProps> = ({ currentView, setCurrentView }) => {
+  const handleLinkClick = (view: string) => {
     setCurrentView(view);
   };
 
@@ -35,4 +40,6 @@ export default function Pagetab({ currentView, setCurrentView }) {
       </nav>
     </header>
   );
-}
+};
+
+export default Pagetab;
