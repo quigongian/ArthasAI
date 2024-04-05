@@ -1,0 +1,45 @@
+†Work performed while at Google Brain ‡Work performed while at Google Research ``` ``` 
+31st Conference on Neural Information Processing Systems (NIPS 2017), Long Beach, CA, USA ``` 
+# arXiv:1706 03762v7 [cs CL] 2 Aug 2023 ### 1 Introduction Recurrent neural networks, long short-term memory 
+[ 13 ] and gated recurrent [ 7 ] neural networks\n\n In these models, the number of operations required to relate signals from 
+two arbitrary input or output positions grows in the distance between positions, 
+linearly for ConvS2S and logarithmically for ByteNet  This makes it more difficult to learn dependencies between 
+distant positions [ 12 ]  In the Transformer this is reduced to a constant number of operations, 
+albeit at the cost of reduced effective resolution due to averaging attention-weighted positions, 
+an effect we counteract with Multi-Head Attention as\n\nThe Transformer allows for significantly 
+more parallelization and can reach a new state of the art in translation quality after being trained 
+for as little as twelve hours on eight P100 GPUs ### 2 Background The goal of reducing sequential 
+computation also forms the foundation of the Extended Neural GPU [ 16 ], ByteNet [ 18 ] and ConvS2S 
+[ 9 ], all of which use convolutional neural networks as basic building block, computing hidden representations 
+in parallel for all input and output positions\n\nattention and the parameter-free position representation 
+and became the other person involved in nearly every detail  Niki designed, implemented, tuned and 
+evaluated countless model variants in our original codebase and tensor2tensor  Llion also experimented 
+with novel model variants, was responsible for our initial codebase, and efficient inference and visualizations  
+Lukasz and Aidan spent countless long days designing various parts of and implementing tensor2tensor, 
+replacing our earlier codebase, greatly improving results and massively accelerating our research\n\naround 
+each of the sub-layers, followed by layer normalization  We also modify the self-attention sub-layer 
+in the decoder stack to prevent positions from attending to subsequent positions  This masking, combined with fact that t
+he output embeddings are offset by one position, ensures that the predictions for positionican depend only on the 
+known outputs at positions less thani 3 2 Attention An attention function can be described as mapping a query 
+and a set of key-value pairs to an output,\n\n[10], consuming the previously generated symbols as additional input 
+when generating the next ``` Figure 1: The Transformer - model architecture ``` 
+The Transformer follows this overall architecture using stacked self-attention and point-wise, 
+fully connected layers for both the encoder and decoder, shown in the left and right halves of Figure 1, 
+respectively 3 1 Encoder and Decoder Stacks Encoder: The encoder is composed of a stack ofN= 6identical layers  
+Each layer has two sub-layers\n\nto-German translation task, improving over the existing best results, including ensembles, 
+by over 2 BLEU  On the WMT 2014 English-to-French translation task, our model establishes a new single-model state-of-the-art 
+BLEU score of 41 8 after training for 3 5 days on eight GPUs, a small fraction of the training costs of the best models from the 
+literature  We show that the Transformer generalizes well to\n\nAttention mechanisms have become an integral part of compelling 
+sequence modeling and transduc- tion models in various tasks, allowing modeling of dependencies without regard to their distance 
+in the input or output sequences [ 2 , 19 ]  In all but a few cases [ 27 ], however, such attention mechanisms are used 
+in conjunction with a recurrent network In this work we propose the Transformer, a model architecture eschewing recurrence and 
+instead relying entirely on an attention mechanism to draw global dependencies between input and output\n\n 
+To facilitate these residual connections, all sub-layers in the model, as well as the embedding layers, produce outputs of 
+dimensiondmodel= 512 Decoder: The decoder is also composed of a stack ofN= 6identical layers  
+In addition to the two sub-layers in each encoder layer, the decoder inserts a third sub-layer, 
+which performs multi-head attention over the output of the encoder stack  Similar to the encoder, 
+we employ residual connections\n\nother tasks by applying it successfully to English constituency parsing both 
+with large and limited training data ``` ``` ∗Equal contribution  Listing order is random  
+Jakob proposed replacing RNNs with self-attention and started the effort to evaluate this idea  
+Ashish, with Illia, designed and implemented the first Transformer models and has been crucially involved 
+in every aspect of this work  Noam proposed scaled dot-product attention, multi-head\n\n
