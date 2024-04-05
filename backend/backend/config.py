@@ -23,4 +23,3 @@ print("AWS_ACCESS_KEY_ID:", settings.aws_access_key_id)
 print("AWS_SECRET_ACCESS_KEY:", settings.aws_secret_access_key)
 print("AWS_SECRET_ACCESS_KEY:", settings.aws_secret_access_key)
 """
-

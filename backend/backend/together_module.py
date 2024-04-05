@@ -11,6 +11,7 @@ import boto3
 from botocore.exceptions import ClientError
 import botocore.exceptions
 from fastapi import HTTPException
+import pickle
 
 
 def configure():
@@ -27,7 +28,8 @@ s3_client = get_s3_client()
 
 
 Bucket=settings.bucket
-mmd_prefix = 'arxiv_jsonl/'
+mmd_prefix = "arxiv_markdown/"
+
 
 import boto3
 import tempfile
@@ -112,7 +114,57 @@ def combine_jsonl_files(bucket_name: str, prefix: str, combined_file_path: str, 
 jsonl_prefix = 'arxiv_jsonl/'
 local_combined_file_path = 'combined.jsonl'
 
-#combine_jsonl_files(Bucket, jsonl_prefix, local_combined_file_path, s3_client)
+
+def markdown_files_to_pickles(Bucket, source_prefix: str, target_prefix: str, s3_client):
+    """
+    Converts each .mmd file from a specified folder (source_prefix) in an S3 bucket into individual pickle files 
+    and uploads them to another folder (target_prefix) within the same bucket.
+
+    Parameters:
+    - bucket_name (str): The name of the S3 bucket.
+    - source_prefix (str): The source folder under which the .mmd files are stored.
+    - target_prefix (str): The target folder where the pickle files will be saved.
+    - s3_client (boto3.client): The boto3 S3 client instance.
+    """
+    paginator = s3_client.get_paginator('list_objects_v2')
+
+    for page in paginator.paginate(Bucket=bucket_name, Prefix=source_prefix):
+        for obj in page.get('Contents', []):
+            key = obj['Key']
+            if key.endswith('.mmd'):
+                # Download the file content
+                response = s3_client.get_object(Bucket=bucket_name, Key=key)
+                file_content = response['Body'].read().decode('utf-8')
+                
+                # Serialize the content to a pickle format
+                pickle_content = pickle.dumps(file_content)
+                
+                # Construct the pickle file key with target_prefix
+                file_name = key.split('/')[-1]  # Extract file name from the key
+                pickle_key = f"{target_prefix}{file_name.replace('.mmd', '.pkl')}"  # Build new key for the pickle file
+                
+                # Upload the pickle content directly to the target folder within the same S3 bucket
+                try:
+                    s3_client.put_object(Bucket=bucket_name, Key=pickle_key, Body=pickle_content)
+                    print(f"Pickle file {pickle_key} uploaded to {bucket_name}/{target_prefix}")
+                except ClientError as e:
+                    print(f"Failed to upload pickle file {pickle_key} to {bucket_name}/{target_prefix}: {e}")
+
+# Example usage
+bucket_name = 'arthasai'  # Name of your S3 bucket
+source_prefix = 'arxiv_markdown/'  # Source folder within the bucket containing .mmd files
+target_prefix = 'arxiv_pickle/'  # Target folder within the same bucket for .pkl files
+
+
+markdown_files_to_pickles(bucket_name, source_prefix, target_prefix, s3_client)
+
+
+
+
+
+
+mmd_prefix = "arxiv_markdown/"
+output_directory = 'arxiv_pickle/'
 
 def clean_jsonl_file(file_path: str):
     """
@@ -166,7 +218,7 @@ except json.JSONDecodeError as e:
 file_id = resp["id"]
 print(resp["id"])"""
 
-#file-cf5c3d5a-7fa6-458d-8074-5804156bf986
+"""#file-cf5c3d5a-7fa6-458d-8074-5804156bf986
 
 resp = together.Finetune.create(
   training_file = 'file-cf5c3d5a-7fa6-458d-8074-5804156bf986',
@@ -185,4 +237,35 @@ print(fine_tune_id)
 print(together.Finetune.retrieve(fine_tune_id=fine_tune_id)) # retrieves information on finetune event
 print(together.Finetune.get_job_status(fine_tune_id=fine_tune_id)) # pending, running, completed
 print(together.Finetune.is_final_model_available(fine_tune_id=fine_tune_id)) # True, False
-print(together.Finetune.get_checkpoints(fine_tune_id=fine_tune_id)) # list of checkpoints
+print(together.Finetune.get_checkpoints(fine_tune_id=fine_tune_id)) # list of checkpoints"""
+
+import boto3
+from botocore.exceptions import NoCredentialsError, ClientError
+
+def check_s3_access(bucket_name: str, prefix: str):
+    """
+    Checks if access to an S3 bucket and prefix is available.
+
+    Parameters:
+    - bucket_name (str): The name of the S3 bucket.
+    - prefix (str): The prefix under which the objects are stored.
+    """
+    # Instantiate the S3 client
+    
+    try:
+        # Attempt to list objects in the specified bucket and prefix
+        response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=prefix)
+        if 'Contents' in response:
+            print(f"Access to the bucket '{bucket_name}' with prefix '{prefix}' is confirmed.")
+            print(f"Number of objects: {len(response['Contents'])}")
+        else:
+            print(f"No objects found in bucket '{bucket_name}' with prefix '{prefix}'.")
+    except NoCredentialsError:
+        print("Credentials not available to access S3.")
+    except ClientError as e:
+        # This could be a permissions error or a missing bucket error
+        print(f"An error occurred: {e}")
+
+# Example usage
+
+#check_s3_access(Bucket, jsonl_prefix)
