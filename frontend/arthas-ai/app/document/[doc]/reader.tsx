@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { GET } from "./api/test/textConversion/route";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { CloudCog } from "lucide-react";
 
-function Reader() {
+export function Reader() {
   const [htmlContent, setHtmlContent] = useState("");
 
-  useEffect(() => {
-    const fetchContent = async () => {
-       try{
-        const htmlContent = await GET();
-        setHtmlContent(htmlContent)
-       } catch (error){
-         console.error('Failed to fetch content:',error)
-       }
-    };
 
-    fetchContent();
-  })
+
+  const readerData = useQuery({
+    queryKey: ["readerData"],
+    queryFn: async () => {
+      const response = await axios.get(
+        "/document/hello/api/test/textConversion"
+      );
+      return response.data;
+    },
+    select(data) {
+      console.log(data);
+    },
+  });
 
   return (
     <div>
