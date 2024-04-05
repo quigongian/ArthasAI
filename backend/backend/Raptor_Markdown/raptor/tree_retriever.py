@@ -169,13 +169,19 @@ class TreeRetriever(BaseRetriever):
 
         query_embedding = self.create_embedding(query)
 
+        print("Query Embedding len: ", len(query_embedding))
+
         selected_nodes = []
 
         node_list = get_node_list(self.tree.all_nodes)
 
         embeddings = get_embeddings(node_list, self.context_embedding_model)
 
-        distances = distances_from_embeddings(query_embedding, embeddings)
+        expected_embedding_length = 768
+
+        valid_embeddings = [emb for emb in embeddings if len(emb) == expected_embedding_length]
+
+        distances = distances_from_embeddings(query_embedding, valid_embeddings)
 
         indices = indices_of_nearest_neighbors_from_distances(distances)
 

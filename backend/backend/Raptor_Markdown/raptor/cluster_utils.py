@@ -139,8 +139,17 @@ class RAPTOR_Clustering(ClusteringAlgorithm):
         threshold: float = 0.1,
         verbose: bool = False,
     ) -> List[List[Node]]:
+        # Assuming embeddings are obtained here
+        embeddings_list = [node.embeddings[embedding_model_name] for node in nodes]
+        # Validate and filter out invalid embeddings
+        expected_embedding_length = 768
+        valid_embeddings = [emb for emb in embeddings_list if len(emb) == expected_embedding_length]
+
         # Get the embeddings from the nodes
-        embeddings = np.array([node.embeddings[embedding_model_name] for node in nodes])
+        embeddings = np.array(valid_embeddings)
+
+        if len(valid_embeddings) != len(embeddings):
+            print("Warning: Invalid embeddings detected and filtered out.")
 
         # Perform the clustering
         clusters = perform_clustering(

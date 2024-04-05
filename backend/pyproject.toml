@@ -25,8 +25,7 @@ sentence-transformers = "^2.6.1"
 transformers = "^4.39.3"
 einops = "*"
 accelerate = "*"
-bitsandbytes = "*"
-
+together = "^1.0.1"
 
 [build-system]
 requires = ["poetry-core"]
