@@ -163,7 +163,7 @@ const About = () => {
             </h2>
             <Accordion className="pb-4 px-4 " type="single" collapsible>
               <AccordionItem
-                className="border-box rounded-2xl shadow-lg p-4 px-4"
+                className="border rounded-2xl shadow-lg p-4 px-4"
                 value="item-1"
               >
                 <AccordionTrigger>
@@ -178,7 +178,7 @@ const About = () => {
               </AccordionItem>
               <div className = "pt-8"></div>
               <AccordionItem
-                className="border-box rounded-2xl shadow-lg p-4 px-4"
+                className="border rounded-2xl shadow-lg p-4 px-4"
                 value="item-2"
               >
                 <AccordionTrigger>
@@ -191,7 +191,7 @@ const About = () => {
               </AccordionItem>
               <div className = "pt-8"></div>
               <AccordionItem
-                className="border-box rounded-2xl shadow-lg p-4 px-4"
+                className="border rounded-2xl shadow-lg p-4 px-4"
                 value="item-3"
               >
                 <AccordionTrigger>
