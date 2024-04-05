@@ -132,8 +132,25 @@ def run(path: str = ""):
 
 
 def load_tree(tree_path: str, config: RetrievalAugmentationConfig):
+    if config is None:
+        RA = RetrievalAugmentation(RetrievalAugmentationConfig(summarization_model=MistralSummarizationModel(), 
+                                          qa_model=MistralQAModel(), 
+                                          embedding_model=M2BertEmbeddingModel()), 
+                                          tree=tree_path)
+        
     RA = RetrievalAugmentation(config=config, tree=tree_path)
     return RA
+
+
+def retrieve_context(tree_file_path: str, question: str):
+    RA = load_tree(tree_file_path)
+    context = RA.retriever.retrieve(question=question)
+    return context
+
+
+def answer_question(tree_file_path: str, RA: RetrievalAugmentation, context: str, question: str):
+    answer = RA.answer_question(question=question)
+    return answer
 
 
 def test(tree_file_path: str, RA: RetrievalAugmentation):
