@@ -116,7 +116,7 @@ const LoginComp = (props: any) => {
 	return (
 		<div className="">
 			<h2 className="text-3xl pt-12">Welcome!</h2>
-			<h3 className="text-dashLinkText text-sm pt-2">
+			<h3 className="text-sm pt-2">
 				New Here? Join others by{" "}
 				<button className="underline" onClick={() => props.setIsView("SignUp")}>
 					creating an account
@@ -135,7 +135,7 @@ const LoginComp = (props: any) => {
 								<FormControl>
 									<Input placeholder="Email" {...field} />
 								</FormControl>
-								<FormMessage className="border-l-2 border-red-500 pl-2 text-dashInputColor text-sm text-left" />
+								<FormMessage className="border-l-2 border-red-500 pl-2 text-sm text-left" />
 							</FormItem>
 						)}
 					/>
@@ -156,12 +156,12 @@ const LoginComp = (props: any) => {
 									</div>
 								</FormControl>
 
-								<FormMessage className="border-l-2 border-red-500 pl-2 text-dashInputColor text-sm text-left" />
+								<FormMessage className="border-l-2 border-red-500 pl-2 text-sm text-left" />
 							</FormItem>
 						)}
 					/>
 					<div className="block w-full pt-6">
-						<button className="rounded-full block w-full bg-dashButtonBrown text-white pt-3 pb-3 mt-6">
+						<button className="rounded-full block w-full bg-accent pt-3 pb-3 mt-6">
 							Login
 						</button>
 					</div>
@@ -171,7 +171,7 @@ const LoginComp = (props: any) => {
 				<div className="inline-block w-1/2 text-left"></div>
 				<div className="inline-block w-1/2 text-right">
 					<button
-						className="text-dashInputColor text-sm underline"
+						className="text-sm underline"
 						onClick={() => props.setIsView("ForgotPassword")}>
 						Forgot Password
 					</button>
@@ -231,7 +231,7 @@ const SignUpComp = (props: any) => {
 	return (
 		<div className="">
 			<h2 className="text-3xl pt-12">Get Started...</h2>
-			<h3 className="text-dashLinkText text-sm pt-2">
+			<h3 className="text-sm pt-2">
 				Forgot your a member?{" "}
 				<button className="underline" onClick={() => props.setIsView("Login")}>
 					Login
@@ -250,7 +250,7 @@ const SignUpComp = (props: any) => {
 								<FormControl>
 									<Input placeholder="Email" {...field} />
 								</FormControl>
-								<FormMessage className="border-l-2 border-red-500 pl-2 text-dashInputColor text-sm text-left" />
+								<FormMessage className="border-l-2 border-red-500 pl-2 text-sm text-left" />
 							</FormItem>
 						)}
 					/>
@@ -270,12 +270,12 @@ const SignUpComp = (props: any) => {
 										</span>
 									</div>
 								</FormControl>
-								<FormMessage className="border-l-2 border-red-500 pl-2 text-dashInputColor text-sm text-left" />
+								<FormMessage className="border-l-2 border-red-500 pl-2 text-sm text-left" />
 							</FormItem>
 						)}
 					/>
 					<div className="block w-full pt-6">
-						<button className="rounded-full block w-full bg-dashButtonBrown text-white pt-3 pb-3 mt-6">
+						<button className="rounded-full block w-full bg-accent pt-3 pb-3 mt-6">
 							Sign Up
 						</button>
 					</div>
@@ -323,7 +323,7 @@ const ForgotPasswordComp = (props: any) => {
 	return (
 		<div>
 			<h2 className="text-3xl pt-12">Forgot Password?</h2>
-			<h3 className="text-dashLinkText text-sm pt-2">
+			<h3 className="text-sm pt-2">
 				No worries! Just enter your email and we will send you a reset link.
 			</h3>
 			<div className="mt-12"></div>
@@ -338,12 +338,12 @@ const ForgotPasswordComp = (props: any) => {
 								<FormControl>
 									<Input placeholder="Email" {...field} />
 								</FormControl>
-								<FormMessage className="border-l-2 border-red-500 pl-2 text-dashInputColor text-sm text-left" />
+								<FormMessage className="border-l-2 border-red-500 pl-2 text-sm text-left" />
 							</FormItem>
 						)}
 					/>
 					<div>
-						<button className="rounded-full block w-full bg-dashButtonBrown text-white pt-3 pb-3 mt-6">
+						<button className="rounded-full block w-full bg-dashButtonBrown pt-3 pb-3 mt-6">
 							Reset Password
 						</button>
 					</div>
@@ -366,7 +366,7 @@ const Homepage = () => {
 			<div className="w-2/5">
 				{/* header */}
 				<div className="h-1/6">
-					<h1 className="text-xl font-semibold text-dashLogoTheme p-8">
+					<h1 className="text-xl font-semibold p-8">
 						ARTHAS AI
 					</h1>
 				</div>
@@ -377,7 +377,7 @@ const Homepage = () => {
 				{/* footer */}
 				<div className="h-1/6 text-center">
 					<div className="h-4/6"></div>
-					<div className="h-2/6 text-dashLinkText">
+					<div className="h-2/6">
 						<Link href="/about" className="pr-6">
 							About Us
 						</Link>

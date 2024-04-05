@@ -29,7 +29,7 @@ const About = () => {
 
         <div className="flex w-full min-h-screen">
           {/* SideBar */}
-          <div className="sticky top-0 bg-white p-6 border-r-2 md:w-1/5 md:max-h-screen md:overflow-y-auto ml-6 mt-2">
+          <div className="sticky top-0 p-6 border-r-2 md:w-1/5 md:max-h-screen md:overflow-y-auto ml-6 mt-2">
             <h2 className="text-left font-medium text-2xl pb-4"> Overview </h2>
             <div className="flex flex-col">
               <Link
@@ -63,7 +63,7 @@ const About = () => {
           </div>
 
           {/* Main Content */}
-          <div className="bg-white p-6 w-full md:w-4/5 ml-6 mt-2 mr-6">
+          <div className="p-6 w-full md:w-4/5 ml-6 mt-2 mr-6">
             <h2 id="section-1" className="text-left font-medium text-2xl pb-4">
               What is Arthas AI?
             </h2>
