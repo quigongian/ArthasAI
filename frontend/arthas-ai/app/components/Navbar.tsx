@@ -85,6 +85,7 @@ const Navbar = () => {
             </nav>
         </>
     );
+=======
 import { useAuth } from "../utils/providers/authProvider";
 import { createClient } from "../utils/supabase/client";
 import { BoxIcon } from "lucide-react";
