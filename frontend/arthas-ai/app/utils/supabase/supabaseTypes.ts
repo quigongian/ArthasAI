@@ -12,18 +12,21 @@ export type Database = {
       document: {
         Row: {
           created_at: string;
+          document_title: string | null;
           id: string;
           last_modified: string | null;
           owner: string | null;
         };
         Insert: {
           created_at?: string;
+          document_title?: string | null;
           id?: string;
           last_modified?: string | null;
           owner?: string | null;
         };
         Update: {
           created_at?: string;
+          document_title?: string | null;
           id?: string;
           last_modified?: string | null;
           owner?: string | null;
