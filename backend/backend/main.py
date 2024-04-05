@@ -5,6 +5,7 @@ from utils.api.workspace import create_workspace, add_paper_to_workspace, get_al
 from models.request_models import Workspace
 from models.dto_models import Paper
 from utils.api.paper import upload_paper_with_metadata, get_all_papers
+from utils.api.search import top_k_abstract_query
 import together
 
 dotenv.load_dotenv()
@@ -18,12 +19,12 @@ def search_results():
             "use /search to search for papers, /upload to upload a paper, /chat to chat with a bot, /graph to get a graph of the data."}
 
 @app.get("/search")
-def search_results():
+def search_results(query: str):
     """
-    For now just return all the papers in the database
+    Return the top k papers based on the abstract cosine similarity
     """
 
-    res = get_all_papers()
+    res = top_k_abstract_query(query)
     return {"message": "Papers retrieved successfully", "data": res}
 
 @app.post("/paper")
