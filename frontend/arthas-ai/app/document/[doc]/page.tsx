@@ -12,17 +12,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 import dynamic from "next/dynamic";
-<<<<<<< HEAD
-import {
-  Settings,
-  PanelTopOpen,
-  ChevronLeft,
-  ArrowRight,
-  ListCollapse,
-} from "lucide-react";
-=======
 import { Settings, ChevronLeft, ArrowRight, ListCollapse } from "lucide-react";
->>>>>>> development
 import { Toaster } from "@/components/ui/toaster";
 import ChatInterface from "@/app/components/chatInterface";
 
@@ -100,11 +90,7 @@ function DocumentEditor({ params }: { params: { doc: string } }) {
             </ResizablePanel>
             <ResizableHandle withHandle />
             <div className="w-9/10 h-10 flex justify-between items-center space-x-4 p-8">
-<<<<<<< HEAD
-              <div >Assistant</div>
-=======
               <div>Assistant</div>
->>>>>>> development
               <div>
                 <Button
                   variant="ghost"
@@ -118,11 +104,7 @@ function DocumentEditor({ params }: { params: { doc: string } }) {
             </div>
             <ResizablePanel
               id="chatbot"
-<<<<<<< HEAD
-              className='px-4 pb-2'
-=======
               className="px-4 pb-2"
->>>>>>> development
               collapsible
               minSize={20}
               defaultSize={20}

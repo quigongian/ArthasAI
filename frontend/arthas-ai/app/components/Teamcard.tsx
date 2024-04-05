@@ -5,13 +5,7 @@ import {
   Card,
   CardContent,
   CardDescription,
-<<<<<<< HEAD
-  CardFooter,
-  CardHeader,
-  CardTitle,
-=======
   CardTitle
->>>>>>> development
 } from "@/components/ui/card";
 
 interface TeamCardProps {
@@ -46,17 +40,10 @@ const TeamCard: React.FC<TeamCardProps> = ({
         <div className="flex items-center justify-between">
             <CardTitle className="text-lg font-semibold mb-1">{name}</CardTitle>
             <div className="flex items-center space-x-2">
-<<<<<<< HEAD
-            <a href={github} aria-label="GitHub" className="w-8 h-8">
-                <Github />
-            </a>
-            <a href={linkedin} aria-label="LinkedIn" className="w-8 h-8">
-=======
             <a target="_blank" href={github} className="w-8 h-8">
                 <Github />
             </a>
             <a target="_blank" href={linkedin} aria-label="LinkedIn" className="w-8 h-8">
->>>>>>> development
                 <Linkedin />
             </a>
             </div>

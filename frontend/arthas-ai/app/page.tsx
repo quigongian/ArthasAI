@@ -66,22 +66,6 @@ const LoginRoute = () => {
 	);
 };
 
-<<<<<<< HEAD
-export default Home;
-function zodResolver(
-  loginSchema: z.ZodObject<
-    { email: z.ZodString; password: z.ZodString },
-    "strip",
-    z.ZodTypeAny,
-    { email: string; password: string },
-    { email: string; password: string }
-  >
-):
-  | import("react-hook-form").Resolver<{ email: string; password: string }, any>
-  | undefined {
-  throw new Error("Function not implemented.");
-}
-=======
 const LoginComp = (props: any) => {
 	const [type, setType] = useState("password");
 	const [icon, setIcon] = useState(eyeOff);
@@ -406,4 +390,3 @@ const Homepage = () => {
 };
 
 export default Homepage;
->>>>>>> development
