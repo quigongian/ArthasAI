@@ -38,7 +38,11 @@ const Message = (
       <span className="">{`${formatDate(timestamp)}`}</span>
     </div>
 
+<<<<<<< HEAD
     <div className=" px-1 text whitespace-pre-wrap ">{text}</div>
+=======
+    <div className=" px-1 text whitespace-pre-wrap break-words ">{text}</div>
+>>>>>>> development
   </div>
 );
 
@@ -82,7 +86,12 @@ const ChatInterface = () => {
     }
   };
 
+<<<<<<< HEAD
   const handleKeyPressCombined = (e: React.KeyboardEvent) => { // combined both functions so they can be added to the same input field
+=======
+  const handleKeyPressCombined = (e: React.KeyboardEvent) => {
+    // combined both functions so they can be added to the same input field
+>>>>>>> development
     handleKeyPress(e);
     handleNewLine(e);
   };
