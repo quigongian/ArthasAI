@@ -1,0 +1,4 @@
+*.md
+*.mmd
+./paper
+./papers/*
