@@ -6,6 +6,7 @@ from models.request_models import Workspace
 from models.dto_models import Paper
 from utils.api.paper import upload_paper_with_metadata, get_all_papers
 from utils.api.search import top_k_abstract_query
+from backend.backend.models.models import ChatInput
 import together
 
 dotenv.load_dotenv()
@@ -14,11 +15,11 @@ together.api_key = os.getenv("TOGETHER_API_KEY")
 from pydantic import BaseModel
 import boto3
 import pickle  # For serialization
-from storage import save_to_storage, load_from_storage, load_embeddings_from_s3, save_embeddings_to_s3
-from config import Settings
+from backend.chat_functionality.storage import save_to_storage, load_from_storage, load_embeddings_from_s3, save_embeddings_to_s3
+from backend.chat_functionality.config import Settings
 from typing import List
-from embeddings import get_embeddings
-from dependencies import get_s3_client, get_together_client
+from backend.chat_functionality.embeddings import get_embeddings
+from backend.chat_functionality.dependencies import get_s3_client, get_together_client
  
 settings = Settings()
 
@@ -122,7 +123,7 @@ if __name__ == "__main__":
     import sys
     import os
     sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-    from backend.config import settings   
+    from backend.chat_functionality.config import settings   
     uvicorn.run(app, host="0.0.0.0", port=8000)
 
 
