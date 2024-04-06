@@ -7,6 +7,7 @@ from models.dto_models import Paper
 from utils.api.paper import upload_paper_with_metadata, get_all_papers
 from utils.api.search import top_k_abstract_query
 import together
+from pydantic import BaseModel
 
 dotenv.load_dotenv()
 together.api_key = os.getenv("TOGETHER_API_KEY")
@@ -84,6 +85,8 @@ def route_get_all_workspaces_for_user():
 def chat():
     return {"Chat": "GET Request"}
 
+class ChatInput(BaseModel):
+    text: str
 @app.post("/chat/{user_id}/{paper_id}")
 def chat(user_id: str, paper_id: str, chat_input: ChatInput):
     #load existing context, if any
