@@ -1,33 +1,73 @@
-// Resources.tsx
-"use client"
-import React from "react";
-import Slider from "./Slider";
-import { Container } from "postcss";
+// Home.tsx
+"use client";
 
+// Home.tsx
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import SearchBar from "../components/Searchbar"; // Adjust the import path based on your project structure
+import { z } from "zod";
+import { createClient } from "../utils/supabase/client";
+import { Session } from "@supabase/supabase-js";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../utils/providers/authProvider";
 
+const Home = () => {
+	const auth = useAuth();
+	const supabase = createClient();
 
+	const handleSearchSubmit = (query: string) => {
+		console.log("Search query:", query);
+		// Add your search logic here
+	};
 
-const slides = [{ url: "https://images.pexels.com/photos/11857626/pexels-photo-11857626.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
-				,title: "One Some type of title about the Arthas AI here", description: "One This can be a short description explaining what Arthas AI does random random random random random"},
-			{ url: "https://images.pexels.com/photos/12009316/pexels-photo-12009316.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-			,title: "Two Some type of title about the Arthas AI here", description: " Two This can be a short description explaining what Arthas AI does"},
-			{ url: "https://images.pexels.com/photos/3854478/pexels-photo-3854478.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-			,title: "Three Some type of title about the Arthas AI here", description: "Three This can be a short description explaining what Arthas AI does"}
-		];
-
-
-
-const Homepage = () => {
 	return (
-		<div className="flex w-full min-h-screen">
-			<div className="w-3/5 m-auto">
-				<Slider slides={slides}/>
-			</div>
-			<div className="w-2/5 bg-blue-500">
-				<h1>Right Container</h1>
+		<div className="flex items-center justify-center min-h-screen">
+			{/* Main Content */}
+			<h1>Logged in as: {auth.user?.email}</h1>
+			<Button
+				onClick={() => {
+					supabase.auth.signOut();
+				}}>
+				Logout!
+			</Button>
+			<div className="max-w-xs grid grid-cols-3 gap-4">
+				<div className="col-span-3 text-center">
+					{/* Logo */}
+					Logo
+				</div>
+
+				<SearchBar onSearchSubmit={handleSearchSubmit} />
+
+				<div className="col-span-3 outline p-4 text-center rounded">
+					{/* Content for Grid 2 */}
+					Search Result Goes Here
+				</div>
+
+				<div className="col-span-3 p-4 text-center">
+					{/* Clickable link to Resources page */}
+					<Link href="/resources" className="hover:text-teal-200">
+						Resources
+					</Link>
+				</div>
+
+				{/* Add more grids as needed */}
 			</div>
 		</div>
 	);
 };
 
-export default Homepage;
+export default Home;
+function zodResolver(
+	loginSchema: z.ZodObject<
+		{ email: z.ZodString; password: z.ZodString },
+		"strip",
+		z.ZodTypeAny,
+		{ email: string; password: string },
+		{ email: string; password: string }
+	>
+):
+	| import("react-hook-form").Resolver<{ email: string; password: string }, any>
+	| undefined {
+	throw new Error("Function not implemented.");
+}

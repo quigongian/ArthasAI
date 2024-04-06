@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -9,33 +9,24 @@ import {
 import { Button } from "@/components/ui/button";
 import { ImperativePanelHandle, collapsePanel } from "../utils";
 import { useQuery, useMutation } from "@tanstack/react-query";
+import axios from "axios";
 
 import dynamic from "next/dynamic";
-import {
-  Settings,
-  PanelTopOpen,
-  ChevronLeft,
-  ArrowRight,
-  ChevronDown,
-} from "lucide-react";
+import { Settings, ChevronLeft, ArrowRight, ListCollapse } from "lucide-react";
 import { Toaster } from "@/components/ui/toaster";
+import ChatInterface from "@/app/components/chatInterface";
 
 const Editor = dynamic(() => import("./notes"), { ssr: false });
 const Flow = dynamic(() => import("./graphs"), { ssr: false });
 
+// TODO: on collapse, rotate arrow 180deg
+
 function DocumentEditor({ params }: { params: { doc: string } }) {
   const fetcher = useQuery({
-    queryKey: [`/document/${params.doc}/documentAPI`],
+    queryKey: [`/document/${params.doc}/api/test`],
     queryFn: async () => {
-      // TODO: Fetch all document information
-      return { hello: "world" };
-    },
-  });
-
-  const mutator = useMutation({
-    mutationKey: ["document", "update"],
-    mutationFn: async () => {
-      return { hello: "world" };
+      const { data } = await axios.get(`/document/${params.doc}/api/tsest`);
+      return data;
     },
   });
 
@@ -54,15 +45,16 @@ function DocumentEditor({ params }: { params: { doc: string } }) {
       <ResizablePanelGroup direction="horizontal" className="h-full">
         <ResizablePanel id="reader" className="w-full" defaultSize={50}>
           <div id="top-reader" className="flex justify-between p-4">
-            <Button variant="outline">
+            <Button variant="ghost">
               <ChevronLeft />
             </Button>
             <Button
               onClick={() => {
                 handleCollapse(readerRef);
               }}
+              variant="outline"
             >
-              <ArrowRight />
+              <ListCollapse />
             </Button>
           </div>
         </ResizablePanel>
@@ -96,7 +88,7 @@ function DocumentEditor({ params }: { params: { doc: string } }) {
               <Editor params={params} />
             </ResizablePanel>
             <ResizableHandle withHandle />
-            <div className="w-full p-2 flex justify-between items-center">
+            <div className="w-9/10 h-10 flex justify-between items-center space-x-4 p-8">
               <div>Assistant</div>
               <div>
                 <Button
@@ -111,12 +103,13 @@ function DocumentEditor({ params }: { params: { doc: string } }) {
             </div>
             <ResizablePanel
               id="chatbot"
+              className="px-4 pb-2"
               collapsible
               minSize={20}
               defaultSize={20}
               ref={chatbotRef}
             >
-              Chatbot
+              <ChatInterface />
             </ResizablePanel>
             <ResizableHandle withHandle />
             <div className="w-full p-2 flex justify-between items-center">
