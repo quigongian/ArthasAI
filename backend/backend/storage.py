@@ -187,6 +187,10 @@ def convert_mmd_to_jsonl_and_save(s3_client, Bucket: str, mmd_contents: List[dic
         except ClientError as e:
             raise HTTPException(status_code=500, detail=str(e.response['Error']['Message']))
 
+def serialize_embeddings(embeddings):
+    serialized_embeddings = pickle.dumps(embeddings)
+    return serialized_embeddings
+
 def mmd_to_json():
     
     Bucket=settings.bucket

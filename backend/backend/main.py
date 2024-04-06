@@ -8,6 +8,7 @@ from storage import save_to_storage, load_from_storage, load_embeddings_from_s3,
 from config import Settings
 import os
 from typing import List
+from embeddings import get_embeddings
 from dependencies import get_s3_client, get_together_client
 def configure():
     load_dotenv()
@@ -27,15 +28,6 @@ app = FastAPI()
 class ChatInput(BaseModel):
     text: str
 
-#Together Ai code to grab text and embed it
-def get_embeddings(texts: List[str], model: str) -> List[List[float]]:
-    texts = [text.replace("\n", " ") for text in texts]
-    outputs = client.embeddings.create(input = texts, model=model)
-    return [outputs.data[i].embedding for i in range(len(texts))]
-
-def serialize_embeddings(embeddings):
-    serialized_embeddings = pickle.dumps(embeddings)
-    return serialized_embeddings
 
 @app.get("/")
 def search_results():
@@ -81,24 +73,6 @@ def chat(user_id: str, paper_id: str, chat_input: ChatInput):
 @app.get("/graph")
 def get_graph():
     return {"Graph": "GET Request"}
-
-
-# Example data to save
-data_to_save = {'example': 'This is a test'}
-
-# Test user and paper IDs
-test_user_id = 'user123'
-test_paper_id = 'paperABC'
-
-# Save the data
-save_to_storage(test_user_id, test_paper_id, data_to_save)  # Pass s3_client here
-
-# Try to load the most recent data
-try:
-    loaded_data = load_from_storage(test_user_id, test_paper_id)
-    print("Loaded Data:", loaded_data)
-except HTTPException as e:
-    print(f"Failed to load data: {e.detail}")
 
 
 if __name__ == "__main__":
