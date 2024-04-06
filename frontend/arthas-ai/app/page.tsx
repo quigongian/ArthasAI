@@ -211,10 +211,12 @@ const SignUpComp = (props: any) => {
 		defaultValues: {
 			email: "",
 			password: "",
+			confirmPassword: "",
 		},
 		values: {
 			email: "",
 			password: "",
+			confirmPassword: "",
 		},
 	});
 
@@ -270,6 +272,31 @@ const SignUpComp = (props: any) => {
 					<FormField
 						control={form.control}
 						name="password"
+						render={({ field }) => (
+							<FormItem className="mb-6">
+								<FormLabel>Password</FormLabel>
+								<FormControl>
+									<div className="relative flex items-center">
+										<Input
+											className="bg-card border-border"
+											placeholder="Password"
+											type={type}
+											{...field}
+										/>
+										<span
+											className="absolute right-0 mr-2"
+											onClick={handleToggle}>
+											<Image src={icon} alt="test" height={20} width={20} />
+										</span>
+									</div>
+								</FormControl>
+								<FormMessage className="border-l-2 border-red-500 pl-2 text-sm text-left text-foreground" />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="confirmPassword"
 						render={({ field }) => (
 							<FormItem>
 								<FormLabel>Password</FormLabel>
