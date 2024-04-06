@@ -15,6 +15,9 @@ import dynamic from "next/dynamic";
 import { Settings, ChevronLeft, ArrowRight, ListCollapse } from "lucide-react";
 import { Toaster } from "@/components/ui/toaster";
 import ChatInterface from "@/app/components/chatInterface";
+import Reader from "./reader";
+import MathNode from "./reader";
+import katex from "katex";
 
 const Editor = dynamic(() => import("./notes"), { ssr: false });
 const Flow = dynamic(() => import("./graphs"), { ssr: false });
@@ -39,6 +42,16 @@ function DocumentEditor({ params }: { params: { doc: string } }) {
     collapsePanel(panelRef.current);
   };
 
+  const content = katex.renderToString(
+    `P(A|B) = \\frac{P(B|A)P(A)}{P(B)} P(A|B) = \\frac{P(B|A)P(A)}{P(B)}`,
+    { displayMode: true }
+  );
+
+  function addBackslashes(str: string) {
+    let stringWithBackslashes = str.replace(/\\/g, "\\\\");
+    return stringWithBackslashes;
+  }
+
   return (
     <div className="h-screen w-screen">
       <Toaster />
@@ -57,6 +70,7 @@ function DocumentEditor({ params }: { params: { doc: string } }) {
               <ListCollapse />
             </Button>
           </div>
+          <MathNode children={addBackslashes(content)} />
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel
