@@ -71,6 +71,12 @@
     @apply bg-[#ececec] py-3 px-4 rounded-md ring-gray-200 text-sm text-gray-800 
     hover:ring-1 focus:outline-none active:ring-gray-300 hover:shadow-md;
   }
+
+  .bg-custom-gradient {
+    background: linear-gradient(to right, transparent, mistyrose), white;
+  }
+  
+  
 }
 
 @layer base {

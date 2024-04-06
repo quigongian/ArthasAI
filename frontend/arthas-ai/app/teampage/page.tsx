@@ -48,9 +48,9 @@ const TeamPage = () => {
       </header>
       <main>
         {/* Banner */}
-        <div className="p-9">
-          <div className="p-10 w-1440 h-302.093 bg-custom-gradient">
-            <h1 className="text-center font-medium pt-4 text-4xl">
+        <div className="pt-9 pb-9">
+          <div className="p-10 w-1440 h-302.093  bg-gray-200">
+            <h1 className="text-center font-medium pt-4 text-4xl ">
               Meet The Arthas AI Team!
             </h1>
             <p className="text-center font-sm p-4">
