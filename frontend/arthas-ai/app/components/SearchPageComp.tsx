@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 const SearchPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchSubmitted, setSearchSubmitted] = useState(false);
-  const {data, isLoading, isError} = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: [`/dashboard/api/test`],
     queryFn: async () => {
       const response = await fetch(`/dashboard/api/test`);
@@ -30,13 +30,16 @@ const SearchPage = () => {
 
   // Correctly destructure the nested data
 
-  let title, abstract;
+  let title: any[] = [];
+  let abstract: any[] = [];
+  let num = 0;
 
-  for(let i = 0; i < Object.keys(data.data).length; i++){
-    let temp = ""
-    title = data.data.i.title;
-    abstract  = data.data.i.abstract;
-  }
+  Object.keys(data.data).forEach(key => {
+    title.push(data.data[key].Title);
+    abstract = [data.data[key].Abstract];
+    num++;
+    // console.log(`Key: ${key}, Value: ${value}`);
+  });
 
 
 
@@ -52,7 +55,10 @@ const SearchPage = () => {
       {!searchSubmitted && (
         <SearchBar setSearchSubmitted={setSearchSubmitted} />
       )}
-      {searchSubmitted && <SearchResults title={title} abstract={abstract}/>}
+      {searchSubmitted &&
+
+        <SearchResults title={title[0]} abstract={abstract[0]} />
+      }
     </div>
   );
 }
