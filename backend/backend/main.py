@@ -13,13 +13,13 @@ together.api_key = os.getenv("TOGETHER_API_KEY")
 
 from pydantic import BaseModel
 import pickle  # For serialization
-from backend.Chat_functionality.storage import save_to_storage, load_from_storage, load_embeddings_from_s3, save_embeddings_to_s3
-from backend.Chat_functionality.config import Settings
-from backend.Chat_functionality.chat import answer_question
+from Chat_functionality.storage import save_to_storage, load_from_storage, load_embeddings_from_s3, save_embeddings_to_s3
+from Chat_functionality.config import Settings
+from Chat_functionality.chat import answer_question
 from typing import List
-from backend.Chat_functionality.embeddings import get_embeddings
-from backend.Chat_functionality.dependencies import get_s3_client, get_together_client
-from backend.models.models import ChatInput
+from Chat_functionality.embeddings import get_embeddings
+from Chat_functionality.dependencies import get_s3_client, get_together_client
+from models.chat_models import ChatInput
 settings = Settings()
 
 together_api_key = get_together_client
@@ -98,7 +98,7 @@ def chat(user_id: str, paper_id: str, chat_input: ChatInput):
     #updating context with new chat input and embeddings
     
     #Note: You'd also want to store the chat output here
-    new_chat_input = chat_input.text
+    new_chat_input = chat_input.question
     embeddings = get_embeddings([new_chat_input], model='togethercomputer/m2-bert-80M-8k-retrieval')
     context['chat_history'].append({'input':new_chat_input, 'embedding': embeddings})
     #save updated context

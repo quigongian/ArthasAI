@@ -3,7 +3,7 @@ from typing import List
 import together
 from dotenv import load_dotenv
 import os
-from config import settings
+from .config import settings
 import pickle
 # Replace 'your_access_key_id' and 'your_secret_access_key' with your actual AWS credentials
 def configure():
@@ -21,7 +21,7 @@ def get_embeddings(texts: List[str], model: str) -> List[List[float]]:
 input_texts = ['Our solar system orbits the Milky Way galaxy at about 515,000 mph']
 embeddings = get_embeddings(input_texts, model='togethercomputer/m2-bert-80M-8k-retrieval')
 
-print(embeddings)
+#print(embeddings)
 # [[0.13437459, 0.09866201, ..., -0.20736569]]
 
 #Together Ai code to grab text and embed it

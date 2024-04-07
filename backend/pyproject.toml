@@ -29,6 +29,7 @@ transformers = "^4.39.3"
 einops = "*"
 accelerate = "*"
 together = "^1.0.1"
+pydantic-settings = "^2.2.1"
 
 [build-system]
 requires = ["poetry-core"]

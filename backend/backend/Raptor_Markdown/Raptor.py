@@ -6,11 +6,16 @@ RAPTOR embedding representation.
 
 The RAPTOR embedding representation will be stored in Neo4j as a tree,
 """
-from raptor import BaseSummarizationModel, BaseQAModel, BaseEmbeddingModel, RetrievalAugmentationConfig
-from raptor import RetrievalAugmentation
+import sys
+sys.path.append("Raptor_Markdown")
+from Raptor_Markdown.raptor.SummarizationModels import BaseSummarizationModel 
+from Raptor_Markdown.raptor.QAModels import BaseQAModel
+from Raptor_Markdown.raptor.EmbeddingModels import BaseEmbeddingModel
+from Raptor_Markdown.raptor.RetrievalAugmentation import RetrievalAugmentationConfig, RetrievalAugmentation
 import together
 from typing import List
 import os
+
 from dotenv import load_dotenv
 from openai import OpenAI
 
@@ -92,7 +97,6 @@ class M2BertEmbeddingModel(BaseEmbeddingModel):
     def example_use(self):
         input_texts = ['Our solar system orbits the Milky Way galaxy at about 515,000 mph']
         embeddings = self.get_embeddings(input_texts, model='togethercomputer/m2-bert-80M-8k-retrieval')
-        print(embeddings)
 
 
     def create_embedding(self, text: str) -> List[float]:
@@ -112,13 +116,8 @@ def load_markdown_to_txt(markdown_file_path: str):
     return text
 
 
-# Load tree from pickle file
-def load_tree(tree_path: str):
-    RA = RetrievalAugmentation(tree=tree_path)
-    return RA
-
-
 def run(path: str = ""):
+    path = "Arxiv Markdown 0102027.mmd"
     # Define the configuration for the Retrieval Augmentation
     RAC = RetrievalAugmentationConfig(summarization_model=MistralSummarizationModel(), qa_model=MistralQAModel(), embedding_model=M2BertEmbeddingModel())
     RA = RetrievalAugmentation(config=RAC)
@@ -133,18 +132,20 @@ def run(path: str = ""):
 
 def load_tree(tree_path: str, config: RetrievalAugmentationConfig):
     if config is None:
-        RA = RetrievalAugmentation(RetrievalAugmentationConfig(summarization_model=MistralSummarizationModel(), 
+        RAConfig = RetrievalAugmentationConfig(summarization_model=MistralSummarizationModel(), 
                                           qa_model=MistralQAModel(), 
-                                          embedding_model=M2BertEmbeddingModel()), 
-                                          tree=tree_path)
-        
-    RA = RetrievalAugmentation(config=config, tree=tree_path)
-    return RA
+                                          embedding_model=M2BertEmbeddingModel())
+        RA_loaded = RetrievalAugmentation(config=RAConfig, tree=tree_path)
+    else: 
+       RA_loaded = RetrievalAugmentation(config=config, tree=tree_path)
+
+    return RA_loaded
 
 
-def retrieve_context(document_id: str, tree_file_path: str, question: str):
-    RA = load_tree(document_id)
-    context = RA.retriever.retrieve(question=question)
+def retrieve_context(document_id: str, question: str):
+    tree_file_path = os.path.join(os.getcwd(), "Raptor_Markdown", "Arxiv Markdown 0102027_Tree")
+    RA = load_tree(tree_path=tree_file_path, config=None)
+    context = RA.retriever.retrieve(query=question)
     return context
 
 
@@ -162,8 +163,9 @@ def test(tree_file_path: str, RA: RetrievalAugmentation):
         question = input("Enter a question: \n")
 
 
-if "__main__" == __name__:
-    run()
+# if "__main__" == __name__:
+    # run()
+    #What issue are we getting now?
     # test("Gene_Paper_Tree", RA=load_tree("Gene_Paper_Tree", 
     #                                      RetrievalAugmentationConfig(summarization_model=MistralSummarizationModel(), 
     #                                      qa_model=MistralQAModel(), 

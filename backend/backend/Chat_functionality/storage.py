@@ -5,8 +5,8 @@ import datetime
 import botocore.exceptions
 from pathlib import Path
 from botocore.exceptions import ClientError
-from config import Settings
-from dependencies import get_s3_client, get_together_client
+from .config import Settings
+from .dependencies import get_s3_client, get_together_client
 from dotenv import load_dotenv
 from typing import List
 import json

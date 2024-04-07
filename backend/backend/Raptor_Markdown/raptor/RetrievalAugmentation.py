@@ -1,6 +1,8 @@
 import logging
 import pickle
 
+import sys
+sys.path.append("raptor")
 from .cluster_tree_builder import ClusterTreeBuilder, ClusterTreeConfig
 from .EmbeddingModels import BaseEmbeddingModel
 from .QAModels import BaseQAModel, GPT3TurboQAModel
@@ -175,11 +177,14 @@ class RetrievalAugmentation:
             try:
                 with open(tree, "rb") as file:
                     self.tree = pickle.load(file)
-                if not isinstance(self.tree, Tree):
-                    raise ValueError("The loaded object is not an instance of Tree")
+                    print("Tree type: " + str(type(self.tree)))
+                    if self.tree.__module__ == "raptor.tree_structures":
+                        module_type = "Raptor_Markdown." + self.tree.__module__
+                if module_type != Tree.__module__:
+                    raise ValueError(f"The loaded object is not an instance of Tree")
             except Exception as e:
                 raise ValueError(f"Failed to load tree from {tree}: {e}")
-        elif isinstance(tree, Tree) or tree is None:
+        elif module_type == Tree.__module__ or tree is None:
             self.tree = tree
         else:
             raise ValueError(
