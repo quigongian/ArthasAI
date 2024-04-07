@@ -12,14 +12,14 @@ dotenv.load_dotenv()
 together.api_key = os.getenv("TOGETHER_API_KEY")
 
 from pydantic import BaseModel
-import boto3
 import pickle  # For serialization
-from storage import save_to_storage, load_from_storage, load_embeddings_from_s3, save_embeddings_to_s3
-from config import Settings
+from backend.Chat_functionality.storage import save_to_storage, load_from_storage, load_embeddings_from_s3, save_embeddings_to_s3
+from backend.Chat_functionality.config import Settings
+from backend.Chat_functionality.chat import answer_question
 from typing import List
-from embeddings import get_embeddings
-from dependencies import get_s3_client, get_together_client
- 
+from backend.Chat_functionality.embeddings import get_embeddings
+from backend.Chat_functionality.dependencies import get_s3_client, get_together_client
+from backend.models.models import ChatInput
 settings = Settings()
 
 together_api_key = get_together_client
@@ -27,6 +27,8 @@ aws_access_key_id = settings.aws_access_key_id
 aws_secret_access_key = settings.aws_secret_access_key
 s3_client = get_s3_client()
 client = together.Together()
+
+from Raptor_Markdown.Raptor import retrieve_context
 
 app = FastAPI()
 
@@ -105,11 +107,13 @@ def chat(user_id: str, paper_id: str, chat_input: ChatInput):
 
     save_to_storage(user_id, paper_id, context)
 
+    paper_context: str = retrieve_context(document_id=paper_id, question=concatenated_prompts)
+
         # Here you would integrate with your AI model to get a response, using the embeddings as needed
-    ai_response = "Response from the AI model"  # Placeholder for AI model integration
+    ai_response =  answer_question(context=paper_context, question=new_chat_input)
 
-
-    return {"Chat": ai_response}
+    return {"Chat": ai_response,
+            "Chat_History": context['chat_history']}
 
 
 @app.get("/graph")
@@ -122,7 +126,7 @@ if __name__ == "__main__":
     import sys
     import os
     sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-    from backend.config import settings   
+    from backend.Chat_functionality.config import settings   
     uvicorn.run(app, host="0.0.0.0", port=8000)
 
 

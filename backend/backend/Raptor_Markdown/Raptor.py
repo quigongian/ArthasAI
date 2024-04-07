@@ -142,8 +142,8 @@ def load_tree(tree_path: str, config: RetrievalAugmentationConfig):
     return RA
 
 
-def retrieve_context(tree_file_path: str, question: str):
-    RA = load_tree(tree_file_path)
+def retrieve_context(document_id: str, tree_file_path: str, question: str):
+    RA = load_tree(document_id)
     context = RA.retriever.retrieve(question=question)
     return context
 
