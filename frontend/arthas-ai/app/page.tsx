@@ -133,9 +133,13 @@ const LoginComp = (props: any) => {
 							<FormItem className="mb-6">
 								<FormLabel>Email</FormLabel>
 								<FormControl>
-									<Input placeholder="Email" {...field} />
+									<Input
+										className="bg-card border-border"
+										placeholder="Email"
+										{...field}
+									/>
 								</FormControl>
-								<FormMessage className="border-l-2 border-red-500 pl-2 text-sm text-left" />
+								<FormMessage className="border-l-2 border-red-500 pl-2 text-sm text-left text-foreground" />
 							</FormItem>
 						)}
 					/>
@@ -147,7 +151,12 @@ const LoginComp = (props: any) => {
 								<FormLabel>Password</FormLabel>
 								<FormControl>
 									<div className="relative flex items-center">
-										<Input placeholder="Password" type={type} {...field} />
+										<Input
+											className="bg-card border-border"
+											placeholder="Password"
+											type={type}
+											{...field}
+										/>
 										<span
 											className="absolute right-0 mr-2"
 											onClick={handleToggle}>
@@ -156,12 +165,12 @@ const LoginComp = (props: any) => {
 									</div>
 								</FormControl>
 
-								<FormMessage className="border-l-2 border-red-500 pl-2 text-sm text-left" />
+								<FormMessage className="border-l-2 border-red-500 pl-2 text-sm text-left text-foreground" />
 							</FormItem>
 						)}
 					/>
 					<div className="block w-full pt-6">
-						<button className="rounded-full block w-full bg-accent pt-3 pb-3 mt-6">
+						<button className="rounded-full block w-full bg-accent text-accent-foreground pt-3 pb-3 mt-6">
 							Login
 						</button>
 					</div>
@@ -202,10 +211,12 @@ const SignUpComp = (props: any) => {
 		defaultValues: {
 			email: "",
 			password: "",
+			confirmPassword: "",
 		},
 		values: {
 			email: "",
 			password: "",
+			confirmPassword: "",
 		},
 	});
 
@@ -248,9 +259,13 @@ const SignUpComp = (props: any) => {
 							<FormItem className="mb-6">
 								<FormLabel>Email</FormLabel>
 								<FormControl>
-									<Input placeholder="Email" {...field} />
+									<Input
+										className="bg-card border-border"
+										placeholder="Email"
+										{...field}
+									/>
 								</FormControl>
-								<FormMessage className="border-l-2 border-red-500 pl-2 text-sm text-left" />
+								<FormMessage className="border-l-2 border-red-500 pl-2 text-sm text-left text-foreground" />
 							</FormItem>
 						)}
 					/>
@@ -258,11 +273,16 @@ const SignUpComp = (props: any) => {
 						control={form.control}
 						name="password"
 						render={({ field }) => (
-							<FormItem>
+							<FormItem className="mb-6">
 								<FormLabel>Password</FormLabel>
 								<FormControl>
 									<div className="relative flex items-center">
-										<Input placeholder="Password" type={type} {...field} />
+										<Input
+											className="bg-card border-border"
+											placeholder="Password"
+											type={type}
+											{...field}
+										/>
 										<span
 											className="absolute right-0 mr-2"
 											onClick={handleToggle}>
@@ -270,12 +290,37 @@ const SignUpComp = (props: any) => {
 										</span>
 									</div>
 								</FormControl>
-								<FormMessage className="border-l-2 border-red-500 pl-2 text-sm text-left" />
+								<FormMessage className="border-l-2 border-red-500 pl-2 text-sm text-left text-foreground" />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="confirmPassword"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Password</FormLabel>
+								<FormControl>
+									<div className="relative flex items-center">
+										<Input
+											className="bg-card border-border"
+											placeholder="Password"
+											type={type}
+											{...field}
+										/>
+										<span
+											className="absolute right-0 mr-2"
+											onClick={handleToggle}>
+											<Image src={icon} alt="test" height={20} width={20} />
+										</span>
+									</div>
+								</FormControl>
+								<FormMessage className="border-l-2 border-red-500 pl-2 text-sm text-left text-foreground" />
 							</FormItem>
 						)}
 					/>
 					<div className="block w-full pt-6">
-						<button className="rounded-full block w-full bg-accent pt-3 pb-3 mt-6">
+						<button className="rounded-full block w-full bg-accent text-accent-foreground pt-3 pb-3 mt-6">
 							Sign Up
 						</button>
 					</div>
@@ -336,14 +381,18 @@ const ForgotPasswordComp = (props: any) => {
 							<FormItem className="mb-10">
 								<FormLabel>Email</FormLabel>
 								<FormControl>
-									<Input placeholder="Email" {...field} />
+									<Input
+										className="bg-card border-border"
+										placeholder="Email"
+										{...field}
+									/>
 								</FormControl>
-								<FormMessage className="border-l-2 border-red-500 pl-2 text-sm text-left" />
+								<FormMessage className="border-l-2 border-red-500 pl-2 text-sm text-left text-foreground" />
 							</FormItem>
 						)}
 					/>
 					<div>
-						<button className="rounded-full block w-full bg-dashButtonBrown pt-3 pb-3 mt-6">
+						<button className="rounded-full block w-full bg-accent text-accent-foreground pt-3 pb-3 mt-6">
 							Reset Password
 						</button>
 					</div>
@@ -366,9 +415,9 @@ const Homepage = () => {
 			<div className="w-2/5">
 				{/* header */}
 				<div className="h-1/6">
-					<h1 className="text-xl font-semibold p-8">
-						ARTHAS AI
-					</h1>
+					<div>
+						<h1 className="text-xl font-semibold m-8">ARTHAS AI</h1>
+					</div>
 				</div>
 				{/* Login/Register */}
 				<div className="h-4/6 pl-8 pr-8">
