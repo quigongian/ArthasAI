@@ -11,6 +11,7 @@ export type Database = {
     Tables: {
       document: {
         Row: {
+          collection_id: string | null;
           created_at: string;
           document_title: string | null;
           id: string;
@@ -18,6 +19,7 @@ export type Database = {
           owner: string | null;
         };
         Insert: {
+          collection_id?: string | null;
           created_at?: string;
           document_title?: string | null;
           id?: string;
@@ -25,6 +27,7 @@ export type Database = {
           owner?: string | null;
         };
         Update: {
+          collection_id?: string | null;
           created_at?: string;
           document_title?: string | null;
           id?: string;
@@ -32,6 +35,13 @@ export type Database = {
           owner?: string | null;
         };
         Relationships: [
+          {
+            foreignKeyName: "public_document_collection_id_fkey";
+            columns: ["collection_id"];
+            isOneToOne: false;
+            referencedRelation: "document_collection";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "public_document_owner_fkey";
             columns: ["owner"];
@@ -45,32 +55,22 @@ export type Database = {
         Row: {
           collection_name: string | null;
           created_at: string;
-          document_id: string | null;
           id: string;
           owner_id: string | null;
         };
         Insert: {
           collection_name?: string | null;
           created_at?: string;
-          document_id?: string | null;
           id?: string;
           owner_id?: string | null;
         };
         Update: {
           collection_name?: string | null;
           created_at?: string;
-          document_id?: string | null;
           id?: string;
           owner_id?: string | null;
         };
         Relationships: [
-          {
-            foreignKeyName: "public_document_collection_document_id_fkey";
-            columns: ["document_id"];
-            isOneToOne: false;
-            referencedRelation: "document";
-            referencedColumns: ["id"];
-          },
           {
             foreignKeyName: "public_document_collection_owner_id_fkey";
             columns: ["owner_id"];
