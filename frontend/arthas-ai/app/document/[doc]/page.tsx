@@ -18,6 +18,7 @@ import ChatInterface from "@/app/components/chatInterface";
 import Reader from "./reader";
 import MathNode from "./reader";
 import katex from "katex";
+import "katex/dist/katex.min.css";
 
 const Editor = dynamic(() => import("./notes"), { ssr: false });
 const Flow = dynamic(() => import("./graphs"), { ssr: false });
@@ -42,15 +43,28 @@ function DocumentEditor({ params }: { params: { doc: string } }) {
     collapsePanel(panelRef.current);
   };
 
-  const content = katex.renderToString(
-    `P(A|B) = \\frac{P(B|A)P(A)}{P(B)} P(A|B) = \\frac{P(B|A)P(A)}{P(B)}`,
-    { displayMode: true }
+  const content =katex.renderToString(
+    // its rendering as a string
+    `
+    \\text{or, we could also appeal to the chain rule of probability:}
+
+    \[p(\\mathbf{x})=\\frac{p(\\mathbf{x},\\mathbf{z})}{p(\\mathbf{z}|\\mathbf{x})} \tag{2}\]
+    \\text{This would be the equation:}
+    \\text{}
+    \[\\mathbb{E}_{q_{\\mathbf{\\phi}}(\\mathbf{z}|\\mathbf{x})}\\left[\\log\\frac{p(\\mathbf{x},\\mathbf{z})}{q_{ \\mathbf{\\phi}}(\\mathbf{z}|\\mathbf{x})}\\right] \tag{3}\]  
+      `,
+    // \[, \tag, \] <- must be only one \
+    { displayMode: true}
   );
 
   function addBackslashes(str: string) {
-    let stringWithBackslashes = str.replace(/\\/g, "\\\\");
+    let stringWithBackslashes = str.replace(/\\(?![\[\]\\tag])/g, "\\\\");
     return stringWithBackslashes;
   }
+
+  const MathNode = ({ children }) => (
+  <div dangerouslySetInnerHTML={{__html: children}}/>
+   );
 
   return (
     <div className="h-screen w-screen">
