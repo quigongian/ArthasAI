@@ -1,38 +1,17 @@
 "use client";
 import React from "react";
 import Pagetab from "./Pagetab";
-import { Search, Users } from "lucide-react";
+import { Search} from "lucide-react";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
-const results = [
-	{
-		title: "Title of the result",
-		description:
-			"A description of the paper. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat",
-	},
-	{
-		title: "Title of the result",
-		description:
-			"A description of the paper. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat",
-	},
-	{
-		title: "Title of the result",
-		description:
-			"A description of the paper. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat",
-	},
-	{
-		title: "Title of the result",
-		description:
-			"A description of the paper. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat",
-	},
-	{
-		title: "Title of the result",
-		description:
-			"A description of the paper. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat",
-	},
-];
+interface SearchResultsProps {
+  titles: string[]; // to map through titles 
+  abstracts: string[];
+}
 
-const Searchresults = () => {
+
+const SearchResults:React.FC<SearchResultsProps> = ({ titles, abstracts }) => {
 	return (
 		<div>
 			{/* <Pagetab/> */}
@@ -58,19 +37,18 @@ const Searchresults = () => {
 			<div className="flex w-full justify-center pt-8 pb-10 bg-background">
 				<div className="w-full max-w-4xl p-2 rounded-lg border bg-background">
 					<div className="divide-y divide-gray-200">
-						{results.map((result, index) => (
+						{titles.map((t, index) => (
 							<div key={index} className="pt-2 pb-2 pl-4">
 								<h3 className="text-xl font-medium text-foreground">
-									{result.title}
+									{t}
 								</h3>
-								<p className="text-foreground mt-1">{result.description}</p>
+								<p className="text-foreground mt-1">{abstracts[index]}</p>
 								<div className="flex mt-3">
-									<button className="px-8 py-0 mr-8 text-foreground bg-card rounded-lg">
-										Edit
-									</button>
-									<button className="px-8 py-0 text-foreground bg-background border rounded-lg">
-										Add
-									</button>
+									<Link href="/document/4df63cc6-1918-45d0-a7df-aac5a62a54bc">
+										<button className="px-8 py-0 mr-8 text-foreground bg-card rounded-lg">
+											Edit
+										</button>
+									</Link>
 								</div>
 							</div>
 						))}

@@ -28,27 +28,31 @@ const SearchPage = () => {
     return <div>Error loading data</div>; // Or any error handling you prefer
   }
 
+
+  // empty array to store titles and abstracts
+  let titles: string[] = []; 
+  let abstracts: string[] = [];
+
+
   // Correctly destructure the nested data
-
-  let title: any[] = [];
-  let abstract: any[] = [];
-  let num = 0;
-
   Object.keys(data.data).forEach(key => {
-    title.push(data.data[key].Title);
-    abstract = [data.data[key].Abstract];
-    num++;
-    // console.log(`Key: ${key}, Value: ${value}`);
+    // if title and abstract exist 
+    if(data.data[key].Title && data.data[key].Abstract) {
+      titles.push(data.data[key].Title); // push title to array
+      abstracts.push(data.data[key].Abstract);
+    }
   });
 
+  // let title: any[] = [];
+  // let abstract: any[] = [];
+  // let num = 0;
 
-
-  // Define a type for 
-  type Results = {
-    title: string,
-    abstract: string
-  };
-
+  // Object.keys(data.data).forEach(key => {
+  //   title.push(data.data[key].Title);
+  //   abstract = [data.data[key].Abstract];
+  //   num++;
+  //   // console.log(`Key: ${key}, Value: ${value}`);
+  // });
 
   return (
     <div>
@@ -57,7 +61,7 @@ const SearchPage = () => {
       )}
       {searchSubmitted &&
 
-        <SearchResults title={title[0]} abstract={abstract[0]} />
+        <SearchResults titles={titles} abstracts={abstracts} />
       }
     </div>
   );
