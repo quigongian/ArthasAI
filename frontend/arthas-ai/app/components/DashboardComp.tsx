@@ -5,45 +5,67 @@ import Image from "next/image";
 import { Search, Users } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Article, Collection } from "../dashboard/Types/Type";
+import AddToCollectionsPopover from "./AddToCollectionsPopover";
 
 export default function DashboardComp() {
   const fetcher = useQuery({
     queryKey: [`/dashboard/api/test`],
     queryFn: async () => {
-		const response = await fetch(`/dashboard/api/test`);
-		if (!response.ok) {
-		  throw new Error(`HTTP error! status: ${response.status}`);
-		}
-		const data = await response.json();
- 		console.log('API Response:', data); // Log the API response
- 		return data;
-
-	},
-});
+      const response = await fetch(`/dashboard/api/test`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log("API Response:", data); // Log the API response
+      return data;
+    },
+  });
 
   const isLoading = fetcher.isLoading;
   const isError = fetcher.isError;
   const data = fetcher.data;
   if (!data) {
-	return <div>Data Loading...</div>;
+    return <div>Data Loading...</div>;
   }
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  
+
   if (isError) {
     return <div>Error loading recently viewed documents</div>;
   }
 
-  const recentlyViewedDocs  = data.data || [];
+  const recentlyViewedDocs = data.data || [];
 
   interface Document {
-	id: string;
-	document_title: string;
-	created_at: string;
-	last_modified: string;
+    id: string;
+    document_title: string;
+    created_at: string;
+    last_modified: string;
   }
+
+  // Popover functionality
+  // Dummy data for AddToCollectionsPopover
+  const collections: Collection[] = [
+    { id: "1", name: "Collection 1" },
+    { id: "2", name: "Collection 2" },
+    { id: "3", name: "Collection 3" },
+  ];
+
+  const articles: Article[] = [
+    { id: "1", title: "Article 1 is name after a very popular figure" },
+    { id: "2", title: "Article 2" },
+    { id: "3", title: "Article 3" },
+    { id: "4", title: "Article 4" },
+    { id: "4", title: "Article 5" },
+    { id: "3", title: "Article 6" },
+  ];
+
+  const handleAddToCollection = (collectionId: string, articleId: string) => {
+    console.log(`Adding article ${articleId} to collection ${collectionId}`);
+  };
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-card">
@@ -82,7 +104,10 @@ export default function DashboardComp() {
             </CardHeader>
             <CardContent className="grid grid-cols-4 gap-6">
               {recentlyViewedDocs.map((doc: Document) => (
-                <Card key={doc.id} className="flex flex-col justify-start border-none h-60 bg-gray-200">
+                <Card
+                  key={doc.id}
+                  className="flex flex-col justify-start border-none h-60 bg-gray-200"
+                >
                   <CardHeader className="flex-row gap-4">
                     <CardTitle className="text-base font-medium">
                       {doc.document_title}
@@ -100,11 +125,17 @@ export default function DashboardComp() {
           {/* Collection Section Start*/}
           <div className="xl:col-span-2 bg-card border rounded mt-10">
             <CardHeader className="flex flex-row items-center">
-              <div className="grid gap-2">
-                <CardTitle className="text-[20px] font-medium">
+              <div className="flex">
+                <CardTitle className="text-[20px] font-medium mr-16">
                   Collections
                 </CardTitle>
-                {/* <CardDescription>All your collections</CardDescription> */}
+
+                {/* Popover Feature */}
+                <AddToCollectionsPopover
+                  collections={collections}
+                  articles={articles}
+                  onAddToCollection={handleAddToCollection}
+                />
               </div>
             </CardHeader>
             <CardContent className="grid grid-cols-4 gap-6">
