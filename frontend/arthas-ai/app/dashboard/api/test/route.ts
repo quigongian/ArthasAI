@@ -1,12 +1,12 @@
 import { NextResponse, NextRequest } from "next/server";
-import { createClient } from "@/app/utils/supabase/client";
+import { createClient } from "@/app/utils/supabase/server";
 
 
 export async function GET(){
     // define a return type
     // fetch from supabase to get the whole document table (document_id, document_title, last_modified, created_At)
 
-    const supabase = createClient(); // use the client version not server
+    const supabase = createClient();
 
     try {
       // Fetch recently viewed documents from the Supabase table

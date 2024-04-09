@@ -8,6 +8,17 @@ import { Input } from "@/components/ui/input";
 import { Article, Collection } from "../dashboard/Types/Type";
 import AddToCollectionsPopover from "./AddToCollectionsPopover";
 
+function formatDateTime(dateString: string) {
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  };
+  return new Date(dateString).toLocaleString("en-US", options);
+}
+
 export default function DashboardComp() {
   const fetcher = useQuery({
     queryKey: [`/dashboard/api/test`],
@@ -25,9 +36,6 @@ export default function DashboardComp() {
   const isLoading = fetcher.isLoading;
   const isError = fetcher.isError;
   const data = fetcher.data;
-  if (!data) {
-    return <div>Data Loading...</div>;
-  }
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -106,16 +114,18 @@ export default function DashboardComp() {
               {recentlyViewedDocs.map((doc: Document) => (
                 <Card
                   key={doc.id}
-                  className="flex flex-col justify-start border-none h-60 bg-gray-200"
+                  className="flex flex-col justify-start border h-60 bg-gray-200"
                 >
                   <CardHeader className="flex-row gap-4">
-                    <CardTitle className="text-base font-medium">
+                    <CardTitle className="text-large font-medium">
                       {doc.document_title}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent>
-                    <p>Last Modified: {doc.last_modified}</p>
-                    <p>Created At: {doc.created_at}</p>
+                  <CardContent className="flex flex-col justify-between h-full">
+                    <div className="flex flex-col justify-end">
+                      <p>Last Modified: {formatDateTime(doc.last_modified)}</p>
+                      <p>Created At: {formatDateTime(doc.created_at)}</p>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
@@ -140,7 +150,7 @@ export default function DashboardComp() {
             </CardHeader>
             <CardContent className="grid grid-cols-4 gap-6">
               <Link href={"#"}>
-                <Card className="flex flex-col justify-center items-center border-none bg-gray-200 hover:bg-gray-300">
+                <Card className="flex flex-col justify-center items-center border bg-gray-200 hover:bg-gray-300">
                   <CardHeader className="flex-row gap-4">
                     {/* <Image
                       src="/assets/folder.png"
@@ -155,7 +165,7 @@ export default function DashboardComp() {
                 </Card>
               </Link>
               <Link href={"#"}>
-                <Card className="flex flex-col justify-center items-center border-none bg-gray-200 hover:bg-gray-300">
+                <Card className="flex flex-col justify-center items-center border bg-gray-200 hover:bg-gray-300">
                   <CardHeader className="flex-row gap-4">
                     {/* <Image
                       src="/assets/folder.png"
@@ -170,7 +180,7 @@ export default function DashboardComp() {
                 </Card>
               </Link>
               <Link href={"#"}>
-                <Card className="flex flex-col justify-center items-center border-none bg-gray-200 hover:bg-gray-300">
+                <Card className="flex flex-col justify-center items-center border bg-gray-200 hover:bg-gray-300">
                   <CardHeader className="flex-row gap-4">
                     {/* <Image
                       src="/assets/folder.png"
@@ -185,7 +195,7 @@ export default function DashboardComp() {
                 </Card>
               </Link>
               <Link href={"#"}>
-                <Card className="flex flex-col justify-center items-center border-none bg-gray-200 hover:bg-gray-300">
+                <Card className="flex flex-col justify-center items-center border bg-gray-200 hover:bg-gray-300">
                   <CardHeader className="flex-row gap-4">
                     {/* <Image
                       src="/assets/folder.png"
@@ -200,7 +210,7 @@ export default function DashboardComp() {
                 </Card>
               </Link>
               <Link href={"#"}>
-                <Card className="flex flex-col justify-center items-center border-none bg-gray-200 hover:bg-gray-300">
+                <Card className="flex flex-col justify-center items-center border bg-gray-200 hover:bg-gray-300">
                   <CardHeader className="flex-row gap-4">
                     {/* <Image
                       src="/assets/folder.png"
