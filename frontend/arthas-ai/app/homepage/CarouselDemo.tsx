@@ -33,31 +33,30 @@ const slides = [
 export function CarouselDemo() {
     
   return (
-    <div className="m-12">
-    <Carousel className="w-full max-w rounded-2xl">
+    <div>
+    <Carousel className="w-full max-w-4xl m-auto rounded-2xl pl-6">
       <CarouselContent>
         {Array.from({ length: 3 }).map((_, index) => (
           <CarouselItem key={index}>
             <div className="p-1">
-              <Card>
-                <CardContent 
-                style={{ backgroundImage: `url(${slides[0].url})` }}
-                className="flex aspect-square items-center justify-center p-12">
-                    <div className="absolute bottom-1/4 pl-8 text-balance space-y-4">
-					<h2 className="text-4xl font-semibold duration-500 w-2/3">
-                        {slides[0].title}
-					</h2>
-					<h3 className="text-xl duration-500 w-1/2">
-						{slides[0].description}
-					</h3>
-				</div>
-                  <span className="text-4xl font-semibold">{index + 1}</span>
+              <Card className="rounded-2xl">
+                <CardContent
+                style={{ backgroundImage: `url(${slides[index].url})` }}
+                className="flex aspect-square items-center justify-center p-6 rounded-2xl">
+                    <div className="pl-8 text-balance space-y-4">
+					            <h2 className="text-4xl font-semibold duration-500 w-2/3">
+                        {slides[index].title}
+					              </h2>
+					            <h3 className="text-xl duration-500 w-1/2">
+						            {slides[index].description}
+					              </h3>
+				            </div>
                 </CardContent>
               </Card>
             </div>
           </CarouselItem>
         ))}
-      </CarouselContent>
+      </CarouselContent>  
       <CarouselPrevious />
       <CarouselNext />
     </Carousel>

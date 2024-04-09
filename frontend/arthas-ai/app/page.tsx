@@ -28,6 +28,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import eye from "./homepage/eye.png";
 import eyeOff from "./homepage/eyeOff.png";
+import { Carousel } from "@/components/ui/carousel";
+import { CarouselDemo } from "./homepage/CarouselDemo";
 
 const slides = [
 	{
@@ -409,7 +411,7 @@ const Homepage = () => {
 			<Toaster />
 			{/* left container */}
 			<div className="w-3/5 m-auto">
-				<Slider slides={slides} />
+				<CarouselDemo />
 			</div>
 			{/* right container */}
 			<div className="w-2/5">
