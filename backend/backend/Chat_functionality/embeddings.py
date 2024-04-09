@@ -3,7 +3,7 @@ from typing import List
 import together
 from dotenv import load_dotenv
 import os
-from .config import settings
+from config import settings
 import pickle
 # Replace 'your_access_key_id' and 'your_secret_access_key' with your actual AWS credentials
 def configure():

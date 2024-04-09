@@ -1,12 +1,13 @@
 import boto3
+from botocore.exceptions import ClientError
 from fastapi import HTTPException
 import pickle
 import datetime
 import botocore.exceptions
 from pathlib import Path
 from botocore.exceptions import ClientError
-from .config import Settings
-from .dependencies import get_s3_client, get_together_client
+from config import Settings
+from dependencies import get_s3_client, get_together_client
 from dotenv import load_dotenv
 from typing import List
 import json
@@ -198,4 +199,57 @@ def mmd_to_json():
 
     mmd_files_contents = list_and_retrieve_mmd_files(Bucket, mmd_prefix)
 
-    convert_mmd_to_jsonl_and_save(s3_client, Bucket, mmd_files_contents)
+
+bucket_name = 'arthasai'
+source_prefix = 'arxiv_markdown/'
+
+
+def get_paper_by_id(bucket_name, folder_prefix, document_id):
+    """
+    Retrieves the key (file path in S3) of a paper with a given id from an S3 bucket folder.
+
+    Parameters:
+    - bucket_name (str): The name of the S3 bucket.
+    - folder_prefix (str): The folder within the bucket.
+    - document_id (int): The order number of the document in the folder.
+
+    Returns:
+    - str: The key of the document in S3.
+    """
+    # Initialize a boto3 S3 client
+    s3_client = boto3.client('s3')
+
+    try:
+        # List all objects in the specified folder
+        response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=folder_prefix)
+
+        # Check if the response contains the 'Contents' key
+        if 'Contents' not in response:
+            raise ValueError("No files found in the specified folder.")
+
+        # Filter out only the relevant .mmd files
+        mmd_files = [obj['Key'] for obj in response['Contents'] if obj['Key'].endswith('.mmd')]
+
+        # Sort the files by their name or you could sort them by 'LastModified' if needed
+        mmd_files.sort()
+
+        # Get the key of the file at the specified index (document_id)
+        file_key = mmd_files[document_id - 1]  # Subtract 1 because list indices start at 0
+
+        return file_key
+
+    except IndexError:
+        raise ValueError(f"Document ID {document_id} is out of range. No such file exists.")
+    except ClientError as e:
+        raise ClientError(f"Failed to retrieve file key: {e.response['Error']['Message']}")
+    except Exception as e:
+        raise Exception(f"An error occurred: {e}")
+
+# Usage
+bucket_name = 'arthasai'
+folder_prefix = 'arxiv_markdown/'
+document_id = 1  # For the first document
+
+
+file_key = get_paper_by_id(bucket_name, folder_prefix, document_id)
+print(f"File path in S3: {file_key}")

@@ -6,18 +6,30 @@ RAPTOR embedding representation.
 
 The RAPTOR embedding representation will be stored in Neo4j as a tree,
 """
-import sys
+"""import sys
 sys.path.append("Raptor_Markdown")
 from Raptor_Markdown.raptor.SummarizationModels import BaseSummarizationModel 
 from Raptor_Markdown.raptor.QAModels import BaseQAModel
 from Raptor_Markdown.raptor.EmbeddingModels import BaseEmbeddingModel
 from Raptor_Markdown.raptor.RetrievalAugmentation import RetrievalAugmentationConfig, RetrievalAugmentation
+"""
+from raptor.SummarizationModels import BaseSummarizationModel
+from raptor.QAModels import BaseQAModel
+from raptor.EmbeddingModels import BaseEmbeddingModel
+from raptor.RetrievalAugmentation import RetrievalAugmentationConfig, RetrievalAugmentation
 import together
 from typing import List
 import os
 
 from dotenv import load_dotenv
 from openai import OpenAI
+
+#from Chat_functionality.config import Settings
+
+import sys
+sys.path.insert(0, 'D:/coding/ArthasAI/ArthasAI/backend/backend')
+
+from Chat_functionality.config import Settings
 
 # if you want to use the Gemma, you will need to authenticate with HuggingFace, Skip this step, if you have the model already downloaded
 # from huggingface_hub import login
@@ -116,7 +128,7 @@ def load_markdown_to_txt(markdown_file_path: str):
     return text
 
 
-def run(path: str = ""):
+def run(document_id: str, path: str = "", ):
     path = "Arxiv Markdown 0102027.mmd"
     # Define the configuration for the Retrieval Augmentation
     RAC = RetrievalAugmentationConfig(summarization_model=MistralSummarizationModel(), qa_model=MistralQAModel(), embedding_model=M2BertEmbeddingModel())
@@ -128,6 +140,8 @@ def run(path: str = ""):
 
     file_name = path.split("/")[-1].split(".")[0]
     RA.save(file_name + "_Tree")
+
+
 
 
 def load_tree(tree_path: str, config: RetrievalAugmentationConfig):
@@ -165,8 +179,63 @@ def test(tree_file_path: str, RA: RetrievalAugmentation):
 
 # if "__main__" == __name__:
     # run()
-    #What issue are we getting now?
     # test("Gene_Paper_Tree", RA=load_tree("Gene_Paper_Tree", 
     #                                      RetrievalAugmentationConfig(summarization_model=MistralSummarizationModel(), 
     #                                      qa_model=MistralQAModel(), 
     #                                      embedding_model=M2BertEmbeddingModel())))
+
+from Chat_functionality.dependencies import get_s3_client
+settings = Settings()
+s3_client = get_s3_client()
+bucket_name = 'arthasai'
+folder_prefix = 'arxiv_markdown/'
+
+from raptor.SummarizationModels import BaseSummarizationModel 
+from raptor.QAModels import BaseQAModel
+from raptor.EmbeddingModels import BaseEmbeddingModel
+from raptor.RetrievalAugmentation import RetrievalAugmentationConfig, RetrievalAugmentation
+import together
+from typing import List
+import os
+
+import boto3
+import pickle
+from botocore.exceptions import ClientError
+def run_for_all_files(bucket_name, folder_prefix, s3_client):
+    paginator = s3_client.get_paginator('list_objects_v2')
+    output_folder = 'raptorized-files/'
+
+    # Loop through all files in the S3 bucket
+    for page in paginator.paginate(Bucket=bucket_name, Prefix=folder_prefix):
+        for obj in page.get('Contents', []):
+            key = obj['Key']
+            if key.endswith('.mmd'):
+                try:
+                    # Load the markdown content from S3
+                    response = s3_client.get_object(Bucket=bucket_name, Key=key)
+                    text = response['Body'].read().decode('utf-8')
+
+                    # Define the configuration for the Retrieval Augmentation
+                    RAC = RetrievalAugmentationConfig(
+                        summarization_model=MistralSummarizationModel(), 
+                        qa_model=MistralQAModel(), 
+                        embedding_model=M2BertEmbeddingModel()
+                    )
+                    RA = RetrievalAugmentation(config=RAC)
+
+                    # Add the loaded text to the Retrieval Augmentation
+                    RA.add_documents(text)
+
+                    # RAPTORIZE and pickle the Retrieval Augmentation
+                    file_name = key.split('/')[-1].replace('.mmd', '')
+                    tree_data = RA.tree  # Assuming RA.tree contains the data structure we want to pickle
+                    pickle_data = pickle.dumps(tree_data)
+
+                    # Save the pickle data back to S3
+                    s3_client.put_object(Bucket=bucket_name, Key=f'{output_folder}{file_name}_Tree.pkl', Body=pickle_data)
+                    print(f'Raptorized and pickled file saved for {key}')
+
+                except ClientError as e:
+                    print(f"Failed to process file {key}: {e.response['Error']['Message']}")
+
+run_for_all_files(bucket_name, folder_prefix, s3_client)
