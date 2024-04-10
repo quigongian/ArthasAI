@@ -15,6 +15,7 @@ from embeddings import get_embeddings
 from models.dto_models import Paper
 import os
 from openai import OpenAI
+import json
 
 client = OpenAI(
   api_key=os.getenv("TOGETHER_API_KEY"),
@@ -23,12 +24,17 @@ client = OpenAI(
 
 class PaperClusterNode(BaseModel):
     id: int
+    title: str
     text: str # this will either be the summary if the node is a cluster, or the abstract if it's a paper
     embedding: List[float]
 
+class SummaryResponse(BaseModel):
+    title: str
+    summary: str
+
 def cluster_papers(papers: List[Paper], n_clusters: int = 10):
     # convert the papers to PaperClusterNode objects
-    paper_nodes = [PaperClusterNode(id=i, text=paper.abstract, embedding=paper.abstract_embedding) for i, paper in enumerate(papers)]
+    paper_nodes = [PaperClusterNode(id=i, text=paper.abstract, embedding=paper.abstract_embedding, title=paper.title) for i, paper in enumerate(papers)]
     recursive_cluster(paper_nodes, n_clusters)
 
 def create_cluster_summaries(cluster_texts: List[List[str]]) -> List[str]:
@@ -36,14 +42,14 @@ def create_cluster_summaries(cluster_texts: List[List[str]]) -> List[str]:
     Create a summary of the cluster based on the text of the papers in the cluster
     """
 
-    summaries = []
+    summaries: List[SummaryResponse] = []
 
     for texts in cluster_texts:
         chat_completion = client.chat.completions.create(
         messages=[
             {
             "role": "system",
-            "content": "You are an expert supparizer, tasked with creating a summary of clusters of research papers, given the abstracts of all the papers in the cluster",
+            "content": "You are an expert supparizer, tasked with creating a summary of clusters of research papers, given the abstracts of all the papers in the cluster. Also output a title that is appropriate for the cluster. Your output should be JSON of the form {\"title\": \"Title of the cluster\", \"summary\": \"Summary of the cluster\"}."
             },
             {
             "role": "user",
@@ -53,9 +59,9 @@ def create_cluster_summaries(cluster_texts: List[List[str]]) -> List[str]:
         model="mistralai/Mixtral-8x7B-Instruct-v0.1"
         )
 
-        summarization = chat_completion.choices[0].message.content
-        print("SUMMARIZATION", summarization)
-        summaries.append(summarization)
+        response = json.loads(chat_completion.choices[0].message.content)
+        print("SUMMARIZATION", response.summary)
+        summaries.append(response)
 
     return summaries
 
@@ -88,16 +94,17 @@ def recursive_cluster(papers: List[PaperClusterNode], n_clusters: int = 5):
 
     # store the clusters in the database
     with driver.session() as session:
-        for i, summary in enumerate(cluster_summaries):
+        for i, summary_res in enumerate(cluster_summaries):
             cluster_uuid = str(uuid.uuid4())
 
             cluster_objects.append({
                 "id": cluster_uuid,
-                "summary": summary,
-                "embedding": get_embeddings([summary], "togethercomputer/m2-bert-80M-8k-retrieval")[0]
+                "title": summary_res.title,
+                "summary": summary_res.summary,
+                "embedding": get_embeddings([summary_res], "togethercomputer/m2-bert-80M-8k-retrieval")[0]
             })
 
-            session.run("MERGE (c:Cluster {id: $id, summary: $summary})", id=cluster_uuid, summary=summary)
+            session.run("MERGE (c:Cluster {id: $id, summary: $summary, title: $title})", id=cluster_uuid, summary=summary_res.summary, title=summary_res.title)
             session.run("""
                         WITH UNWIND $papers as paper
                         MATCH (p:Paper|Cluster {id: paper.id})

@@ -9,6 +9,7 @@ from models.dto_models import Paper
 from utils.api.paper import upload_paper_with_metadata, get_all_papers
 from utils.api.search import top_k_abstract_query
 import together
+from utils.scripts.seed_db import seed_db
 
 together.api_key = os.getenv("TOGETHER_API_KEY")
 
@@ -125,5 +126,6 @@ if __name__ == "__main__":
     sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
     from backend.config import settings   
     uvicorn.run(app, host="0.0.0.0", port=8000)
+    seed_db()
 
 
