@@ -5,26 +5,26 @@ export async function GET() {
       {
         Data: {
           Relevant_Sources: [
-            {
-              Paper_1: {
+            
+              {
                 Title: "Attention is All You Need",
                 Abstract: "This paper is about...",
               },
-              Paper_2: {
+              {
                 Title: "CLIP: Connecting Text and Images",
                 Abstract: "This paper is about...",
               },
-              Paper_3: {
+              {
                 Title: "BERT: Pre-training...",
                 Abstract: "This paper is about...",
               },
-            },
+            
           ],
         },
       },
     ];
   
-    const data = results[0].Data.Relevant_Sources[0];
+    const data = results[0].Data.Relevant_Sources;
   
     return NextResponse.json({
       message: "This is a GET request",
