@@ -1,9 +1,12 @@
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import boto3
 from botocore.exceptions import ClientError
 from Chat_functionality.dependencies import get_s3_client
 import pickle
 
-from .Raptor import run
+from Raptor import run
 
 def run_for_all_files(bucket_name, folder_prefix, s3_client):
     paginator = s3_client.get_paginator('list_objects_v2')
@@ -32,7 +35,7 @@ def run_for_all_files(bucket_name, folder_prefix, s3_client):
                 except ClientError as e:
                     print(f"Failed to process file {key}: {e.response['Error']['Message']}")
 
-bucket_name = 'Arthasai'
+bucket_name = 'arthasai'
 folder_prefix = 'arxiv_markdown/'
 s3_client = get_s3_client()
 run_for_all_files(bucket_name, folder_prefix, s3_client)

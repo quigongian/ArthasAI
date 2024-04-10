@@ -105,10 +105,14 @@ class TreeRetrieverConfig:
 
 class TreeRetriever(BaseRetriever):
     def __init__(self, config, tree) -> None:
+        print("Tree Module = " + str(tree.__module__))
+        module_type = "Raptor_Markdown.raptor.tree_structures"
+
         if tree.__module__ == "raptor.tree_structures":
                     module_type = "Raptor_Markdown." + tree.__module__
-
+            
         if module_type != Tree.__module__:
+            print("Type = " + str(tree.__module__))
             raise ValueError(f"The loaded object is not an instance of Tree")
 
         if config.num_layers is not None and config.num_layers > tree.num_layers + 1:

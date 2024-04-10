@@ -163,7 +163,7 @@ def load_tree(tree_path: str, config: RetrievalAugmentationConfig):
 
 
 def retrieve_context(document_id: str, question: str):
-    tree_file_path = os.path.join(os.getcwd(), "Raptor_Markdown", "Arxiv Markdown 0102027_Tree")
+    tree_file_path = os.path.join(os.getcwd(), "Raptor_Markdown", "raptor_trees", document_id + "_Tree")
     RA = load_tree(tree_path=tree_file_path, config=None)
     context = RA.retriever.retrieve(query=question)
     return context

@@ -172,6 +172,7 @@ class RetrievalAugmentation:
                 "config must be an instance of RetrievalAugmentationConfig"
             )
 
+        module_type = ""
         # Check if tree is a string (indicating a path to a pickled tree)
         if isinstance(tree, str):
             try:
