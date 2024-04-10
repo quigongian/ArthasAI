@@ -18,10 +18,10 @@ def get_embeddings(texts: List[str], model: str) -> List[List[float]]:
     outputs = client.embeddings.create(input = texts, model=model)
     return [outputs.data[i].embedding for i in range(len(texts))]
 
-input_texts = ['Our solar system orbits the Milky Way galaxy at about 515,000 mph']
-embeddings = get_embeddings(input_texts, model='togethercomputer/m2-bert-80M-8k-retrieval')
+# input_texts = ['Our solar system orbits the Milky Way galaxy at about 515,000 mph']
+# embeddings = get_embeddings(input_texts, model='togethercomputer/m2-bert-80M-8k-retrieval')
 
-print(embeddings)
+# print(embeddings)
 # [[0.13437459, 0.09866201, ..., -0.20736569]]
 
 #Together Ai code to grab text and embed it

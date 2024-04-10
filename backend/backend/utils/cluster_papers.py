@@ -26,7 +26,6 @@ class PaperClusterNode(BaseModel):
     text: str # this will either be the summary if the node is a cluster, or the abstract if it's a paper
     embedding: List[float]
 
-
 def cluster_papers(papers: List[Paper], n_clusters: int = 10):
     # convert the papers to PaperClusterNode objects
     paper_nodes = [PaperClusterNode(id=i, text=paper.abstract, embedding=paper.abstract_embedding) for i, paper in enumerate(papers)]

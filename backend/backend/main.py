@@ -1,5 +1,7 @@
-from fastapi import FastAPI, HTTPException
 import dotenv
+dotenv.load_dotenv()
+
+from fastapi import FastAPI, HTTPException
 import os
 from utils.api.workspace import create_workspace, add_paper_to_workspace, get_all_workspaces, get_workspace
 from models.request_models import Workspace
@@ -8,7 +10,6 @@ from utils.api.paper import upload_paper_with_metadata, get_all_papers
 from utils.api.search import top_k_abstract_query
 import together
 
-dotenv.load_dotenv()
 together.api_key = os.getenv("TOGETHER_API_KEY")
 
 from pydantic import BaseModel
@@ -84,32 +85,32 @@ def route_get_all_workspaces_for_user():
 def chat():
     return {"Chat": "GET Request"}
 
-@app.post("/chat/{user_id}/{paper_id}")
-def chat(user_id: str, paper_id: str, chat_input: ChatInput):
-    #load existing context, if any
-    try:
-        context = load_from_storage(user_id, paper_id)
-    except HTTPException as e:
-        context = {'chat_history': []}
+# @app.post("/chat/{user_id}/{paper_id}")
+# def chat(user_id: str, paper_id: str, chat_input: ChatInput):
+#     #load existing context, if any
+#     try:
+#         context = load_from_storage(user_id, paper_id)
+#     except HTTPException as e:
+#         context = {'chat_history': []}
 
     
-    #updating context with new chat input and embeddings
+#     #updating context with new chat input and embeddings
     
-    #Note: You'd also want to store the chat output here
-    new_chat_input = chat_input.text
-    embeddings = get_embeddings([new_chat_input], model='togethercomputer/m2-bert-80M-8k-retrieval')
-    context['chat_history'].append({'input':new_chat_input, 'embedding': embeddings})
-    #save updated context
+#     #Note: You'd also want to store the chat output here
+#     new_chat_input = chat_input.text
+#     embeddings = get_embeddings([new_chat_input], model='togethercomputer/m2-bert-80M-8k-retrieval')
+#     context['chat_history'].append({'input':new_chat_input, 'embedding': embeddings})
+#     #save updated context
 
-    concatenated_prompts = "\n".join([entry['input'] for entry in context['chat_history']]) + "\n" + new_chat_input
+#     concatenated_prompts = "\n".join([entry['input'] for entry in context['chat_history']]) + "\n" + new_chat_input
 
-    save_to_storage(user_id, paper_id, context)
+#     save_to_storage(user_id, paper_id, context)
 
-        # Here you would integrate with your AI model to get a response, using the embeddings as needed
-    ai_response = "Response from the AI model"  # Placeholder for AI model integration
+#         # Here you would integrate with your AI model to get a response, using the embeddings as needed
+#     ai_response = "Response from the AI model"  # Placeholder for AI model integration
 
 
-    return {"Chat": ai_response}
+#     return {"Chat": ai_response}
 
 
 @app.get("/graph")
