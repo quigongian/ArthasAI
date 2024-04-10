@@ -82,16 +82,16 @@ def load_from_storage(paper_id: str) -> dict:
     else:
         raise HTTPException(status_code=404, detail="No data found")
     
-def save_embeddings_to_s3(user_id: str, paper_id: str, embeddings: List[List[float]]):
-    key = f"{user_id}-{paper_id}-embeddings.pkl"
+def save_embeddings_to_s3( paper_id: str, embeddings: List[List[float]]):
+    key = f"{paper_id}-embeddings.pkl"
     serialized_data = pickle.dumps(embeddings)  # Serialize embeddings directly here
     try:
         s3_client.put_object(Bucket=settings.bucket, Key=key, Body=serialized_data)
     except botocore.exceptions.ClientError as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-def load_embeddings_from_s3(user_id: str, paper_id: str) -> List[List[float]]:
-    key = f"{user_id}-{paper_id}-embeddings.pkl"
+def load_embeddings_from_s3( paper_id: str) -> List[List[float]]:
+    key = f"{paper_id}-embeddings.pkl"
     try:
         response = s3_client.get_object(Bucket=settings.bucket, Key=key)
         serialized_data = response['Body'].read()
