@@ -13,7 +13,8 @@ together.api_key = os.getenv("TOGETHER_API_KEY")
 
 from pydantic import BaseModel
 import pickle  # For serialization
-from Chat_functionality.storage import save_to_storage, load_from_storage, load_embeddings_from_s3, save_embeddings_to_s3
+
+from backend.Chat_functionality.storage import save_to_storage, load_from_storage, load_embeddings_from_s3, save_embeddings_to_s3
 from Chat_functionality.config import Settings
 from Chat_functionality.chat import answer_question
 from typing import List
@@ -86,11 +87,11 @@ def route_get_all_workspaces_for_user():
 def chat():
     return {"Chat": "GET Request"}
 
-@app.post("/chat/{user_id}/{paper_id}")
-def chat(user_id: str, paper_id: str, chat_input: ChatInput):
+@app.post("/chat/{paper_id}")
+def chat( paper_id: str, chat_input: ChatInput):
     #load existing context, if any
     try:
-        context = load_from_storage(user_id, paper_id)
+        context = load_from_storage(paper_id)
     except HTTPException as e:
         context = {'chat_history': []}
 
@@ -105,7 +106,7 @@ def chat(user_id: str, paper_id: str, chat_input: ChatInput):
 
     concatenated_prompts = "\n".join([entry['input'] for entry in context['chat_history']]) + "\n" + new_chat_input
 
-    save_to_storage(user_id, paper_id, context)
+    save_to_storage( paper_id, context)
 
     paper_context: str = retrieve_context(document_id=paper_id, question=concatenated_prompts)
 
