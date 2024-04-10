@@ -1,6 +1,6 @@
 from models.request_models import Paper
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 class Paper(Paper):
     cite_count: int
@@ -11,5 +11,5 @@ class Paper(Paper):
     pdf_blob: str
     arxiv_id: str
     raw_markdown: str
-    abstract_embedding: List[float]
+    abstract_embedding: Optional[List[float]] = None
     id: str

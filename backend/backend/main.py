@@ -118,6 +118,11 @@ def chat():
 def get_graph():
     return {"Graph": "GET Request"}
 
+@app.get("/seed")
+def seed():
+    seed_db()
+    return {"message": "Database seeded successfully"}
+
 
 if __name__ == "__main__":
     import uvicorn
@@ -126,6 +131,3 @@ if __name__ == "__main__":
     sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
     from backend.config import settings   
     uvicorn.run(app, host="0.0.0.0", port=8000)
-    seed_db()
-
-
