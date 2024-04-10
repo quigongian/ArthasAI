@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 
+// Route for chatbot
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
 
