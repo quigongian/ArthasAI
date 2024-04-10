@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     method: "GET",
     params: {},
     headers: {},
-    url: "put url here",
+    url: "",
   })
     .then((res) => {
       result = res.data;
