@@ -13,7 +13,8 @@ together.api_key = os.getenv("TOGETHER_API_KEY")
 
 from pydantic import BaseModel
 import pickle  # For serialization
-from Chat_functionality.storage import save_to_storage, load_from_storage, load_embeddings_from_s3, save_embeddings_to_s3
+
+from backend.Chat_functionality.storage import save_to_storage, load_from_storage, load_embeddings_from_s3, save_embeddings_to_s3
 from Chat_functionality.config import Settings
 from Chat_functionality.chat import answer_question
 from typing import List

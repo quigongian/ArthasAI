@@ -246,10 +246,8 @@ def get_paper_by_id(bucket_name, folder_prefix, document_id):
         raise Exception(f"An error occurred: {e}")
 
 # Usage
-bucket_name = 'arthasai'
-folder_prefix = 'arxiv_markdown/'
 document_id = 1  # For the first document
 
-
+"""
 file_key = get_paper_by_id(bucket_name, folder_prefix, document_id)
-print(f"File path in S3: {file_key}")
+print(f"File path in S3: {file_key}")"""
