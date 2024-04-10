@@ -26,7 +26,7 @@ s3_client = get_s3_client()
 
 
 
-def save_to_storage(user_id: str, paper_id: str, data: dict):
+def save_to_storage(paper_id: str, data: dict):
     """
     Saves the given data to an AWS S3 bucket with a key constructed from the user ID, paper ID, and the current timestamp.
 
@@ -40,7 +40,7 @@ def save_to_storage(user_id: str, paper_id: str, data: dict):
     - HTTPException: If there is an error saving the data to S3.
     """
     current_timestamp = datetime.datetime.now(datetime.timezone.utc)
-    key = f"{user_id}-{paper_id}-{current_timestamp}-context.pkl"
+    key = f"{paper_id}-{current_timestamp}-context.pkl"
 
     serialized_data = pickle.dumps(data)
     try:
@@ -49,7 +49,7 @@ def save_to_storage(user_id: str, paper_id: str, data: dict):
         #handle the exception accordingly
         raise HTTPException(status_code=500, detail=str(e))
     
-def load_from_storage(user_id: str, paper_id: str) -> dict:
+def load_from_storage(paper_id: str) -> dict:
     """
     Loads the most recent data for the given user ID and paper ID from an AWS S3 bucket.
 
@@ -65,7 +65,7 @@ def load_from_storage(user_id: str, paper_id: str) -> dict:
     - HTTPException: If there is an error loading the data from S3 or if no data is found.
     """
         
-    prefix = f"{user_id}-{paper_id}-"
+    prefix = f"{paper_id}-"
     response = s3_client.list_objects_v2(Bucket=settings.bucket, Prefix=prefix)
 
     # Extracting keys and sorting them to find the most recent
