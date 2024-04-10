@@ -203,20 +203,9 @@ def mmd_to_json():
 bucket_name = 'arthasai'
 source_prefix = 'arxiv_markdown/'
 
-
+"""
 def get_paper_by_id(bucket_name, folder_prefix, document_id):
-    """
-    Retrieves the key (file path in S3) of a paper with a given id from an S3 bucket folder.
-
-    Parameters:
-    - bucket_name (str): The name of the S3 bucket.
-    - folder_prefix (str): The folder within the bucket.
-    - document_id (int): The order number of the document in the folder.
-
-    Returns:
-    - str: The key of the document in S3.
-    """
-    # Initialize a boto3 S3 client
+ 
     s3_client = boto3.client('s3')
 
     try:
@@ -244,12 +233,5 @@ def get_paper_by_id(bucket_name, folder_prefix, document_id):
         raise ClientError(f"Failed to retrieve file key: {e.response['Error']['Message']}")
     except Exception as e:
         raise Exception(f"An error occurred: {e}")
+"""
 
-# Usage
-bucket_name = 'arthasai'
-folder_prefix = 'arxiv_markdown/'
-document_id = 1  # For the first document
-
-
-file_key = get_paper_by_id(bucket_name, folder_prefix, document_id)
-print(f"File path in S3: {file_key}")

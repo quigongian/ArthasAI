@@ -129,13 +129,15 @@ def load_markdown_to_txt(markdown_file_path: str):
     return text
 
 
-def run(document_id: str, path: str = "", ):
-    path = "Arxiv Markdown 0102027.mmd"
+def run(document_id: str, path: str = "", text: str = None):
     # Define the configuration for the Retrieval Augmentation
     RAC = RetrievalAugmentationConfig(summarization_model=MistralSummarizationModel(), qa_model=MistralQAModel(), embedding_model=M2BertEmbeddingModel())
     RA = RetrievalAugmentation(config=RAC)
 
-    text = load_markdown_to_txt(path)
+    if text is None and path != "":
+        text = load_markdown_to_txt(path)
+    else:
+        text = text
 
     RA.add_documents(text)
 
