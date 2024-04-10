@@ -19,7 +19,9 @@ import Reader from "./reader";
 import MathNode from "./reader";
 import katex from "katex";
 import "katex/dist/katex.min.css";
-import ReactMarkdown from "react-markdown"
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import MarkdownDisplay from "./markdownDisplay";
 
 const Editor = dynamic(() => import("./notes"), { ssr: false });
 const Flow = dynamic(() => import("./graphs"), { ssr: false });
@@ -44,32 +46,6 @@ function DocumentEditor({ params }: { params: { doc: string } }) {
     collapsePanel(panelRef.current);
   };
 
-  const content = katex.renderToString(
-    // its rendering as a string
-    //tried : \newline , \\ , \\break, \\hfill,
-    `
-    \\text{or, we could also appeal to the chain rule of probability:} 
-    Classifier-Free Guidance 
-    \\sqrt{64}  \ = \ 8
-    \[p(\\mathbf{x})=\\frac{p(\\mathbf{x},\\mathbf{z})}{p(\\mathbf{z}|\\mathbf{x})} \tag{2}\]
-    \\text{This would be the equation:}
-    \\text{}
-    \[\\mathbb{E}_{q_{\\mathbf{\\phi}}(\\mathbf{z}|\\mathbf{x})}\\left[\\log\\frac{p(\\mathbf{x},\\mathbf{z})}{q_{ \\mathbf{\\phi}}(\\mathbf{z}|\\mathbf{x})}\\right] \tag{3}\]  
-    \\text{hijeowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwaoghjraeo;gihao;erighaoeirjgoiaerjg;iaoerg;oaeirjgoaierjgo;aerjig;aoeirj}
-      `,
-    // \[, \tag, \] <- must be only one \
-    { displayMode: true, strict: true, throwOnError: false }
-  );
-
-  function addBackslashes(str: string) {
-    let stringWithBackslashes = str.replace(/\\(?![\[\]\\tag])/g, "\\\\");
-    return stringWithBackslashes;
-  }
-  //@ts-ignore
-  const MathNode = ({ children }) => (
-    <div dangerouslySetInnerHTML={{ __html: children }} />
-  );
-
   return (
     <div className="h-screen w-screen">
       <Toaster />
@@ -88,10 +64,7 @@ function DocumentEditor({ params }: { params: { doc: string } }) {
               <ListCollapse />
             </Button>
           </div>
-
-          <div className="!whitespace-normal">
-              <MathNode children={addBackslashes(content)} />
-          </div>
+          <MarkdownDisplay />
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel
