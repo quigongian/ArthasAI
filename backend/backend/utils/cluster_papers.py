@@ -5,7 +5,7 @@ The clustering is hierarchical, so the clusters will be further clustered and su
 """
 
 from typing import List
-from sklearn.cluster import GaussianMixture
+from sklearn.mixture import GaussianMixture
 from sklearn.manifold import TSNE
 import numpy as np
 from utils.db.neo4j import driver
@@ -33,8 +33,9 @@ class SummaryResponse(BaseModel):
     summary: str
 
 def cluster_papers(papers: List[Paper], n_clusters: int = 10):
+    print(papers)
     # convert the papers to PaperClusterNode objects
-    paper_nodes = [PaperClusterNode(id=i, text=paper.abstract, embedding=paper.abstract_embedding, title=paper.title) for i, paper in enumerate(papers)]
+    paper_nodes = [PaperClusterNode(id=i, text=paper["abstract"], embedding=paper["abstract_embedding"], title=paper["title"]) for i, paper in enumerate(papers)]
     recursive_cluster(paper_nodes, n_clusters)
 
 def create_cluster_summaries(cluster_texts: List[List[str]]) -> List[str]:
@@ -59,8 +60,10 @@ def create_cluster_summaries(cluster_texts: List[List[str]]) -> List[str]:
         model="mistralai/Mixtral-8x7B-Instruct-v0.1"
         )
 
+        print("RAW RESPONSE", chat_completion.choices[0].message.content)
         response = json.loads(chat_completion.choices[0].message.content)
-        print("SUMMARIZATION", response.summary)
+        # print("RESPONSE", response)
+        print("SUMMARIZATION", response["summary"])
         summaries.append(response)
 
     return summaries
@@ -73,7 +76,7 @@ def recursive_cluster(papers: List[PaperClusterNode], n_clusters: int = 5):
 
     # convert the embeddings to t-sne
     embeddings = np.array([paper.embedding for paper in papers])
-    tsne = TSNE(n_components=2, perplexity=50, n_iter=5000)
+    tsne = TSNE(n_components=2, perplexity=2, n_iter=5000)
     tsne_embeddings = tsne.fit_transform(embeddings)
 
     # cluster the papers
@@ -81,11 +84,11 @@ def recursive_cluster(papers: List[PaperClusterNode], n_clusters: int = 5):
     clusters = gmm.fit_predict(tsne_embeddings)
 
     # get the text of all the nodes belonging to each cluster
-    cluster_texts = [] * n_clusters
+    cluster_texts = [[] for _ in range(n_clusters)]
 
     for i, cluster in enumerate(clusters):
-        if cluster not in cluster_texts:
-            cluster_texts[cluster] = []
+        print(cluster, papers[i].text)
+        print("CLUSTER", cluster)
         cluster_texts[cluster].append(papers[i].text)
     
     # summarize the text of each cluster
@@ -99,18 +102,29 @@ def recursive_cluster(papers: List[PaperClusterNode], n_clusters: int = 5):
 
             cluster_objects.append({
                 "id": cluster_uuid,
-                "title": summary_res.title,
-                "summary": summary_res.summary,
-                "embedding": get_embeddings([summary_res], "togethercomputer/m2-bert-80M-8k-retrieval")[0]
+                "title": summary_res["title"],
+                "summary": summary_res["summary"],
+                "embedding": get_embeddings([summary_res["summary"]], "togethercomputer/m2-bert-80M-8k-retrieval")[0]
             })
 
-            session.run("MERGE (c:Cluster {id: $id, summary: $summary, title: $title})", id=cluster_uuid, summary=summary_res.summary, title=summary_res.title)
+            # Convert PaperClusterNode objects to dictionaries (to avoid type errors)
+            paper_data = [
+                {
+                    "id": paper.id,
+                    "title": paper.title,
+                    "text": paper.text,
+                    "embedding": paper.embedding
+                }
+                for j, paper in enumerate(papers) if clusters[j] == i
+            ]
+
+            session.run("MERGE (c:Cluster {id: $id, summary: $summary, title: $title})", id=cluster_uuid, summary=summary_res["summary"], title=summary_res["title"])
             session.run("""
                         WITH UNWIND $papers as paper
                         MATCH (p:Paper|Cluster {id: paper.id})
                         MATCH (c:Cluster {id: $cluster_id})
                         MERGE (c)-[:CONTAINS]->(p)
-                        """, papers=[paper for j, paper in enumerate(papers) if clusters[j] == i], cluster_id=cluster_uuid)
+                        """, papers=paper_data, cluster_id=cluster_uuid)
     
     new_n_clusters = n_clusters // 2
     if new_n_clusters > 1:

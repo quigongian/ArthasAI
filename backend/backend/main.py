@@ -21,6 +21,7 @@ from config import Settings
 from typing import List
 from embeddings import get_embeddings
 from dependencies import get_s3_client, get_together_client
+from utils.cluster_papers import cluster_papers
  
 settings = Settings()
 
@@ -118,10 +119,18 @@ def chat():
 def get_graph():
     return {"Graph": "GET Request"}
 
+#NOTE: the only purpose of exposing these two methods as routes is to test them. this should be removed in production
 @app.get("/seed")
 def seed():
     seed_db()
     return {"message": "Database seeded successfully"}
+
+@app.get("/cluster_papers")
+def cluster_papers_route():
+    papers = get_all_papers()[:5]
+    cluster_papers(papers=papers, n_clusters=2)
+    return {"message": "Papers clustered successfully"}
+    # return {"data": papers}
 
 
 if __name__ == "__main__":

@@ -90,9 +90,9 @@ def get_all_papers():
 
     QUERY = """
     MATCH (p:Paper)
-    RETURN p
+    RETURN p.arxiv_id as arxiv_id, p.title as title, p.abstract as abstract, p.publication_date as publication_date, p.cite_count as cite_count, p.inf_cite_count as inf_cite_count, p.pdf_blob as pdf_blob, p.raw_markdown as raw_markdown, p.abstract_embedding as abstract_embedding
     """
 
-    with driver.session() as session:
-        result = session.run(QUERY)
-        return result.data()
+    records, summary, keys = driver.execute_query(QUERY)
+    return records
+    # return [record["p"] for record in result]
