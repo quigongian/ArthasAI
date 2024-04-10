@@ -29,6 +29,8 @@ export default function Editor({ params }: { params: { doc: string } }) {
     },
   ]);
 
+  const [theme, useTheme] = useState<"light" | "dark">("light");
+
   const supabase = createClient();
 
   const { toast } = useToast();
@@ -119,7 +121,7 @@ export default function Editor({ params }: { params: { doc: string } }) {
       {editor ? (
         <BlockNoteView
           editor={editor}
-          theme="light"
+          theme={theme}
           onChange={() => {
             console.log("changed");
             setBlocks(editor.document);
