@@ -1,4 +1,6 @@
 import boto3
+from botocore.exceptions import ClientError
+from Chat_functionality.dependencies import get_s3_client
 import pickle
 
 from .Raptor import run
@@ -16,20 +18,10 @@ def run_for_all_files(bucket_name, folder_prefix, s3_client):
                     # Load the markdown content from S3
                     response = s3_client.get_object(Bucket=bucket_name, Key=key)
                     text = response['Body'].read().decode('utf-8')
-
-                    # Define the configuration for the Retrieval Augmentation
-                    RAC = RetrievalAugmentationConfig(
-                        summarization_model=MistralSummarizationModel(), 
-                        qa_model=MistralQAModel(), 
-                        embedding_model=M2BertEmbeddingModel()
-                    )
-                    RA = RetrievalAugmentation(config=RAC)
-
-                    # Add the loaded text to the Retrieval Augmentation
-                    RA.add_documents(text)
+                    file_name = key.split('/')[-1].replace('.mmd', '')
 
                     # RAPTORIZE and pickle the Retrieval Augmentation
-                    file_name = key.split('/')[-1].replace('.mmd', '')
+                    RA = run(document_id=file_name, text=text)
                     tree_data = RA.tree  # Assuming RA.tree contains the data structure we want to pickle
                     pickle_data = pickle.dumps(tree_data)
 
@@ -40,4 +32,7 @@ def run_for_all_files(bucket_name, folder_prefix, s3_client):
                 except ClientError as e:
                     print(f"Failed to process file {key}: {e.response['Error']['Message']}")
 
+bucket_name = 'Arthasai'
+folder_prefix = 'arxiv_markdown/'
+s3_client = get_s3_client()
 run_for_all_files(bucket_name, folder_prefix, s3_client)

@@ -141,8 +141,11 @@ def run(document_id: str, path: str = "", text: str = None):
 
     RA.add_documents(text)
 
-    file_name = path.split("/")[-1].split(".")[0]
-    RA.save(file_name + "_Tree")
+    RA.save(os.path.join(os.getcwd(), "raptor_trees", document_id + "_Tree"))
+
+    RA.tree
+
+    return RA
 
 
 
