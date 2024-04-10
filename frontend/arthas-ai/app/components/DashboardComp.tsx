@@ -2,11 +2,14 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import Image from "next/image";
-import { Search, Users } from "lucide-react";
+import { Folder, Search, Users } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Article, Collection } from "../dashboard/Types/Type";
 import AddToCollectionsPopover from "./AddToCollectionsPopover";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { DialogOverlay } from "@radix-ui/react-dialog";
+import CollectionsDialog from "./CollectionDialog";
 
 function formatDateTime(dateString: string) {
   const options: Intl.DateTimeFormatOptions = {
@@ -60,6 +63,7 @@ export default function DashboardComp() {
     { id: "1", name: "Collection 1" },
     { id: "2", name: "Collection 2" },
     { id: "3", name: "Collection 3" },
+    { id: "4", name: "Collection 4" },
   ];
 
   const articles: Article[] = [
@@ -148,81 +152,23 @@ export default function DashboardComp() {
               </div>
             </CardHeader>
             <CardContent className="grid grid-cols-4 gap-6">
-              <Link href={"#"}>
-                <Card className="flex flex-col justify-center items-center border bg-gray-200 hover:bg-gray-300">
-                  <CardHeader className="flex-row gap-4">
-                    {/* <Image
-                      src="/assets/folder.png"
-                      alt="Collection Image"
-                      width={25}
-                      height={25}
-                    /> */}
-                    <CardTitle className="text-base font-medium">
-                      Collection Name
-                    </CardTitle>
-                  </CardHeader>
-                </Card>
-              </Link>
-              <Link href={"#"}>
-                <Card className="flex flex-col justify-center items-center border bg-gray-200 hover:bg-gray-300">
-                  <CardHeader className="flex-row gap-4">
-                    {/* <Image
-                      src="/assets/folder.png"
-                      alt="Collection Image"
-                      width={25}
-                      height={25}
-                    /> */}
-                    <CardTitle className="text-base font-medium">
-                      Collection Name
-                    </CardTitle>
-                  </CardHeader>
-                </Card>
-              </Link>
-              <Link href={"#"}>
-                <Card className="flex flex-col justify-center items-center border bg-gray-200 hover:bg-gray-300">
-                  <CardHeader className="flex-row gap-4">
-                    {/* <Image
-                      src="/assets/folder.png"
-                      alt="Collection Image"
-                      width={25}
-                      height={25}
-                    /> */}
-                    <CardTitle className="text-base font-medium">
-                      Collection Name
-                    </CardTitle>
-                  </CardHeader>
-                </Card>
-              </Link>
-              <Link href={"#"}>
-                <Card className="flex flex-col justify-center items-center border bg-gray-200 hover:bg-gray-300">
-                  <CardHeader className="flex-row gap-4">
-                    {/* <Image
-                      src="/assets/folder.png"
-                      alt="Collection Image"
-                      width={25}
-                      height={25}
-                    /> */}
-                    <CardTitle className="text-base font-medium">
-                      Collection Name
-                    </CardTitle>
-                  </CardHeader>
-                </Card>
-              </Link>
-              <Link href={"#"}>
-                <Card className="flex flex-col justify-center items-center border bg-gray-200 hover:bg-gray-300">
-                  <CardHeader className="flex-row gap-4">
-                    {/* <Image
-                      src="/assets/folder.png"
-                      alt="Collection Image"
-                      width={25}
-                      height={25}
-                    /> */}
-                    <CardTitle className="text-base font-medium">
-                      Collection Name
-                    </CardTitle>
-                  </CardHeader>
-                </Card>
-              </Link>
+              {collections.map((collection) => (
+                <Dialog key={collection.id}>
+                  <DialogTrigger>
+                    <Card className="flex flex-col justify-center items-center bg-gray-200 hover:bg-gray-300 dark:bg-gray-200 dark:text-gray-800">
+                      <CardHeader className="flex-row items-center gap-2 ">
+                        <Folder className="h-5 stroke-[3px] " />
+                        <CardTitle className="text-lg font-medium">
+                          {collection.name}
+                        </CardTitle>
+                      </CardHeader>
+                    </Card>
+                  </DialogTrigger>
+                  <DialogOverlay className="fixed inset-0 bg-black/60" />
+                  {/* Render dialog content */}
+                  <CollectionsDialog articles={articles} />
+                </Dialog>
+              ))}
             </CardContent>
           </div>
           {/* Collection Section End*/}
