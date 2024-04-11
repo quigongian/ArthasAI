@@ -14,8 +14,7 @@ import axios from "axios";
 import dynamic from "next/dynamic";
 import { Settings, ChevronLeft, ArrowRight, ListCollapse } from "lucide-react";
 import { Toaster } from "@/components/ui/toaster";
-import ChatInterface from "@/app/components/chatInterface";;
-import "katex/dist/katex.min.css";
+import ChatInterface from "@/app/components/chatInterface";
 import MarkdownDisplay from "./markdownDisplay";
 
 const Editor = dynamic(() => import("./notes"), { ssr: false });
