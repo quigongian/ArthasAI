@@ -1,66 +1,70 @@
 "use client";
 
-import { toast } from "@/components/ui/use-toast";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useCallback } from "react";
-import ReactFlow, {
-  MiniMap,
-  Controls,
-  Background,
-  useNodesState,
-  useEdgesState,
-  addEdge,
-  BackgroundVariant,
-} from "reactflow";
-import "reactflow/dist/style.css";
+import { useEffect } from "react";
+import Graph from "graphology";
+import "@react-sigma/core/lib/react-sigma.min.css";
+import {
+  ControlsContainer,
+  ZoomControl,
+  useLoadGraph,
+} from "@react-sigma/core";
+import { SigmaContainer } from "@react-sigma/core";
 
-const initialNodes = [
-  { id: "1", position: { x: 0, y: 0 }, data: { label: "1" } },
-  { id: "2", position: { x: -100, y: 100 }, data: { label: "2" } },
-  { id: "3", position: { x: 100, y: 200 }, data: { label: "3" } },
-];
+export const LoadGraph = () => {
+  const loadGraph = useLoadGraph();
 
-const initialEdges = [
-  { id: "e1-2", source: "1", target: "2" },
-  { id: "e2-3", source: "2", target: "3" },
-  { id: "e1-3", source: "1", target: "3" },
-];
+  useEffect(() => {
+    const graph = new Graph();
+    graph.addNode("first", {
+      x: 0,
+      y: 0,
+      size: 15,
+      label: "My first node",
+    });
 
-function Flow({ params }: { params: { doc: string } }) {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+    // generate a random graph
+    for (let i = 0; i < 100; i++) {
+      // add a node and edges between some of them
+      graph.addNode(i.toString(), {
+        x: Math.random(),
+        y: Math.random(),
+        size: Math.random() * 10,
+        label: `Node ${i}`,
+      });
+      if (i > 0) {
+        graph.addEdge(i.toString(), (i - 1).toString());
+      }
+    }
+    loadGraph(graph);
+  }, [loadGraph]);
 
-  const onConnect = useCallback(
-    (params: any) => setEdges((eds) => addEdge(params, eds)),
-    [setEdges]
-  );
+  return null;
+};
 
-  const fetching = useQuery({
-    queryKey: [`/document/${params.doc}/graphAPI/get`],
-    queryFn: async () => {
-      return { hello: "world" };
-    },
-  });
-
-  const update = useMutation({
-    mutationKey: [`/document/${params.doc}/editor/api/update`],
-    mutationFn: async () => {
-      return { hello: "world" };
-    },
-  });
-
+function Flow({ params }: { params: { docid: string } }) {
   return (
-    <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      onConnect={onConnect}
-    >
-      <MiniMap />
-      <Controls />
-      <Background color="#BFDBFE" variant={BackgroundVariant.Lines} />
-    </ReactFlow>
+    <div>
+      <SigmaContainer
+        style={{
+          height: "1000px",
+          width: "100%",
+          background: "var(--background-color)",
+        }}
+      >
+        <ControlsContainer
+          position={"top-right"}
+          style={{
+            background: "var(--background-color)",
+          }}
+        >
+          <ZoomControl
+            style={{ display: "flex" }}
+            className="flex justify-center"
+          />
+        </ControlsContainer>
+        <LoadGraph />
+      </SigmaContainer>
+    </div>
   );
 }
 
