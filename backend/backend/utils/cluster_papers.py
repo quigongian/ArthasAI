@@ -23,7 +23,7 @@ client = OpenAI(
 )
 
 class PaperClusterNode(BaseModel):
-    id: int
+    id: str
     title: str
     text: str # this will either be the summary if the node is a cluster, or the abstract if it's a paper
     embedding: List[float]
@@ -35,7 +35,7 @@ class SummaryResponse(BaseModel):
 def cluster_papers(papers: List[Paper], n_clusters: int = 10):
     print(papers)
     # convert the papers to PaperClusterNode objects
-    paper_nodes = [PaperClusterNode(id=i, text=paper["abstract"], embedding=paper["abstract_embedding"], title=paper["title"]) for i, paper in enumerate(papers)]
+    paper_nodes = [PaperClusterNode(id=paper["id"], text=paper["abstract"], embedding=paper["abstract_embedding"], title=paper["title"]) for i, paper in enumerate(papers)]
     recursive_cluster(paper_nodes, n_clusters)
 
 def create_cluster_summaries(cluster_texts: List[List[str]]) -> List[str]:
@@ -120,7 +120,8 @@ def recursive_cluster(papers: List[PaperClusterNode], n_clusters: int = 5):
 
             session.run("MERGE (c:Cluster {id: $id, summary: $summary, title: $title})", id=cluster_uuid, summary=summary_res["summary"], title=summary_res["title"])
             session.run("""
-                        WITH UNWIND $papers as paper
+                        WITH $papers as papers
+                        UNWIND papers as paper
                         MATCH (p:Paper|Cluster {id: paper.id})
                         MATCH (c:Cluster {id: $cluster_id})
                         MERGE (c)-[:CONTAINS]->(p)

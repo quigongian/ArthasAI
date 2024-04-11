@@ -4,6 +4,7 @@ import boto3
 from models.dto_models import Paper
 from utils.db.neo4j import driver
 from utils.embeddings import get_embeddings
+import uuid
 
 # BEGIN CODE FROM DAVID TO GET METADATA
 def only_id(filename):
@@ -65,6 +66,7 @@ def upload_paper_with_metadata(paper: Paper):
 
     #compute the abstract embedding;
     abstract_embedding = get_embeddings([paper.abstract], model='togethercomputer/m2-bert-80M-8k-retrieval')[0]
+    id = str(uuid.uuid4())
 
     QUERY = """
     MERGE (p:Paper {arxiv_id: $arxiv_id})
@@ -76,11 +78,12 @@ def upload_paper_with_metadata(paper: Paper):
     p.pdf_blob = $pdf_blob,
     p.raw_markdown = $raw_markdown,
     p.abstract_embedding = $abstract_embedding
+    p.id = $id
     RETURN p
     """
 
     with driver.session() as session:
-        result = session.run(QUERY, arxiv_id=paper.arxiv_id, title=paper.title, abstract=paper.abstract, publication_date=paper.publication_date, cite_count=paper.cite_count, inf_cite_count=paper.inf_cite_count, pdf_blob=paper.pdf_blob, raw_markdown=paper.raw_markdown, abstract_embedding=abstract_embedding)
+        result = session.run(QUERY, id=id, arxiv_id=paper.arxiv_id, title=paper.title, abstract=paper.abstract, publication_date=paper.publication_date, cite_count=paper.cite_count, inf_cite_count=paper.inf_cite_count, pdf_blob=paper.pdf_blob, raw_markdown=paper.raw_markdown, abstract_embedding=abstract_embedding)
         return result.data()
 
 def get_all_papers():
@@ -90,7 +93,7 @@ def get_all_papers():
 
     QUERY = """
     MATCH (p:Paper)
-    RETURN p.arxiv_id as arxiv_id, p.title as title, p.abstract as abstract, p.publication_date as publication_date, p.cite_count as cite_count, p.inf_cite_count as inf_cite_count, p.pdf_blob as pdf_blob, p.raw_markdown as raw_markdown, p.abstract_embedding as abstract_embedding
+    RETURN p.id as id, p.arxiv_id as arxiv_id, p.title as title, p.abstract as abstract, p.publication_date as publication_date, p.cite_count as cite_count, p.inf_cite_count as inf_cite_count, p.pdf_blob as pdf_blob, p.raw_markdown as raw_markdown, p.abstract_embedding as abstract_embedding
     """
 
     records, summary, keys = driver.execute_query(QUERY)
