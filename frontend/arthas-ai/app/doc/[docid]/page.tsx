@@ -81,7 +81,7 @@ function DocumentEditor({ params }: { params: { docid: string } }) {
               ref={notesRef}
               className="!overflow-auto"
             >
-              <div className="w-9/10 h-10 flex justify-between items-center space-x-4 p-8">
+              <div className="w-9/10 h-10 flex justify-between items-center space-x-4 p-4">
                 <div>{"Document Name's Notes"}</div>
                 <div className="flex">
                   <Button variant="ghost" onClick={() => {}}>
@@ -92,7 +92,7 @@ function DocumentEditor({ params }: { params: { docid: string } }) {
               <Editor params={params} />
             </ResizablePanel>
             <ResizableHandle withHandle />
-            <div className="w-9/10 h-10 flex justify-between items-center space-x-4 p-8">
+            <div className="w-9/10 h-10 flex justify-between items-center space-x-4 p-2">
               <div>Assistant</div>
               <div>
                 <Button
@@ -116,7 +116,7 @@ function DocumentEditor({ params }: { params: { docid: string } }) {
               <ChatInterface />
             </ResizablePanel>
             <ResizableHandle withHandle />
-            <div className="w-full p-2 flex justify-between items-center">
+            <div className="w-full flex justify-between items-center">
               <div>Relationship Graph</div>
               <div>
                 <Button
