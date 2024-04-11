@@ -26,8 +26,7 @@ import {
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
-import eye from "./homepage/eye.png";
-import eyeOff from "./homepage/eyeOff.png";
+import { IoIosEyeOff, IoIosEye } from "react-icons/io";
 
 const slides = [
 	{
@@ -68,16 +67,16 @@ const LoginRoute = () => {
 
 const LoginComp = (props: any) => {
 	const [type, setType] = useState("password");
-	const [icon, setIcon] = useState(eyeOff);
+	const [icon, setIcon] = useState("eyeOff");
 	const supabase = createClient();
 	const { toast } = useToast();
 
 	const handleToggle = () => {
 		if (type === "password") {
-			setIcon(eye);
+			setIcon("eye");
 			setType("text");
 		} else {
-			setIcon(eyeOff);
+			setIcon("eyeOff");
 			setType("password");
 		}
 	};
@@ -160,7 +159,7 @@ const LoginComp = (props: any) => {
 										<span
 											className="absolute right-0 mr-2"
 											onClick={handleToggle}>
-											<Image src={icon} alt="test" height={20} width={20} />
+											{icon === "eye" ? <IoIosEye /> : <IoIosEyeOff />}
 										</span>
 									</div>
 								</FormControl>
@@ -192,16 +191,16 @@ const LoginComp = (props: any) => {
 
 const SignUpComp = (props: any) => {
 	const [type, setType] = useState("password");
-	const [icon, setIcon] = useState(eyeOff);
+	const [icon, setIcon] = useState("eyeOff");
 	const supabase = createClient();
 	const { toast } = useToast();
 
 	const handleToggle = () => {
 		if (type === "password") {
-			setIcon(eye);
+			setIcon("eye");
 			setType("text");
 		} else {
-			setIcon(eyeOff);
+			setIcon("eyeOff");
 			setType("password");
 		}
 	};
@@ -286,7 +285,7 @@ const SignUpComp = (props: any) => {
 										<span
 											className="absolute right-0 mr-2"
 											onClick={handleToggle}>
-											<Image src={icon} alt="test" height={20} width={20} />
+											{icon === "eye" ? <IoIosEye /> : <IoIosEyeOff />}
 										</span>
 									</div>
 								</FormControl>
@@ -311,7 +310,7 @@ const SignUpComp = (props: any) => {
 										<span
 											className="absolute right-0 mr-2"
 											onClick={handleToggle}>
-											<Image src={icon} alt="test" height={20} width={20} />
+											{icon === "eye" ? <IoIosEye /> : <IoIosEyeOff />}
 										</span>
 									</div>
 								</FormControl>
