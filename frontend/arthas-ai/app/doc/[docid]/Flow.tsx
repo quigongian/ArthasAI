@@ -14,35 +14,7 @@ export function Flow({ params }: { params: { docid: string } }) {
           background: "var(--background-color)",
         }}
       >
-        <ControlsContainer position={"top-right"}>
-          <Button
-            variant={"ghost"}
-            onClick={() => {
-              const camera = useCamera();
-              camera.zoomIn();
-            }}
-          >
-            +
-          </Button>
-          <Button
-            variant={"ghost"}
-            onClick={() => {
-              const camera = useCamera();
-              camera.zoomOut();
-            }}
-          >
-            -
-          </Button>
-          <Button
-            variant={"ghost"}
-            onClick={() => {
-              const camera = useCamera();
-              camera.reset();
-            }}
-          >
-            Center
-          </Button>
-        </ControlsContainer>
+        <ControlsContainer position={"top-right"}></ControlsContainer>
         <LoadGraph />
       </SigmaContainer>
     </div>
