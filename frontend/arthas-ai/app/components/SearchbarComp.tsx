@@ -9,10 +9,31 @@ interface searchBarProps {
 export default function SearchBar({ setSearchSubmitted }: searchBarProps) {
 	const [searchInput, setSearchInput] = useState("");
 
+	const handleSearchSubmit = async () => {
+        try {
+            const response = await fetch('/api/onsearch', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    searchQuery: searchInput,
+                }),
+            });
+
+            const data = await response.json();
+            console.log(data); // handle the response as needed
+        
+        } catch (error) {
+            console.error("Failed to submit search:", error);
+        }
+    };
+
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === "Enter") {
 			e.preventDefault();
 			setSearchSubmitted(true);
+			handleSearchSubmit();
 		}
 	};
 
