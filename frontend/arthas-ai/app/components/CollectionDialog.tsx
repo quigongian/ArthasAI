@@ -10,33 +10,50 @@ import { Article } from "../dashboard/Types/Type";
 import { useState } from "react";
 
 interface CollectionsDialogProps {
-  articles: Article[];
+  docs: Document[];
 }
 
-const CollectionsDialog: React.FC<CollectionsDialogProps> = ({ articles }) => {
-  const [selectedArticles, setSelectedArticles] = useState<Article[]>([]);
+interface Document {
+  id: string;
+  document_title: string;
+}
+
+const CollectionsDialog: React.FC<CollectionsDialogProps> = () => {
+  const [selectedDocs, setSelectedDocs] = useState<Document[]>([]);
+  const handleOpenDocs = () => {
+    console.log("Opening selected documents:", selectedDocs);
+  };
+
   return (
-    <DialogContent className="bg-gray-200 max-w-[425px] fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 DialogOverlay p-6">
+    <DialogContent className="bg-popover text-popover-accent max-w-[425px] fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 DialogOverlay p-6">
       <DialogHeader>
-        <DialogTitle>Articles</DialogTitle>
-        <DialogDescription>Articles in your collection</DialogDescription>
+        <DialogTitle className="text-[color:var(--foreground)]">
+          Documents
+        </DialogTitle>
+        <DialogDescription>Documents in your collection</DialogDescription>
       </DialogHeader>
       <div style={{ maxHeight: "350px", overflow: "auto" }}>
         <ul className="space-y-2">
-          {articles.map((article) => (
+          {selectedDocs.map((doc) => (
             <li
-              key={article.id}
+              key={doc.id}
               className={`cursor-pointer hover:bg-gray-100 rounded-md p-2 ${
-                selectedArticles.includes(article) ? "bg-gray-100" : ""
+                selectedDocs.includes(doc) ? "" : ""
               }`}
             >
-              {article.title}
+              {doc.document_title}
             </li>
           ))}
         </ul>
       </div>
       <DialogFooter>
-        <Button type="submit">Save changes</Button>
+        <Button
+          className="bg-accent text-accent-foreground hover:bg-[#1F7A2F] dark:hover:bg-[#E66C14]"
+          type="submit"
+          onClick={handleOpenDocs}
+        >
+          Add
+        </Button>
       </DialogFooter>
     </DialogContent>
   );

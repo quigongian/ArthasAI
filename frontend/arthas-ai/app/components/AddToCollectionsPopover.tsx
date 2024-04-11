@@ -7,16 +7,22 @@ import {
 } from "@/components/ui/popover";
 import { PlusIcon } from "lucide-react";
 import { Article, Collection } from "../dashboard/Types/Type";
+import { Button } from "@/components/ui/button";
 
 interface AddToCollectionsPopoverProps {
   collections: Collection[];
-  articles: Article[];
+  docs: Document[];
   onAddToCollection: (collectionId: string, articleId: string) => void;
+}
+
+interface Document {
+  id: string;
+  document_title: string;
 }
 
 const AddToCollectionsPopover: React.FC<AddToCollectionsPopoverProps> = ({
   collections,
-  articles,
+  docs,
   onAddToCollection,
 }) => {
   const [selectedCollection, setSelectedCollection] =
@@ -27,21 +33,21 @@ const AddToCollectionsPopover: React.FC<AddToCollectionsPopoverProps> = ({
   };
 
   const handleAddToCollection = () => {
-    if (selectedCollection && selectedArticles.length > 0) {
-      selectedArticles.forEach((article) => {
-        onAddToCollection(selectedCollection.id, article.id);
+    if (selectedCollection && selectedDocs.length > 0) {
+      selectedDocs.forEach((doc) => {
+        onAddToCollection(selectedCollection.id, doc.id);
       });
-      setSelectedArticles([]);
+      setSelectedDocs([]);
     }
   };
 
-  const [selectedArticles, setSelectedArticles] = useState<Article[]>([]);
+  const [selectedDocs, setSelectedDocs] = useState<Document[]>([]);
 
-  const handleArticleClick = (article: Article) => {
-    if (selectedArticles.includes(article)) {
-      setSelectedArticles(selectedArticles.filter((a) => a.id !== article.id));
+  const handleArticleClick = (doc: Document) => {
+    if (selectedDocs.includes(doc)) {
+      setSelectedDocs(selectedDocs.filter((a) => a.id !== doc.id));
     } else {
-      setSelectedArticles([...selectedArticles, article]);
+      setSelectedDocs([...selectedDocs, doc]);
     }
   };
 
@@ -54,7 +60,7 @@ const AddToCollectionsPopover: React.FC<AddToCollectionsPopoverProps> = ({
           </button>
         </PopoverTrigger>
 
-        <PopoverContent className="w-[400px] p-4 space-y-4">
+        <PopoverContent className="w-[400px] p-4 space-y-4 bg-popover text-popover-foreground">
           <div className="grid grid-cols-2 gap-4">
             <div style={{ maxHeight: "350px", overflow: "auto" }}>
               <h3 className="text-lg font-medium mb-2">Collections</h3>
@@ -63,9 +69,9 @@ const AddToCollectionsPopover: React.FC<AddToCollectionsPopoverProps> = ({
                 {collections.map((collection) => (
                   <li
                     key={collection.id}
-                    className={`cursor-pointer hover:bg-gray-100 rounded-md p-2 ${
+                    className={`cursor-pointer hover:bg-gray-100 hover:dark:text-gray-800  rounded-md mt-2 p-2 ${
                       selectedCollection?.id === collection.id
-                        ? "bg-gray-100"
+                        ? "bg-gray-200 text-gray-800"
                         : ""
                     }`}
                     onClick={() => handleCollectionClick(collection)}
@@ -79,27 +85,29 @@ const AddToCollectionsPopover: React.FC<AddToCollectionsPopoverProps> = ({
               <h3 className="text-lg font-medium mb-2">Articles</h3>
               <hr />
               <ul className="space-y-2">
-                {articles.map((article) => (
+                {docs.map((doc) => (
                   <li
-                    key={article.id}
-                    className={`cursor-pointer hover:bg-gray-100 rounded-md p-2 ${
-                      selectedArticles.includes(article) ? "bg-gray-100" : ""
+                    key={doc.id}
+                    className={`cursor-pointer hover:bg-gray-100 hover:dark:text-gray-800 rounded-md mt-2 p-2 ${
+                      selectedDocs.includes(doc)
+                        ? "bg-gray-200 text-gray-800"
+                        : ""
                     }`}
-                    onClick={() => handleArticleClick(article)}
+                    onClick={() => handleArticleClick(doc)}
                   >
-                    {article.title}
+                    {doc.document_title}
                   </li>
                 ))}
               </ul>
             </div>
           </div>
-          {selectedCollection && selectedArticles.length > 0 && (
-            <button
-              className="bg-gray-400 hover:bg-gray-500 text-white rounded-md px-4 py-2"
+          {selectedCollection && selectedDocs.length > 0 && (
+            <Button
+              className=" bg-accent hover:bg-accent text-accent-foreground hover:bg-[#1F7A2F] dark:hover:bg-[#E66C14]"
               onClick={handleAddToCollection}
             >
               Add to {selectedCollection.name}
-            </button>
+            </Button>
           )}
         </PopoverContent>
       </Popover>
