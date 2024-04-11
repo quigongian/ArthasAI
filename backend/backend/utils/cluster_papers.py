@@ -60,22 +60,22 @@ def create_cluster_summaries(cluster_texts: List[List[str]]) -> List[str]:
         model="mistralai/Mixtral-8x7B-Instruct-v0.1"
         )
 
-        print("RAW RESPONSE", chat_completion.choices[0].message.content)
+        # print("RAW RESPONSE", chat_completion.choices[0].message.content)
         response = json.loads(chat_completion.choices[0].message.content)
-        # print("RESPONSE", response)
         print("SUMMARIZATION", response["summary"])
         summaries.append(response)
 
     return summaries
 
 
-def recursive_cluster(papers: List[PaperClusterNode], n_clusters: int = 5):
+def recursive_cluster(nodes: List[PaperClusterNode], n_clusters: int = 5):
     """
     Recursively cluster the papers based on their embeddings and store the clusters in the database
+    'node' can be either a paper (if it's a leaf node) or a cluster (if it's an internal node in the tree)
     """
 
     # convert the embeddings to t-sne
-    embeddings = np.array([paper.embedding for paper in papers])
+    embeddings = np.array([node.embedding for node in nodes])
     tsne = TSNE(n_components=2, perplexity=2, n_iter=5000)
     tsne_embeddings = tsne.fit_transform(embeddings)
 
@@ -87,9 +87,9 @@ def recursive_cluster(papers: List[PaperClusterNode], n_clusters: int = 5):
     cluster_texts = [[] for _ in range(n_clusters)]
 
     for i, cluster in enumerate(clusters):
-        print(cluster, papers[i].text)
+        print(cluster, nodes[i].text)
         print("CLUSTER", cluster)
-        cluster_texts[cluster].append(papers[i].text)
+        cluster_texts[cluster].append(nodes[i].text)
     
     # summarize the text of each cluster
     cluster_summaries = create_cluster_summaries(cluster_texts)
@@ -108,14 +108,14 @@ def recursive_cluster(papers: List[PaperClusterNode], n_clusters: int = 5):
             })
 
             # Convert PaperClusterNode objects to dictionaries (to avoid type errors)
-            paper_data = [
+            node_data = [
                 {
-                    "id": paper.id,
-                    "title": paper.title,
-                    "text": paper.text,
-                    "embedding": paper.embedding
+                    "id": node.id,
+                    "title": node.title,
+                    "text": node.text,
+                    "embedding": node.embedding
                 }
-                for j, paper in enumerate(papers) if clusters[j] == i
+                for j, node in enumerate(nodes) if clusters[j] == i
             ]
 
             session.run("MERGE (c:Cluster {id: $id, summary: $summary, title: $title})", id=cluster_uuid, summary=summary_res["summary"], title=summary_res["title"])
@@ -125,7 +125,7 @@ def recursive_cluster(papers: List[PaperClusterNode], n_clusters: int = 5):
                         MATCH (p:Paper|Cluster {id: paper.id})
                         MATCH (c:Cluster {id: $cluster_id})
                         MERGE (c)-[:CONTAINS]->(p)
-                        """, papers=paper_data, cluster_id=cluster_uuid)
+                        """, papers=node_data, cluster_id=cluster_uuid)
     
     new_n_clusters = n_clusters // 2
     if new_n_clusters > 1:
