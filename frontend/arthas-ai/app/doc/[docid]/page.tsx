@@ -12,20 +12,22 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 import dynamic from "next/dynamic";
-import { Settings, ChevronLeft, ArrowRight, ListCollapse } from "lucide-react";
+import { Settings, ChevronLeft, ListCollapse } from "lucide-react";
 import { Toaster } from "@/components/ui/toaster";
-import ChatInterface from "@/app/components/chatInterface";
+import ChatInterface from "@/app/doc/[docid]/chatInterface";
+import { useSearchParams } from "next/navigation";
+import { url } from "inspector";
 
 const Editor = dynamic(() => import("./notes"), { ssr: false });
 const Flow = dynamic(() => import("./graphs"), { ssr: false });
 
 // TODO: on collapse, rotate arrow 180deg
 
-function DocumentEditor({ params }: { params: { doc: string } }) {
+function DocumentEditor({ params }: { params: { docid: string } }) {
   const fetcher = useQuery({
-    queryKey: [`/document/${params.doc}/api/test`],
+    queryKey: [`/document/${params.docid}/api/test`],
     queryFn: async () => {
-      const { data } = await axios.get(`/document/${params.doc}/api/tsest`);
+      const { data } = await axios.get(`/document/${params.docid}/api/tsest`);
       return data;
     },
   });
@@ -34,6 +36,8 @@ function DocumentEditor({ params }: { params: { doc: string } }) {
   const notesRef = useRef<ImperativePanelHandle>(null);
   const chatbotRef = useRef<ImperativePanelHandle>(null);
   const nodegraphRef = useRef<ImperativePanelHandle>(null);
+
+  const urlParams = useSearchParams();
 
   const handleCollapse = (panelRef: React.RefObject<ImperativePanelHandle>) => {
     collapsePanel(panelRef.current);
@@ -45,7 +49,7 @@ function DocumentEditor({ params }: { params: { doc: string } }) {
       <ResizablePanelGroup direction="horizontal" className="h-full">
         <ResizablePanel id="reader" className="w-full" defaultSize={50}>
           <div id="top-reader" className="flex justify-between p-4">
-            <Button variant="ghost">
+            <Button variant="ghost" onClick={() => {}}>
               <ChevronLeft />
             </Button>
             <Button
@@ -77,7 +81,7 @@ function DocumentEditor({ params }: { params: { doc: string } }) {
               ref={notesRef}
               className="!overflow-auto"
             >
-              <div className="w-9/10 h-10 flex justify-between items-center space-x-4 p-8">
+              <div className="w-9/10 h-10 flex justify-between items-center space-x-4 p-4">
                 <div>{"Document Name's Notes"}</div>
                 <div className="flex">
                   <Button variant="ghost" onClick={() => {}}>
@@ -88,7 +92,7 @@ function DocumentEditor({ params }: { params: { doc: string } }) {
               <Editor params={params} />
             </ResizablePanel>
             <ResizableHandle withHandle />
-            <div className="w-9/10 h-10 flex justify-between items-center space-x-4 p-8">
+            <div className="w-9/10 h-10 flex justify-between items-center space-x-4 p-2">
               <div>Assistant</div>
               <div>
                 <Button
@@ -112,7 +116,7 @@ function DocumentEditor({ params }: { params: { doc: string } }) {
               <ChatInterface />
             </ResizablePanel>
             <ResizableHandle withHandle />
-            <div className="w-full p-2 flex justify-between items-center">
+            <div className="w-full flex justify-between items-center">
               <div>Relationship Graph</div>
               <div>
                 <Button
@@ -132,7 +136,9 @@ function DocumentEditor({ params }: { params: { doc: string } }) {
               defaultSize={10}
               ref={nodegraphRef}
             >
-              <Flow params={params} />
+              <div className="h-full w-full">
+                <Flow params={params} />
+              </div>
             </ResizablePanel>
           </ResizablePanelGroup>
         </ResizablePanel>

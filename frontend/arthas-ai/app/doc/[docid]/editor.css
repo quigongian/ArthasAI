@@ -1,0 +1,11 @@
+/* Adds border and shadow to editor */
+.bn-editor {
+  background-color: var(--background-color);
+}
+
+/* Makes slash menu hovered items blue */
+.bn-container[data-theming-css-demo]
+  .bn-slash-menu
+  .mantine-Menu-item[data-hovered] {
+  background-color: blue;
+}
