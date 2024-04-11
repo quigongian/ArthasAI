@@ -104,10 +104,16 @@ class TreeRetrieverConfig:
 
 
 class TreeRetriever(BaseRetriever):
-
     def __init__(self, config, tree) -> None:
-        if not isinstance(tree, Tree):
-            raise ValueError("tree must be an instance of Tree")
+        print("Tree Module = " + str(tree.__module__))
+        module_type = "Raptor_Markdown.raptor.tree_structures"
+
+        if tree.__module__ == "raptor.tree_structures":
+                    module_type = "Raptor_Markdown." + tree.__module__
+            
+        if module_type != Tree.__module__:
+            print("Type = " + str(tree.__module__))
+            raise ValueError(f"The loaded object is not an instance of Tree")
 
         if config.num_layers is not None and config.num_layers > tree.num_layers + 1:
             raise ValueError(
@@ -169,7 +175,7 @@ class TreeRetriever(BaseRetriever):
 
         query_embedding = self.create_embedding(query)
 
-        print("Query Embedding len: ", len(query_embedding))
+        # print("Query Embedding len: ", len(query_embedding))
 
         selected_nodes = []
 
