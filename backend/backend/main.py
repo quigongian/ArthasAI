@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 import dotenv
 import os
-from utils.api.workspace import create_workspace, add_paper_to_workspace, get_all_workspaces, get_workspace
+from utils.api.workspace import create_workspace, add_paper_to_workspace, get_all_workspaces, get_workspace, get_all_workspace_graph
 from models.request_models import Workspace
 from models.dto_models import Paper
 from utils.api.paper import upload_paper_with_metadata, get_all_papers
@@ -62,6 +62,7 @@ def route_upload_paper(paper: Paper):
 def route_create_workspace(workspace: Workspace):
     print(workspace)
     result = create_workspace(user_id=workspace.user_id, workspace_name=workspace.workspace_name, workspace_description=workspace.workspace_description)
+    print(result)
     return {"message": "Workspace created successsfully", "workspace_id": result[0]["workspace_id"]}
 
 @app.post("/workspace/{workspace_id}/paper/{paper_id}")
@@ -80,8 +81,9 @@ def route_get_workspace_by_id(workspace_id: str):
 
 @app.get("/workspace")
 def route_get_all_workspaces_for_user():
-    res = get_all_workspaces(user_id="test user")
-    return {"message": "Workspaces retrieved successfully", "data": res}
+    workspaces = get_all_workspaces(user_id="user")
+    graph = get_all_workspace_graph(user_id="user")
+    return {"message": "Workspaces retrieved successfully", "workspaces": workspaces, "graph": graph}
 
 @app.get("/chat")
 def chat():
@@ -115,11 +117,6 @@ def chat( paper_id: str, chat_input: ChatInput):
 
     return {"Chat": ai_response,
             "Chat_History": context['chat_history']}
-
-
-@app.get("/graph")
-def get_graph():
-    return {"Graph": "GET Request"}
 
 
 if __name__ == "__main__":
