@@ -45,25 +45,50 @@ def create_cluster_summaries(cluster_texts: List[List[str]]) -> List[str]:
 
     summaries: List[SummaryResponse] = []
 
-    for texts in cluster_texts:
-        chat_completion = client.chat.completions.create(
-        messages=[
-            {
-            "role": "system",
-            "content": "You are an expert supparizer, tasked with creating a summary of clusters of research papers, given the abstracts of all the papers in the cluster. Also output a title that is appropriate for the cluster. Your output should be JSON of the form {\"title\": \"Title of the cluster\", \"summary\": \"Summary of the cluster\"}."
-            },
-            {
-            "role": "user",
-            "content": "Here are the abstracts of the papers in the cluster: " + "\n\n".join(texts),
-            }
-        ],
-        model="mistralai/Mixtral-8x7B-Instruct-v0.1"
-        )
+    chat_completion = client.chat.completions.create(
+    messages=[
+        {
+        "role": "system",
+        "content": 
+"""
+Given the following instructions:
+- You are an expert supparizer, tasked with creating a summary of clusters of research papers, based on the abstracts of all the papers.
+- The purpose of the application is to help researchers find papers, so the papers need to be grouped by topic.
+- The paper clusters were chosen based on Gaussian Mixture Model (GMM) clustering of paper embeddings.
+- The summaries should be concise, around 1 paragraph long, and not too broad.
+- The output should be in JSON format, with each cluster represented as an object containing a "title" and "summary" field.
 
-        # print("RAW RESPONSE", chat_completion.choices[0].message.content)
-        response = json.loads(chat_completion.choices[0].message.content)
-        print("SUMMARIZATION", response["summary"])
-        summaries.append(response)
+Produce a JSON output with the following structure:
+[
+    {
+      "title": "Title of Cluster 1",
+      "summary": "Concise 1-paragraph summary of Cluster 1"
+    },
+    {
+      "title": "Title of Cluster 2", 
+      "summary": "Concise 1-paragraph summary of Cluster 2"
+    },
+    {
+      "title": "Title of Cluster 3",
+      "summary": "Concise 1-paragraph summary of Cluster 3"
+    }
+]
+
+Please ensure that the summaries are informative and helpful for researchers to understand the key topics covered in each cluster, without being overly long or broad.
+"""
+        },
+        {
+        "role": "user",
+        "content": "\n\n".join([f"Cluster {i} abstracts:\n {'\n\n'.join(abstracts)}" for i, abstracts in enumerate(cluster_texts)]),
+        }
+    ],
+    model="mistralai/Mixtral-8x7B-Instruct-v0.1"
+    )
+
+    # print("RAW RESPONSE", chat_completion.choices[0].message.content)
+    response = json.loads(chat_completion.choices[0].message.content)
+    print("SUMMARIZATION", response["summary"])
+    summaries.append(response)
 
     return summaries
 
@@ -128,7 +153,7 @@ def recursive_cluster(nodes: List[PaperClusterNode], n_clusters: int = 5):
                         """, papers=node_data, cluster_id=cluster_uuid)
     
     new_n_clusters = n_clusters // 2
-    if new_n_clusters > 1:
+    if new_n_clusters >= 1:
         recursive_cluster(cluster_objects, new_n_clusters)
 
     return
