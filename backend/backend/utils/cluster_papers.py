@@ -16,6 +16,7 @@ from models.dto_models import Paper
 import os
 from openai import OpenAI
 import json
+import math
 
 client = OpenAI(
   api_key=os.getenv("TOGETHER_API_KEY"),
@@ -44,53 +45,46 @@ def create_cluster_summaries(cluster_texts: List[List[str]]) -> List[str]:
     """
 
     summaries: List[SummaryResponse] = []
-    nl = "\n\n" # because python < 3.12 doesn't support f-strings with backslashes
 
-    chat_completion = client.chat.completions.create(
-    messages=[
-        {
-        "role": "system",
-        "content": 
-"""
-Given the following instructions:
-- You are an expert supparizer, tasked with creating a summary of clusters of research papers, based on the abstracts of all the papers.
+    for i, abstracts in enumerate(cluster_texts):
+        chat_completion = client.chat.completions.create(
+        messages=[
+            {
+            "role": "system",
+            "content": 
+    """
+ Given the following instructions:
+
+- You are an expert supparizer, tasked with creating a summary of a cluster of research papers, based on the abstracts of the papers.
 - The purpose of the application is to help researchers find papers, so the papers need to be grouped by topic.
 - The paper clusters were chosen based on Gaussian Mixture Model (GMM) clustering of paper embeddings.
-- The summaries should be concise, around 1 paragraph long, and not too broad.
-- The output should be in JSON format, with each cluster represented as an object containing a "title" and "summary" field.
+- The summaries should be concise, around 3 sentences long, and not too broad.
+- You are given all the abstracts from a single cluster of papers, and you need to summarize them into a single summary.
 
-Produce a JSON output with the following structure:
-[
-    {
-      "title": "Title of Cluster 1",
-      "summary": "Concise 1-paragraph summary of Cluster 1"
-    },
-    {
-      "title": "Title of Cluster 2", 
-      "summary": "Concise 1-paragraph summary of Cluster 2"
-    },
-    {
-      "title": "Title of Cluster 3",
-      "summary": "Concise 1-paragraph summary of Cluster 3"
-    }
-]
+The output must be in the following JSON format (this is VERY IMPORTANT):
 
-Please ensure that the summaries are informative and helpful for researchers to understand the key topics covered in each cluster, without being overly long or broad. Avoid using language like 'this cluster' in your summary
-"""
-        },
-        {
-        "role": "user",
-        "content": "\n\n".join([f"Cluster {i} abstracts:\n {nl.join(abstracts)}" for i, abstracts in enumerate(cluster_texts)]),
-        }
-    ],
-    model="mistralai/Mixtral-8x7B-Instruct-v0.1"
-    )
+{
+  "title": "Title of Cluster",
+  "summary": "Concise 3-sentence summary of the Cluster"
+}
 
-    # print("RAW RESPONSE", chat_completion.choices[0].message.content)
-    response = json.loads(chat_completion.choices[0].message.content)
-    print("SUMMARIZATION", response)
+You must output the result in this exact JSON format. Do not include any additional text or information outside of the JSON object.
+    """
+            },
+            {
+            "role": "user",
+            "content": "Here are the abstracts of the papers in the cluster: " + "\n\n".join(abstracts)
+            }
+        ],
+        model="mistralai/Mixtral-8x7B-Instruct-v0.1"
+        )
 
-    return response
+        # print("RAW RESPONSE", chat_completion.choices[0].message.content)
+        response = json.loads(chat_completion.choices[0].message.content)
+        print("SUMMARIZATION", response)
+        summaries.append(SummaryResponse(**response))
+
+    return summaries
 
 
 def recursive_cluster(nodes: List[PaperClusterNode], n_clusters: int = 5):
@@ -101,7 +95,7 @@ def recursive_cluster(nodes: List[PaperClusterNode], n_clusters: int = 5):
 
     # convert the embeddings to t-sne
     embeddings = np.array([node.embedding for node in nodes])
-    tsne = TSNE(n_components=2, perplexity=2, n_iter=5000)
+    tsne = TSNE(n_components=2, perplexity=len(nodes)-1, n_iter=5000)
     tsne_embeddings = tsne.fit_transform(embeddings)
 
     # cluster the papers
@@ -127,9 +121,9 @@ def recursive_cluster(nodes: List[PaperClusterNode], n_clusters: int = 5):
 
             cluster_objects.append(PaperClusterNode(
                 id=cluster_uuid,
-                title=summary_res["title"],
-                text=summary_res["summary"],
-                embedding=get_embeddings([summary_res["summary"]], "togethercomputer/m2-bert-80M-8k-retrieval")[0]
+                title=summary_res.title,
+                text=summary_res.summary,
+                embedding=get_embeddings([summary_res.summary], "togethercomputer/m2-bert-80M-8k-retrieval")[0]
             ))
 
             # Convert PaperClusterNode objects to dictionaries (to avoid type errors)
@@ -143,7 +137,7 @@ def recursive_cluster(nodes: List[PaperClusterNode], n_clusters: int = 5):
                 for j, node in enumerate(nodes) if clusters[j] == i
             ]
 
-            session.run("MERGE (c:Cluster {id: $id, summary: $summary, title: $title})", id=cluster_uuid, summary=summary_res["summary"], title=summary_res["title"])
+            session.run("MERGE (c:Cluster {id: $id, summary: $summary, title: $title})", id=cluster_uuid, summary=summary_res.summary, title=summary_res.title)
             session.run("""
                         WITH $papers as papers
                         UNWIND papers as paper
@@ -152,8 +146,8 @@ def recursive_cluster(nodes: List[PaperClusterNode], n_clusters: int = 5):
                         MERGE (c)-[:CONTAINS]->(p)
                         """, papers=node_data, cluster_id=cluster_uuid)
     
-    new_n_clusters = n_clusters // 2
-    if new_n_clusters >= 1:
+    new_n_clusters = math.floor(math.sqrt(len(cluster_objects)))
+    if new_n_clusters > 1:
         recursive_cluster(cluster_objects, new_n_clusters)
 
     return

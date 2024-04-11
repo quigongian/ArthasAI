@@ -22,6 +22,7 @@ from typing import List
 from embeddings import get_embeddings
 from dependencies import get_s3_client, get_together_client
 from utils.cluster_papers import cluster_papers
+import math
  
 settings = Settings()
 
@@ -128,7 +129,7 @@ def seed():
 @app.get("/cluster_papers")
 def cluster_papers_route():
     papers = get_all_papers()
-    cluster_papers(papers=papers, n_clusters=len(papers) // 12)
+    cluster_papers(papers=papers, n_clusters=math.floor(math.sqrt(len(papers))))
     return {"message": "Papers clustered successfully"}
     # return {"data": papers}
 
