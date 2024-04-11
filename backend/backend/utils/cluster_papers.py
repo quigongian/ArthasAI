@@ -44,6 +44,7 @@ def create_cluster_summaries(cluster_texts: List[List[str]]) -> List[str]:
     """
 
     summaries: List[SummaryResponse] = []
+    nl = "\n\n" # because python < 3.12 doesn't support f-strings with backslashes
 
     chat_completion = client.chat.completions.create(
     messages=[
@@ -74,12 +75,12 @@ Produce a JSON output with the following structure:
     }
 ]
 
-Please ensure that the summaries are informative and helpful for researchers to understand the key topics covered in each cluster, without being overly long or broad.
+Please ensure that the summaries are informative and helpful for researchers to understand the key topics covered in each cluster, without being overly long or broad. Avoid using language like 'this cluster' in your summary
 """
         },
         {
         "role": "user",
-        "content": "\n\n".join([f"Cluster {i} abstracts:\n {'\n\n'.join(abstracts)}" for i, abstracts in enumerate(cluster_texts)]),
+        "content": "\n\n".join([f"Cluster {i} abstracts:\n {nl.join(abstracts)}" for i, abstracts in enumerate(cluster_texts)]),
         }
     ],
     model="mistralai/Mixtral-8x7B-Instruct-v0.1"
@@ -87,10 +88,9 @@ Please ensure that the summaries are informative and helpful for researchers to 
 
     # print("RAW RESPONSE", chat_completion.choices[0].message.content)
     response = json.loads(chat_completion.choices[0].message.content)
-    print("SUMMARIZATION", response["summary"])
-    summaries.append(response)
+    print("SUMMARIZATION", response)
 
-    return summaries
+    return response
 
 
 def recursive_cluster(nodes: List[PaperClusterNode], n_clusters: int = 5):
@@ -125,12 +125,12 @@ def recursive_cluster(nodes: List[PaperClusterNode], n_clusters: int = 5):
         for i, summary_res in enumerate(cluster_summaries):
             cluster_uuid = str(uuid.uuid4())
 
-            cluster_objects.append({
-                "id": cluster_uuid,
-                "title": summary_res["title"],
-                "summary": summary_res["summary"],
-                "embedding": get_embeddings([summary_res["summary"]], "togethercomputer/m2-bert-80M-8k-retrieval")[0]
-            })
+            cluster_objects.append(PaperClusterNode(
+                id=cluster_uuid,
+                title=summary_res["title"],
+                text=summary_res["summary"],
+                embedding=get_embeddings([summary_res["summary"]], "togethercomputer/m2-bert-80M-8k-retrieval")[0]
+            ))
 
             # Convert PaperClusterNode objects to dictionaries (to avoid type errors)
             node_data = [

@@ -127,8 +127,8 @@ def seed():
 
 @app.get("/cluster_papers")
 def cluster_papers_route():
-    papers = get_all_papers()[:5]
-    cluster_papers(papers=papers, n_clusters=2)
+    papers = get_all_papers()
+    cluster_papers(papers=papers, n_clusters=len(papers) // 12)
     return {"message": "Papers clustered successfully"}
     # return {"data": papers}
 
