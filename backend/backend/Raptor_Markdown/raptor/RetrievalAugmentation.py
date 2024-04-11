@@ -1,6 +1,8 @@
 import logging
 import pickle
 
+import sys
+sys.path.append("raptor")
 from .cluster_tree_builder import ClusterTreeBuilder, ClusterTreeConfig
 from .EmbeddingModels import BaseEmbeddingModel
 from .QAModels import BaseQAModel, GPT3TurboQAModel
@@ -170,16 +172,18 @@ class RetrievalAugmentation:
                 "config must be an instance of RetrievalAugmentationConfig"
             )
 
+        module_type = ""
         # Check if tree is a string (indicating a path to a pickled tree)
         if isinstance(tree, str):
             try:
                 with open(tree, "rb") as file:
                     self.tree = pickle.load(file)
+                    print("Tree type: " + str(type(self.tree)))
                 if not isinstance(self.tree, Tree):
-                    raise ValueError("The loaded object is not an instance of Tree")
+                    raise ValueError(f"The loaded object is not an instance of Tree")
             except Exception as e:
                 raise ValueError(f"Failed to load tree from {tree}: {e}")
-        elif isinstance(tree, Tree) or tree is None:
+        elif isinstance(self.tree, Tree) or tree is None:
             self.tree = tree
         else:
             raise ValueError(
