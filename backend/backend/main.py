@@ -14,7 +14,7 @@ together.api_key = os.getenv("TOGETHER_API_KEY")
 from pydantic import BaseModel
 import pickle  # For serialization
 
-from backend.Chat_functionality.storage import save_to_storage, load_from_storage, load_embeddings_from_s3, save_embeddings_to_s3
+from Chat_functionality.storage import save_to_storage, load_from_storage, load_embeddings_from_s3, save_embeddings_to_s3
 from Chat_functionality.config import Settings
 from Chat_functionality.chat import answer_question
 from typing import List
@@ -106,7 +106,7 @@ def chat( paper_id: str, chat_input: ChatInput):
 
     concatenated_prompts = "\n".join([entry['input'] for entry in context['chat_history']]) + "\n" + new_chat_input
 
-    save_to_storage( paper_id, context)
+    save_to_storage(paper_id, context)
 
     paper_context: str = retrieve_context(document_id=paper_id, question=concatenated_prompts)
 

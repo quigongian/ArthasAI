@@ -179,13 +179,11 @@ class RetrievalAugmentation:
                 with open(tree, "rb") as file:
                     self.tree = pickle.load(file)
                     print("Tree type: " + str(type(self.tree)))
-                    if self.tree.__module__ == "raptor.tree_structures":
-                        module_type = "Raptor_Markdown." + self.tree.__module__
-                if module_type != Tree.__module__:
+                if not isinstance(self.tree, Tree):
                     raise ValueError(f"The loaded object is not an instance of Tree")
             except Exception as e:
                 raise ValueError(f"Failed to load tree from {tree}: {e}")
-        elif module_type == Tree.__module__ or tree is None:
+        elif isinstance(self.tree, Tree) or tree is None:
             self.tree = tree
         else:
             raise ValueError(
