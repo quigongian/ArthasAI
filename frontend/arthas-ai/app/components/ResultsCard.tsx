@@ -11,38 +11,39 @@ interface ResultsCardProps {
 const ResultsCard: React.FC<ResultsCardProps> = ({ title, abstract }) => {
   const router = useRouter();
 
-  // const mutation = useMutation({
-  //   mutationFn: async (data: { title: string; abstract: string; }) => {
-  //     const response = await fetch(`/dashboard/api/test/edit`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(data),
-  //     });
+  const mutation = useMutation({
+    mutationFn: async (data: { title: string; abstract: string; }) => {
+      const response = await fetch(`/dashboard/api/test/edit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
 
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! status: ${response.status}`);
-  //     }
-  //     return response.json();
-  //   },
-  // });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    },
+  });
 
   // Event handler that calls the mutation and then redirects
   const handleEditClick = () => {
-    // Pass the document data to the mutate function
-    // mutation.mutate({ title, abstract }, {
-    //   onSuccess: () => {
-    //     router.push(`/document/4df63cc6-1918-45d0-a7df-aac5a62a54bc`); // redirects user to document page
-    //   },
-    //   onError: (error) => {
-    //     console.error('Mutation error:', error);
-    //   },
-    // });
+    //Pass the document data to the mutate function
+    mutation.mutate({ title, abstract }, {
+      onSuccess: () => {
+        router.push(`/document/4df63cc6-1918-45d0-a7df-aac5a62a54bc`); // redirects user to document page
+      },
+      onError: (error) => {
+        console.error('Mutation error:', error);
+      },
+        
+    });
 
 
     // for now its just going to redirect to document page until i can fix error 
-    router.push(`/document/4df63cc6-1918-45d0-a7df-aac5a62a54bc`);
+    //router.push(`/document/4df63cc6-1918-45d0-a7df-aac5a62a54bc`);
   };
 
   return (
