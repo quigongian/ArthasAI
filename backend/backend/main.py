@@ -126,12 +126,11 @@ def seed():
     seed_db()
     return {"message": "Database seeded successfully"}
 
-@app.get("/cluster_papers")
-def cluster_papers_route():
-    papers = get_all_papers()
-    cluster_papers(papers=papers, n_clusters=math.floor(math.sqrt(len(papers))))
-    return {"message": "Papers clustered successfully"}
-    # return {"data": papers}
+# @app.get("/cluster_papers")
+# def cluster_papers_route():
+#     papers = get_all_papers()
+#     cluster_papers(papers=papers, n_clusters=math.floor(math.sqrt(len(papers))))
+#     return {"message": "Papers clustered successfully"}
 
 
 if __name__ == "__main__":
