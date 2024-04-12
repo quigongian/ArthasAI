@@ -44,6 +44,7 @@ def search_results(query: str):
     Return the top k papers based on the abstract cosine similarity
     """
     res = top_k_abstract_query(query=query, k=3)
+    res = res[:3]
     return {"message": "Papers retrieved successfully", "data": res}
 
 @app.post("/paper")

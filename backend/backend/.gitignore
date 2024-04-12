@@ -1,6 +1,6 @@
-.backend/.env
-
+*.md
+*.mmd
+./paper
+./papers/*
+*.pyc
 .env
-.env*.local
-test.jsonl
-combined.jsonl
