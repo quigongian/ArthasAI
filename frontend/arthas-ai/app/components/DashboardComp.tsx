@@ -9,6 +9,8 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { DialogOverlay } from "@radix-ui/react-dialog";
 import CollectionsDialog from "./CollectionDialog";
 import { useRouter } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton"
+
 
 function formatDateTime(dateString: string) {
   const options: Intl.DateTimeFormatOptions = {
@@ -67,7 +69,7 @@ export default function DashboardComp() {
   const isError = isErrorRecentDocs || isErrorCollections;
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Skeleton className="w-[100px] h-[20px] rounded-full" />;
   }
 
   if (isError) {
@@ -76,14 +78,6 @@ export default function DashboardComp() {
 
   const recentlyViewedDocs = recentDocsData.data || [];
   const collections = collectionsData.data || [];
-
-  // // Dummy data for AddToCollectionsPopover
-  //  const collections: Collection[] = [
-  //   { id: "1", name: "Collection 1" },
-  //   { id: "2", name: "Collection 2" },
-  //   { id: "3", name: "Collection 3" },
-  //   { id: "4", name: "Collection 4" },
-  // ];
 
   const handleAddToCollection = (collectionId: string, articleId: string) => {
     console.log(`Adding article ${articleId} to collection ${collectionId}`);
