@@ -62,10 +62,9 @@ function DocumentEditor({ params }: { params: { docid: string } }) {
               <ListCollapse />
             </Button>
             <div>
-            <MarkdownDisplay/>
             </div>
-
           </div>
+          <MarkdownDisplay/>
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel
