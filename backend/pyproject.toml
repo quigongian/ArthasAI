@@ -30,6 +30,7 @@ accelerate = "*"
 together = "^1.0.1"
 pydantic-settings = "^2.2.1"
 pandas = "^2.2.1"
+tiktoken = "^0.6.0"
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.29.4"

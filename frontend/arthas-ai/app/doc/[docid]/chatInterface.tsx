@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useRef } from "react";
 import { Send } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 
 type MessageProps = {
   sender: string;
@@ -42,7 +44,8 @@ const Message = (
   </div>
 );
 
-const ChatInterface = () => {
+
+const ChatInterface = ({ params }: { params: { docid: string } }) => {
   const [messages, setMessages] = useState([] as MessageProps[]); // store messages
 
   const [inputText, setInputText] = useState(""); // store input
@@ -53,7 +56,19 @@ const ChatInterface = () => {
     setInputText(e.target.value);
   };
 
-  const sendMessage = () => {
+  const sendMessageAPI = useMutation({    
+    mutationKey: [`/document/chat`], // cache
+    mutationFn: async (question: string) => {
+      console.log("Question sending to API:", question)
+      const response = await axios.post(`https://5de2-2600-1700-5230-be20-245b-a378-fe03-f41d.ngrok-free.app/chat/0805.2368`, {
+        question: question, // send question to ngrok
+      });
+      console.log("Response received:", response.data)
+      return response.data;
+    },
+  });
+
+  const sendMessage = async () => {
     if (inputText === "") return; // cant send empty messages
     // send message
     const newMessage = {
@@ -62,10 +77,25 @@ const ChatInterface = () => {
       timestamp: Date.now(),
     };
 
-    setMessages([...messages, newMessage]);
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
     setInputText(""); // clear input
-  };
+    //localhost:8000/chat/ {doc.id}
 
+    try{
+      const data = await sendMessageAPI.mutateAsync(inputText);
+
+      const assistantMessage = {
+        sender: "Assistant",
+        text: data.Chat, // get "Chat": response from ngrok
+        timestamp: Date.now(),
+      };
+      setMessages((prevMessages) => [...prevMessages, assistantMessage]);
+    } catch (error){
+
+      console.error("Api call failed", error);
+    }
+  }; 
+//
   const handleNewLine = (e: React.KeyboardEvent) => {
     // add new line on shift + enter
     if (e.key === "Enter" && e.shiftKey) {
@@ -96,7 +126,7 @@ const ChatInterface = () => {
   }, [messages]);
 
   return (
-    <div className=" h-full min-h-40 bg-white  rounded-md flex flex-col justify-between">
+    <div className=" h-full min-h-40 flex flex-col justify-between">
       <div className="flex-1 overflow-y-auto">
         {" "}
         {/* show messages custom no-scrollbar class to remove automatic scrollbar from overflow-y-auto*/}
@@ -105,9 +135,9 @@ const ChatInterface = () => {
         ))}
         <div ref={messagesEndRef} />
       </div>
-      <div className="flex justify-between items-center pb-1 pl-1 pt-[0.1rem]">
+      <div className="flex justify-between items-center pb-1 pl-1 pr-4  pt-[0.1rem]">
         <textarea /* input for user to type message */
-          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 paddi text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
           // basic border, removes resize from textarea ( can be added again if wanted, just remove resize-none)
           placeholder="Type your message here"
           value={inputText}
