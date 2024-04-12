@@ -59,9 +59,11 @@ const ChatInterface = ({ params }: { params: { docid: string } }) => {
   const sendMessageAPI = useMutation({    
     mutationKey: [`/document/chat`], // cache
     mutationFn: async (question: string) => {
-      const response = await axios.post(`https://339b-98-42-218-55.ngrok-free.app/chat/0805.2368`, {
+      console.log("Question sending to API:", question)
+      const response = await axios.post(`https://5de2-2600-1700-5230-be20-245b-a378-fe03-f41d.ngrok-free.app/chat/0805.2368`, {
         question: question, // send question to ngrok
       });
+      console.log("Response received:", response.data)
       return response.data;
     },
   });
@@ -124,7 +126,7 @@ const ChatInterface = ({ params }: { params: { docid: string } }) => {
   }, [messages]);
 
   return (
-    <div className="border h-full min-h-40 flex flex-col justify-between">
+    <div className=" h-full min-h-40 flex flex-col justify-between">
       <div className="flex-1 overflow-y-auto">
         {" "}
         {/* show messages custom no-scrollbar class to remove automatic scrollbar from overflow-y-auto*/}
