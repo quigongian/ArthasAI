@@ -33,8 +33,8 @@ const Message = (
       sender === "user" ? "user-message" : "assistant-message"
     }`}
   >
-    <div className=" px-1 flex justify-between items-center timestamp text-xs text-gray-500">
-      <span className=" font-bold py-2  text-black text-[15px] ">{sender}</span>
+    <div className=" px-1 flex justify-between items-center timestamp text-xs">
+      <span className=" font-bold py-2 ">{sender}</span>
       <span className="">{`${formatDate(timestamp)}`}</span>
     </div>
 
@@ -96,7 +96,7 @@ const ChatInterface = () => {
   }, [messages]);
 
   return (
-    <div className=" h-full min-h-40 bg-white  rounded-md flex flex-col justify-between">
+    <div className=" h-full min-h-40  rounded-md flex flex-col justify-between">
       <div className="flex-1 overflow-y-auto">
         {" "}
         {/* show messages custom no-scrollbar class to remove automatic scrollbar from overflow-y-auto*/}
