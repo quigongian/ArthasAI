@@ -48,11 +48,11 @@ const TeamPage = () => {
 			<main>
 				{/* Banner */}
 				<div className="pt-9 pb-9">
-					<div className="p-10 w-1440 h-302.093 bg-custom-gradient">
+					<div className="p-10 w-1440 h-302.093 bg-card">
 						<h1 className="text-center text-accent font-medium pt-4 text-4xl">
 							Meet The Arthas AI Team!
 						</h1>
-						<p className="text-center text-black font-sm p-4">
+						<p className="text-center font-sm p-4">
 							{`We are a vibrant and innovative team of software engineers, 
               				each bringing a unique blend of skills, experiences, and passions 
               				to the table. Our team is composed of individuals with a wide range 

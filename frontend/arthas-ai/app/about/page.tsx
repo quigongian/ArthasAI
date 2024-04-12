@@ -16,11 +16,11 @@ const About = () => {
 			<main>
 				{/* Banner */}
 				<div className="pt-9"></div>
-				<div className="p-10 w-1440px h-210px bg-custom-gradient">
+				<div className="p-10 w-1440px h-210px bg-card">
 					<h1 className="text-center text-accent font-medium pb-4 text-4xl">
 						About Arthas AI
 					</h1>
-					<p className="text-center font-sm pb-4 text-black">
+					<p className="text-center font-sm pb-4">
 						Curious about something? Use the Arthas AI search engine to find
 						research papers based on your curiousity.
 					</p>

@@ -121,7 +121,7 @@ export async function GET() {
         },
         {
             id: "15",
-            image: "https://i.pinimg.com/originals/93/4e/44/934e441f3088c1fd5267fb734c743fd1.jpg",
+            image: "headshots/Joas-Kish.jpg",
             name: "Joas Kish",
             role: "Backend Developer",
             github: "https://github.com/Kishimita",
