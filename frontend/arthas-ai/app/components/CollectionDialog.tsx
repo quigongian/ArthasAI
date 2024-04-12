@@ -41,15 +41,6 @@ const CollectionsDialog: React.FC<CollectionsDialogProps> = ({ selectedDocs }) =
           ))}
         </ul>
       </div>
-      <DialogFooter>
-        <Button
-          className="bg-accent text-accent-foreground hover:bg-[#1F7A2F] dark:hover:bg-[#E66C14]"
-          type="submit"
-          onClick={handleOpenDocs}
-        >
-          Add
-        </Button>
-      </DialogFooter>
     </DialogContent>
   );
 };

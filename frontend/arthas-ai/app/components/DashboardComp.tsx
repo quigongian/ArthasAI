@@ -85,9 +85,9 @@ export default function DashboardComp() {
 
   const handleClick = (documentId: Document) => {
     // Prefetch the document page so that it loads faster
-    router.prefetch(`/document/4df63cc6-1918-45d0-a7df-aac5a62a54bc`);
+    router.prefetch(`/doc/4df63cc6-1918-45d0-a7df-aac5a62a54bc`);
     // Redirect the user to the document page
-    router.push(`/document/4df63cc6-1918-45d0-a7df-aac5a62a54bc`);
+    router.push(`/doc/4df63cc6-1918-45d0-a7df-aac5a62a54bc`);
   };
 
   return (
