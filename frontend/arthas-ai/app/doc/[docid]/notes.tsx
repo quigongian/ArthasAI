@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import { useAutosave } from "react-autosave";
 
 import { BlockNoteView } from "@blocknote/react";
 import "@blocknote/core/fonts/inter.css";
@@ -9,12 +8,13 @@ import "@blocknote/react/style.css";
 import { BlockNoteEditor, PartialBlock } from "@blocknote/core";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useToast } from "@/components/ui/use-toast";
-import { useAuth } from "@/app/utils/providers/authProvider";
 import { createClient } from "@/app/utils/supabase/client";
 import { getCurrentDate } from "@/app/utils/databaseUtils";
 import { Skeleton } from "@/components/ui/skeleton";
+import "./editor.css";
+import { useTheme } from "next-themes";
 
-export default function Editor({ params }: { params: { doc: string } }) {
+export default function Editor({ params }: { params: { docid: string } }) {
   const [blocks, setBlocks] = useState<PartialBlock[]>([
     {
       id: "268ef9f5-b2eb-4575-ba12-ea99d5d922e2",
@@ -29,19 +29,22 @@ export default function Editor({ params }: { params: { doc: string } }) {
     },
   ]);
 
+  const [notesTheme, setNotesTheme] = useState<"light" | "dark">("light");
+
   const supabase = createClient();
 
   const { toast } = useToast();
+  const { theme } = useTheme();
 
   const fetching = useQuery({
     enabled: true,
     staleTime: Infinity,
-    queryKey: [`/document/${params.doc}/notesAPI/get`],
+    queryKey: [`/doc/${params.docid}/notesAPI/get`],
     queryFn: async () => {
       const res = await supabase
         .from("user_notes")
         .select("*")
-        .eq("id", params.doc);
+        .eq("id", params.docid);
 
       if (res.error) {
         throw new Error(res.error.message);
@@ -57,16 +60,24 @@ export default function Editor({ params }: { params: { doc: string } }) {
     },
   });
 
+  useEffect(() => {
+    if (theme == "dark") {
+      setNotesTheme("dark");
+    } else {
+      setNotesTheme("light");
+    }
+  }, [theme]);
+
   const update = useMutation({
-    mutationKey: [`/document/${params.doc}/editor/api/update`],
+    mutationKey: [`/document/${params.docid}/editor/api/update`],
     mutationFn: async () => {
       try {
         await supabase
           .from("user_notes")
           .upsert([
             {
-              id: params.doc,
-              docment_id: params.doc,
+              id: params.docid,
+              docment_id: params.docid,
               content: JSON.stringify(blocks),
               modified_at: getCurrentDate(),
             },
@@ -119,11 +130,12 @@ export default function Editor({ params }: { params: { doc: string } }) {
       {editor ? (
         <BlockNoteView
           editor={editor}
-          theme="light"
+          theme={notesTheme}
           onChange={() => {
             console.log("changed");
             setBlocks(editor.document);
           }}
+          data-theming-css-demo
         />
       ) : (
         <div className="w-full h-full space-y-2">
