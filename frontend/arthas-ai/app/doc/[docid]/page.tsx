@@ -33,6 +33,14 @@ function DocumentEditor({ params }: { params: { docid: string } }) {
     },
   });
 
+  const documentFetcher = useQuery({
+    queryKey: [`/document/${params.docid}/api/document`],
+    queryFn: async () => {
+      const { data } = await axios.get(`/chat/0805.2368`);
+      return data;
+    },
+  });
+
   const readerRef = useRef<ImperativePanelHandle>(null);
   const notesRef = useRef<ImperativePanelHandle>(null);
   const chatbotRef = useRef<ImperativePanelHandle>(null);
@@ -61,10 +69,9 @@ function DocumentEditor({ params }: { params: { docid: string } }) {
             >
               <ListCollapse />
             </Button>
-            <div>
-            </div>
+            <div></div>
           </div>
-          <MarkdownDisplay/>
+          <MarkdownDisplay />
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel
@@ -117,7 +124,7 @@ function DocumentEditor({ params }: { params: { docid: string } }) {
               defaultSize={20}
               ref={chatbotRef}
             >
-              <ChatInterface />
+              <ChatInterface params={params} />
             </ResizablePanel>
             <ResizableHandle withHandle />
             <div className="w-full flex justify-between items-center">
