@@ -47,19 +47,17 @@ const TeamPage = () => {
 			<header></header>
 			<main>
 				{/* Banner */}
-				<div className="p-9">
-					<div className="p-10 w-1440 h-302.093 bg-custom-gradient">
-						<h1 className="text-center font-medium pt-4 text-4xl">
+				<div className="pt-9 pb-9">
+					<div className="p-10 w-1440 h-302.093 bg-card">
+						<h1 className="text-center text-accent font-medium pt-4 text-4xl">
 							Meet The Arthas AI Team!
 						</h1>
 						<p className="text-center font-sm p-4">
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-							eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-							enim ad minim veniam, quis nostrud exercitation ullamco laboris
-							nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-							reprehenderit in voluptate velit esse cillum dolore eu fugiat
-							nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-							sunt in culpa qui officia deserunt mollit anim id est laborum.
+							{`We are a vibrant and innovative team of software engineers, 
+              				each bringing a unique blend of skills, experiences, and passions 
+              				to the table. Our team is composed of individuals with a wide range 
+              				of backgrounds and expertise, each contributing to our collective mission 
+              				of pushing the boundaries of what's possible in the realm of artificial intelligence.`}
 						</p>
 					</div>
 				</div>
