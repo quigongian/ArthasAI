@@ -29,7 +29,7 @@ export const LoadGraph = () => {
         x: Math.random(),
         y: Math.random(),
         size: Math.random() * 10,
-        label: `Node ${i}`,
+        label: `Document ${i}`,
       });
       if (i > 0) {
         graph.addEdge(i.toString(), (i - 1).toString());
