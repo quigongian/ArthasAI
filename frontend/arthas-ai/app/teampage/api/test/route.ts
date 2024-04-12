@@ -5,27 +5,27 @@ export async function GET() {
     const teamLeads = [
         {
             id: "1",
-            image: "https://i.pinimg.com/originals/9c/13/5e/9c135e483264e00b70cfc5329c5e55e2.jpg",
+            image: "headshots/Giancarlo-Padron.jpeg",
             name: "Giancarlo Padron",
             role: "Team Lead",
             quote: `"I worked on..."`,
             github: "https://github.com/quigongian",
-            linkedin: "https://linkedin.com/in/gabriela-sebastian-"
+            linkedin: "https://www.linkedin.com/in/giancarlopadron/"
         },
         {
             id: "2",
-            image: "https://i.pinimg.com/originals/9c/13/5e/9c135e483264e00b70cfc5329c5e55e2.jpg",
+            image: "headshots/Jose-Pujol.jpeg",
             name: "Jose Pujol",
             role: "Team Lead",
             quote: `"I worked on..."`,
             github: "https://github.com/Jose-Codes",
-            linkedin: "https://linkedin.com/in/gabriela-sebastian-"
+            linkedin: "https://www.linkedin.com/in/josepujol/"
         }
     ]
     const frontend = [
         {
             id: "3",
-            image: "https://i.pinimg.com/originals/89/79/90/897990126794575981766f3c71324152.jpg",
+            image: "headshots/Richard-Brito.png",
             name: "Richard Brito",
             role: "Frontend Developer",
             quote: `"I worked on..."`,
@@ -34,7 +34,7 @@ export async function GET() {
         },
         {
             id: "4",
-            image: "https://i.pinimg.com/originals/89/79/90/897990126794575981766f3c71324152.jpg",
+            image: "headshots/Vincent-Carrancho.jpeg",
             name: "Vincent Carrancho",
             role: "Frontend Developer",
             quote: `"I worked on..."`,
@@ -61,7 +61,7 @@ export async function GET() {
         },
         {
             id: "7",
-            image: "https://i.pinimg.com/originals/89/79/90/897990126794575981766f3c71324152.jpg",
+            image: "headshots/Alisha-Jafry.jpg",
             name: "Alisha Jafry",
             role: "Frontend Developer",
             quote: `"I worked on..."`,
@@ -70,7 +70,7 @@ export async function GET() {
         },
         {
             id: "8",
-            image: "https://i.pinimg.com/originals/89/79/90/897990126794575981766f3c71324152.jpg",
+            image: "headshots/David-Moreno.jpeg",
             name: "David Moreno",
             role: "Frontend Developer",
             quote: `"I worked on..."`,
@@ -88,7 +88,7 @@ export async function GET() {
         },
         {
             id: "10",
-            image: "https://i.pinimg.com/originals/89/79/90/897990126794575981766f3c71324152.jpg",
+            image: "headshots/Valentina-Rojas.jpeg",
             name: "Valentina Rojas",
             role: "Frontend Developer",
             quote: `"I worked on..."`,
@@ -97,7 +97,7 @@ export async function GET() {
         },
         {
             id: "11",
-            image: "https://i.pinimg.com/originals/89/79/90/897990126794575981766f3c71324152.jpg",
+            image: "headshots/Melvin-Santos.jpeg",
             name: "Melvin Santos",
             role: "Frontend Developer",
             quote: `"I worked on..."`,
@@ -126,7 +126,7 @@ export async function GET() {
         },
         {
             id: "14",
-            image: "https://i.pinimg.com/originals/53/32/4b/53324bca1d5759d9c10c4b99847351ae.jpg",
+            image: "headshots/Gabriel-Hubner.jpeg",
             name: "Gabriel Hübner",
             role: "Backend Developer",
             quote: `"I worked on..."`,
@@ -135,16 +135,16 @@ export async function GET() {
         },
         {
             id: "15",
-            image: "https://i.pinimg.com/originals/53/32/4b/53324bca1d5759d9c10c4b99847351ae.jpg",
+            image: "https://i.pinimg.com/originals/93/4e/44/934e441f3088c1fd5267fb734c743fd1.jpg",
             name: "Joas Kish",
             role: "Backend Developer",
             quote: `"I worked on..."`,
             github: "https://github.com/Kishimita",
-            linkedin: "https://linkedin.com/in/gabriela-sebastian-"
+            linkedin: ""
         },
         {
             id: "16",
-            image: "https://i.pinimg.com/originals/53/32/4b/53324bca1d5759d9c10c4b99847351ae.jpg",
+            image: "headshots/Jacob-Schuster.jpeg",
             name: "Jacob Schuster",
             role: "Backend Developer",
             quote: `"I worked on..."`,
@@ -153,7 +153,7 @@ export async function GET() {
         },
         {
             id: "17",
-            image: "https://i.pinimg.com/originals/53/32/4b/53324bca1d5759d9c10c4b99847351ae.jpg",
+            image: "headshots/David-Ulloa.jpeg",
             name: "David Ulloa",
             role: "Backend Developer",
             quote: `"I worked on..."`,
