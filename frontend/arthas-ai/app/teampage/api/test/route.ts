@@ -7,8 +7,7 @@ export async function GET() {
             id: "1",
             image: "headshots/Giancarlo-Padron.jpeg",
             name: "Giancarlo Padron",
-            role: "Team Lead",
-            quote: `"I worked on..."`,
+            role: "Team Lead",       
             github: "https://github.com/quigongian",
             linkedin: "https://www.linkedin.com/in/giancarlopadron/"
         },
@@ -17,7 +16,6 @@ export async function GET() {
             image: "headshots/Jose-Pujol.jpeg",
             name: "Jose Pujol",
             role: "Team Lead",
-            quote: `"I worked on..."`,
             github: "https://github.com/Jose-Codes",
             linkedin: "https://www.linkedin.com/in/josepujol/"
         }
@@ -28,7 +26,6 @@ export async function GET() {
             image: "headshots/Richard-Brito.png",
             name: "Richard Brito",
             role: "Frontend Developer",
-            quote: `"I worked on..."`,
             github: "https://github.com/richardbrrito",
             linkedin: "https://www.linkedin.com/in/richardbrrito/"
         },
@@ -37,7 +34,6 @@ export async function GET() {
             image: "headshots/Vincent-Carrancho.jpeg",
             name: "Vincent Carrancho",
             role: "Frontend Developer",
-            quote: `"I worked on..."`,
             github: "https://github.com/VincentCarrancho",
             linkedin: "https://www.linkedin.com/in/vincentcarrancho/"
         },
@@ -46,7 +42,6 @@ export async function GET() {
             image: "headshots/Laura-Davalos.jpg",
             name: "Laura Davalos",
             role: "Frontend Developer",
-            quote: `"I worked on..."`,
             github: "https://github.com/lauradavalos01",
             linkedin: "https://www.linkedin.com/in/laura-davalos-98056415b/"
         },
@@ -55,7 +50,6 @@ export async function GET() {
             image: "headshots/Alberto-Guerra.jpg",
             name: "Alberto Guerra",
             role: "Frontend Developer",
-            quote: `"I worked on..."`,
             github: "https://github.com/Ezriel1",
             linkedin: "https://www.linkedin.com/in/albertomguerra/"
         },
@@ -64,7 +58,6 @@ export async function GET() {
             image: "headshots/Alisha-Jafry.jpg",
             name: "Alisha Jafry",
             role: "Frontend Developer",
-            quote: `"I worked on..."`,
             github: "https://github.com/alishuhh",
             linkedin: "https://www.linkedin.com/in/alishajafry/"
         },
@@ -73,7 +66,6 @@ export async function GET() {
             image: "headshots/David-Moreno.jpeg",
             name: "David Moreno",
             role: "Frontend Developer",
-            quote: `"I worked on..."`,
             github: "https://github.com/dmoreno0716",
             linkedin: "https://www.linkedin.com/in/dmor/"
         },
@@ -82,7 +74,6 @@ export async function GET() {
             image: "headshots/Erick-Rivera.jpg",
             name: "Erick Rivera",
             role: "Frontend Developer",
-            quote: `"I worked on..."`,
             github: "https://github.com/erk-riv",
             linkedin: "https://www.linkedin.com/in/erick-riv/"
         },
@@ -91,7 +82,6 @@ export async function GET() {
             image: "headshots/Valentina-Rojas.jpeg",
             name: "Valentina Rojas",
             role: "Frontend Developer",
-            quote: `"I worked on..."`,
             github: "https://github.com/valentinaarojas",
             linkedin: "https://www.linkedin.com/in/valentina-rojas-387b0b224/"
         },
@@ -100,7 +90,6 @@ export async function GET() {
             image: "headshots/Melvin-Santos.jpeg",
             name: "Melvin Santos",
             role: "Frontend Developer",
-            quote: `"I worked on..."`,
             github: "https://github.com/melbTech",
             linkedin: "https://www.linkedin.com/in/melvin-santos99/"
         },
@@ -109,7 +98,6 @@ export async function GET() {
             image: "headshots/Gabriela-Sebastian.jpg",
             name: "Gabriela Sebastian",
             role: "Frontend Developer",
-            quote: `"I worked on..."`,
             github: "http://github.com/gabsebas",
             linkedin: "https://linkedin.com/in/gabriela-sebastian-"
         }
@@ -120,7 +108,6 @@ export async function GET() {
             image: "headshots/Joseph-Gabrie.jpg",
             name: "Joseph Gabrie",
             role: "Backend Developer",
-            quote: `"I worked on..."`,
             github: "https://github.com/JosephGabrie",
             linkedin: "https://www.linkedin.com/in/jgabrie007/"
         },
@@ -129,7 +116,6 @@ export async function GET() {
             image: "headshots/Gabriel-Hubner.jpeg",
             name: "Gabriel Hübner",
             role: "Backend Developer",
-            quote: `"I worked on..."`,
             github: "https://github.com/ghubnerr",
             linkedin: "https://www.linkedin.com/in/gabriel-lucchesi/"
         },
@@ -138,7 +124,6 @@ export async function GET() {
             image: "https://i.pinimg.com/originals/93/4e/44/934e441f3088c1fd5267fb734c743fd1.jpg",
             name: "Joas Kish",
             role: "Backend Developer",
-            quote: `"I worked on..."`,
             github: "https://github.com/Kishimita",
             linkedin: ""
         },
@@ -147,16 +132,14 @@ export async function GET() {
             image: "headshots/Jacob-Schuster.jpeg",
             name: "Jacob Schuster",
             role: "Backend Developer",
-            quote: `"I worked on..."`,
             github: "https://github.com/Jacob8765",
             linkedin: "https://www.linkedin.com/in/jacob-schuster-396947211/"
         },
         {
             id: "17",
             image: "headshots/David-Ulloa.jpeg",
-            name: "David Ulloa",
+            name: "David\nUlloa",
             role: "Backend Developer",
-            quote: `"I worked on..."`,
             github: "https://github.com/DavidUlloa6310",
             linkedin: "https://www.linkedin.com/in/david-a-ulloa/"
         }
