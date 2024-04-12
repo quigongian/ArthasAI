@@ -31,9 +31,8 @@ const Message = (
   { sender, text, timestamp }: MessageProps // show text, differentiate from user and assistant
 ) => (
   <div
-    className={`message ${
-      sender === "user" ? "user-message" : "assistant-message"
-    }`}
+    className={`message ${sender === "user" ? "user-message" : "assistant-message"
+      }`}
   >
     <div className=" px-1 flex justify-between items-center timestamp text-xs text-gray-500">
       <span className=" font-bold py-2  text-black text-[15px] ">{sender}</span>
@@ -56,11 +55,11 @@ const ChatInterface = ({ params }: { params: { docid: string } }) => {
     setInputText(e.target.value);
   };
 
-  const sendMessageAPI = useMutation({    
+  const sendMessageAPI = useMutation({
     mutationKey: [`/document/chat`], // cache
     mutationFn: async (question: string) => {
       console.log("Question sending to API:", question)
-      const response = await axios.post(`https://5de2-2600-1700-5230-be20-245b-a378-fe03-f41d.ngrok-free.app/chat/0805.2368`, {
+      const response = await axios.post(`https://bc05-131-94-186-12.ngrok-free.app/chat/0805.2368`, {
         question: question, // send question to ngrok
       });
       console.log("Response received:", response.data)
@@ -81,7 +80,7 @@ const ChatInterface = ({ params }: { params: { docid: string } }) => {
     setInputText(""); // clear input
     //localhost:8000/chat/ {doc.id}
 
-    try{
+    try {
       const data = await sendMessageAPI.mutateAsync(inputText);
 
       const assistantMessage = {
@@ -90,12 +89,12 @@ const ChatInterface = ({ params }: { params: { docid: string } }) => {
         timestamp: Date.now(),
       };
       setMessages((prevMessages) => [...prevMessages, assistantMessage]);
-    } catch (error){
+    } catch (error) {
 
       console.error("Api call failed", error);
     }
-  }; 
-//
+  };
+  //
   const handleNewLine = (e: React.KeyboardEvent) => {
     // add new line on shift + enter
     if (e.key === "Enter" && e.shiftKey) {
