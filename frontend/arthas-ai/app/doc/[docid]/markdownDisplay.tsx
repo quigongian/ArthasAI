@@ -18,7 +18,7 @@ const MarkdownDisplay = () => {
     <div className='h-full overflow-y-auto custom-scroll '>
       <ReactMarkdown 
       remarkPlugins={[remarkGfm]} 
-      className="!whitespace-normal px-4 markdown"
+      className="whitespace-normal px-4 markdown"
       >
         {content}
        </ReactMarkdown>

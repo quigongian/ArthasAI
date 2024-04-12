@@ -17,6 +17,7 @@ import { Toaster } from "@/components/ui/toaster";
 import ChatInterface from "@/app/doc/[docid]/chatInterface";
 import { useSearchParams } from "next/navigation";
 import { url } from "inspector";
+import MarkdownDisplay from "./markdownDisplay";
 
 const Editor = dynamic(() => import("./notes"), { ssr: false });
 const Flow = dynamic(() => import("./graphs"), { ssr: false });
@@ -60,6 +61,10 @@ function DocumentEditor({ params }: { params: { docid: string } }) {
             >
               <ListCollapse />
             </Button>
+            <div>
+            <MarkdownDisplay/>
+            </div>
+
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
