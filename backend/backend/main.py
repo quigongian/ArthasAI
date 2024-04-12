@@ -23,6 +23,9 @@ from Chat_functionality.dependencies import get_s3_client, get_together_client
 from models.chat_models import ChatInput
 settings = Settings()
 
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 together_api_key = get_together_client
 aws_access_key_id = settings.aws_access_key_id
 aws_secret_access_key = settings.aws_secret_access_key
@@ -32,6 +35,15 @@ client = together.Together()
 from Raptor_Markdown.Raptor import retrieve_context
 
 app = FastAPI()
+
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 @app.get("/")
 def search_results():
