@@ -40,3 +40,27 @@ The main objectives of this project are to learn the following:
 
 ## System Designs
 ![image info](./Arthas_AI_Diagrams.png)
+
+## How to run the local host
+How to run the local host server.
+
+This guide assumes you have the latest version of Arthas AI
+
+Step1
+Make sure you are in the right directory
+cd .\ArthasAI\backend\backend\
+
+Step2
+Run Poetry Shell
+(You might need to install Poetry follow this guide https://python-poetry.org/docs/ )
+
+Step3
+Run FastAPI
+use command[ uvicorn main:app --reload ]to activate fastAPI
+After using this command in your terminal you will receive a local host url
+![alt text](image.png)
+copy the url like http://127.0.0.1:8000
+
+and using your favorite API platform like postman or Thunder Client
+
+use /chat/{document_id}
