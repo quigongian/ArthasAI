@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { ImperativePanelHandle, collapsePanel } from "../utils";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
-
 import dynamic from "next/dynamic";
 import { Settings, ChevronLeft, ArrowRight, ListCollapse } from "lucide-react";
 import { Toaster } from "@/components/ui/toaster";
@@ -111,7 +110,7 @@ function DocumentEditor({ params }: { params: { doc: string } }) {
               defaultSize={20}
               ref={chatbotRef}
             >
-              <ChatInterface />
+              <ChatInterface params={params} />
             </ResizablePanel>
             <ResizableHandle withHandle />
             <div className="w-full p-2 flex justify-between items-center">

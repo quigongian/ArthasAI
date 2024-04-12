@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useRef } from "react";
 import { Send } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 
 type MessageProps = {
   sender: string;
@@ -62,9 +64,24 @@ const ChatInterface = () => {
       timestamp: Date.now(),
     };
 
+    const updatedMessages = [...messages, newMessage];
     setMessages([...messages, newMessage]);
     setInputText(""); // clear input
+    //localhost:8000/chat/ {doc.id}
+    sendMessageAPI.mutate(updatedMessages); // send message to backend
   };
+//
+  const sendMessageAPI = useMutation({    
+      mutationKey: [`/document/chat`], // cache
+      mutationFn: async (data: MessageProps[]) => {
+        await axios({
+          method: "post",
+          url: "/document/chat",
+          params: { doc: doc },
+          data: data,
+        })
+      },
+  });
 
   const handleNewLine = (e: React.KeyboardEvent) => {
     // add new line on shift + enter
