@@ -1,8 +1,12 @@
+"use client"
+
 import React, { useState } from "react";
 import SearchBar from "./SearchbarComp";
-import Results from "./Searchresults";
+import SearchResults from "./Searchresults";
+import { useQuery } from "@tanstack/react-query";
 
-export default function SearchPage() {
+
+const SearchPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchSubmitted, setSearchSubmitted] = useState(false);
 
@@ -11,7 +15,11 @@ export default function SearchPage() {
       {!searchSubmitted && (
         <SearchBar setSearchSubmitted={setSearchSubmitted} />
       )}
-      {searchSubmitted && <Results />}
+      {searchSubmitted &&
+
+        <SearchResults/>
+      }
     </div>
   );
 }
+export default SearchPage;
