@@ -15,7 +15,7 @@ import dynamic from "next/dynamic";
 import { Settings, ChevronLeft, ListCollapse } from "lucide-react";
 import { Toaster } from "@/components/ui/toaster";
 import ChatInterface from "@/app/doc/[docid]/chatInterface";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { url } from "inspector";
 import MarkdownDisplay from "./markdownDisplay";
 
@@ -46,6 +46,8 @@ function DocumentEditor({ params }: { params: { docid: string } }) {
   const chatbotRef = useRef<ImperativePanelHandle>(null);
   const nodegraphRef = useRef<ImperativePanelHandle>(null);
 
+  const router = useRouter();
+
   const urlParams = useSearchParams();
 
   const handleCollapse = (panelRef: React.RefObject<ImperativePanelHandle>) => {
@@ -58,7 +60,12 @@ function DocumentEditor({ params }: { params: { docid: string } }) {
       <ResizablePanelGroup direction="horizontal" className="h-full">
         <ResizablePanel id="reader" className="w-full" defaultSize={50}>
           <div id="top-reader" className="flex justify-between p-4">
-            <Button variant="ghost" onClick={() => {}}>
+            <Button
+              variant="ghost"
+              onClick={() => {
+                router.push("/dashboard");
+              }}
+            >
               <ChevronLeft />
             </Button>
             <Button
