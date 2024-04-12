@@ -31,21 +31,21 @@ import { IoIosEyeOff, IoIosEye } from "react-icons/io";
 const slides = [
 	{
 		url: "https://images.pexels.com/photos/11857626/pexels-photo-11857626.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-		title: "One Some type of title about the Arthas AI here",
+		title: "Arthas AI Search Engine",
 		description:
-			"One This can be a short description explaining what Arthas AI does random random random random random",
+			"Arthas AI's search engine is an intuitive AI powered search engine built to locate and provide the most relevant information for your research into artificial intelligence.",
 	},
 	{
 		url: "https://images.pexels.com/photos/12009316/pexels-photo-12009316.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-		title: "Two Some type of title about the Arthas AI here",
+		title: "Arthas AI Research Features",
 		description:
-			" Two This can be a short description explaining what Arthas AI does",
+			"Arthas AI provides a user friendly platform built for research, offering tools such as a Text Editor, AI Chat Window, and Visualization Graph.",
 	},
 	{
 		url: "https://images.pexels.com/photos/3854478/pexels-photo-3854478.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-		title: "Three Some type of title about the Arthas AI here",
+		title: "Arthas AI Dashboard",
 		description:
-			"Three This can be a short description explaining what Arthas AI does",
+			"Our convenient dashboard allows for collection of previously researched information and document retention.",
 	},
 ];
 

@@ -26,9 +26,8 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`bg-custom-gradient border-2 sticky top-0 z-50 backdrop-filter backdrop-blur-lg ${
-          isNavbarVisible ? "" : "hidden"
-        }`}
+        className={`bg-custom-gradient border-2 sticky top-0 z-50 backdrop-filter backdrop-blur-lg ${isNavbarVisible ? "" : "hidden"
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
@@ -54,9 +53,6 @@ const Navbar = () => {
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => setTheme("dark")}>
                     Dark
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setTheme("system")}>
-                    System
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
