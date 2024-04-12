@@ -71,6 +71,12 @@
     @apply bg-[#ececec] py-3 px-4 rounded-md ring-gray-200 text-sm text-gray-800 
     hover:ring-1 focus:outline-none active:ring-gray-300 hover:shadow-md;
   }
+
+  .bg-custom-gradient {
+    background: linear-gradient(to right, transparent, mistyrose), white;
+  }
+  
+  
 }
 
 @layer base {
@@ -80,4 +86,27 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.markdown > * {
+  all: revert;
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 4px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+  max-height: 4px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #777;
 }

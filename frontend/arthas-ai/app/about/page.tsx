@@ -16,7 +16,7 @@ const About = () => {
 			<main>
 				{/* Banner */}
 				<div className="pt-9"></div>
-				<div className="p-10 w-1440px h-210px bg-custom-gradient">
+				<div className="p-10 w-1440px h-210px bg-card">
 					<h1 className="text-center text-accent font-medium pb-4 text-4xl">
 						About Arthas AI
 					</h1>

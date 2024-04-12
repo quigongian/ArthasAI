@@ -5,111 +5,99 @@ export async function GET() {
     const teamLeads = [
         {
             id: "1",
-            image: "https://i.pinimg.com/originals/9c/13/5e/9c135e483264e00b70cfc5329c5e55e2.jpg",
-            name: "GOWON",
-            role: "Team Lead",
-            quote: `"I worked on..."`,
-            github: "https://github.com/gabsebas",
-            linkedin: "https://linkedin.com/in/gabriela-sebastian-"
+            image: "headshots/Giancarlo-Padron.jpeg",
+            name: "Giancarlo Padron",
+            role: "Team Lead",       
+            github: "https://github.com/quigongian",
+            linkedin: "https://www.linkedin.com/in/giancarlopadron/"
         },
         {
             id: "2",
-            image: "https://i.pinimg.com/originals/9c/13/5e/9c135e483264e00b70cfc5329c5e55e2.jpg",
-            name: "GOWON",
+            image: "headshots/Jose-Pujol.jpg",
+            name: "Jose Pujol",
             role: "Team Lead",
-            quote: `"I worked on..."`,
-            github: "http://github.com/gabsebas",
-            linkedin: "https://linkedin.com/in/gabriela-sebastian-"
+            github: "https://github.com/Jose-Codes",
+            linkedin: "https://www.linkedin.com/in/josepujol/"
         }
     ]
     const frontend = [
         {
             id: "3",
-            image: "https://i.pinimg.com/originals/89/79/90/897990126794575981766f3c71324152.jpg",
-            name: "CHUU",
+            image: "headshots/Richard-Brito.png",
+            name: "Richard Brito",
             role: "Frontend Developer",
-            quote: `"I worked on..."`,
-            github: "https://github.com/gabsebas",
-            linkedin: "https://linkedin.com/in/gabriela-sebastian-"
+            github: "https://github.com/richardbrrito",
+            linkedin: "https://www.linkedin.com/in/richardbrrito/"
         },
         {
             id: "4",
-            image: "https://i.pinimg.com/originals/89/79/90/897990126794575981766f3c71324152.jpg",
-            name: "CHUU",
+            image: "headshots/Vincent-Carrancho.jpeg",
+            name: "Vincent Carrancho",
             role: "Frontend Developer",
-            quote: `"I worked on..."`,
-            github: "http://github.com/gabsebas",
-            linkedin: "https://linkedin.com/in/gabriela-sebastian-"
+            github: "https://github.com/VincentCarrancho",
+            linkedin: "https://www.linkedin.com/in/vincentcarrancho/"
         },
         {
             id: "5",
-            image: "https://i.pinimg.com/originals/89/79/90/897990126794575981766f3c71324152.jpg",
-            name: "CHUU",
+            image: "headshots/Laura-Davalos.jpg",
+            name: "Laura Davalos",
             role: "Frontend Developer",
-            quote: `"I worked on..."`,
-            github: "http://github.com/gabsebas",
-            linkedin: "https://linkedin.com/in/gabriela-sebastian-"
+            github: "https://github.com/lauradavalos01",
+            linkedin: "https://www.linkedin.com/in/laura-davalos-98056415b/"
         },
         {
             id: "6",
-            image: "https://i.pinimg.com/originals/89/79/90/897990126794575981766f3c71324152.jpg",
-            name: "CHUU",
+            image: "headshots/Alberto-Guerra.jpg",
+            name: "Alberto Guerra",
             role: "Frontend Developer",
-            quote: `"I worked on..."`,
-            github: "http://github.com/gabsebas",
-            linkedin: "https://linkedin.com/in/gabriela-sebastian-"
+            github: "https://github.com/Ezriel1",
+            linkedin: "https://www.linkedin.com/in/albertomguerra/"
         },
         {
             id: "7",
-            image: "https://i.pinimg.com/originals/89/79/90/897990126794575981766f3c71324152.jpg",
-            name: "CHUU",
+            image: "headshots/Alisha-Jafry.jpg",
+            name: "Alisha Jafry",
             role: "Frontend Developer",
-            quote: `"I worked on..."`,
-            github: "http://github.com/gabsebas",
-            linkedin: "https://linkedin.com/in/gabriela-sebastian-"
+            github: "https://github.com/alishuhh",
+            linkedin: "https://www.linkedin.com/in/alishajafry/"
         },
         {
             id: "8",
-            image: "https://i.pinimg.com/originals/89/79/90/897990126794575981766f3c71324152.jpg",
-            name: "CHUU",
+            image: "headshots/David-Moreno.jpg",
+            name: "David Moreno",
             role: "Frontend Developer",
-            quote: `"I worked on..."`,
-            github: "http://github.com/gabsebas",
-            linkedin: "https://linkedin.com/in/gabriela-sebastian-"
+            github: "https://github.com/dmoreno0716",
+            linkedin: "https://www.linkedin.com/in/dmor/"
         },
         {
             id: "9",
-            image: "https://i.pinimg.com/originals/89/79/90/897990126794575981766f3c71324152.jpg",
-            name: "CHUU",
+            image: "headshots/Erick-Rivera.jpg",
+            name: "Erick Rivera",
             role: "Frontend Developer",
-            quote: `"I worked on..."`,
-            github: "http://github.com/gabsebas",
-            linkedin: "https://linkedin.com/in/gabriela-sebastian-"
+            github: "https://github.com/erk-riv",
+            linkedin: "https://www.linkedin.com/in/erick-riv/"
         },
         {
             id: "10",
-            image: "https://i.pinimg.com/originals/89/79/90/897990126794575981766f3c71324152.jpg",
-            name: "CHUU",
+            image: "headshots/Valentina-Rojas.jpeg",
+            name: "Valentina Rojas",
             role: "Frontend Developer",
-            quote: `"I worked on..."`,
-            github: "http://github.com/gabsebas",
-            linkedin: "https://linkedin.com/in/gabriela-sebastian-"
+            github: "https://github.com/valentinaarojas",
+            linkedin: "https://www.linkedin.com/in/valentina-rojas-387b0b224/"
         },
         {
             id: "11",
-            image: "https://i.pinimg.com/originals/89/79/90/897990126794575981766f3c71324152.jpg",
-            name: "CHUU",
+            image: "headshots/Melvin-Santos.jpeg",
+            name: "Melvin Santos",
             role: "Frontend Developer",
-            quote: `"I worked on..."`,
-            github: "http://github.com/gabsebas",
-            linkedin: "https://linkedin.com/in/gabriela-sebastian-"
+            github: "https://github.com/melbTech",
+            linkedin: "https://www.linkedin.com/in/melvin-santos99/"
         },
         {
             id: "12",
-            image: "https://i.pinimg.com/originals/89/79/90/897990126794575981766f3c71324152.jpg",
-            name: "CHUU",
+            image: "headshots/Gabriela-Sebastian.jpg",
+            name: "Gabriela Sebastian",
             role: "Frontend Developer",
-            quote: `"I worked on..."`,
             github: "http://github.com/gabsebas",
             linkedin: "https://linkedin.com/in/gabriela-sebastian-"
         }
@@ -117,48 +105,43 @@ export async function GET() {
     const backend = [
         {
             id: "13",
-            image: "https://i.pinimg.com/originals/53/32/4b/53324bca1d5759d9c10c4b99847351ae.jpg",
-            name: "YVES",
+            image: "headshots/Joseph-Gabrie.jpg",
+            name: "Joseph Gabrie",
             role: "Backend Developer",
-            quote: `"I worked on..."`,
-            github: "http://github.com/gabsebas",
-            linkedin: "https://linkedin.com/in/gabriela-sebastian-"
+            github: "https://github.com/JosephGabrie",
+            linkedin: "https://www.linkedin.com/in/jgabrie007/"
         },
         {
             id: "14",
-            image: "https://i.pinimg.com/originals/53/32/4b/53324bca1d5759d9c10c4b99847351ae.jpg",
-            name: "YVES",
+            image: "headshots/Gabriel-Hubner.jpeg",
+            name: "Gabriel Hübner",
             role: "Backend Developer",
-            quote: `"I worked on..."`,
-            github: "http://github.com/gabsebas",
-            linkedin: "https://linkedin.com/in/gabriela-sebastian-"
+            github: "https://github.com/ghubnerr",
+            linkedin: "https://www.linkedin.com/in/gabriel-lucchesi/"
         },
         {
             id: "15",
-            image: "https://i.pinimg.com/originals/53/32/4b/53324bca1d5759d9c10c4b99847351ae.jpg",
-            name: "YVES",
+            image: "headshots/Joas-Kish.jpg",
+            name: "Joas Kish",
             role: "Backend Developer",
-            quote: `"I worked on..."`,
-            github: "http://github.com/gabsebas",
-            linkedin: "https://linkedin.com/in/gabriela-sebastian-"
+            github: "https://github.com/Kishimita",
+            linkedin: ""
         },
         {
             id: "16",
-            image: "https://i.pinimg.com/originals/53/32/4b/53324bca1d5759d9c10c4b99847351ae.jpg",
-            name: "YVES",
+            image: "headshots/Jacob-Schuster.jpeg",
+            name: "Jacob Schuster",
             role: "Backend Developer",
-            quote: `"I worked on..."`,
-            github: "http://github.com/gabsebas",
-            linkedin: "https://linkedin.com/in/gabriela-sebastian-"
+            github: "https://github.com/Jacob8765",
+            linkedin: "https://www.linkedin.com/in/jacob-schuster-396947211/"
         },
         {
             id: "17",
-            image: "https://i.pinimg.com/originals/53/32/4b/53324bca1d5759d9c10c4b99847351ae.jpg",
-            name: "YVES",
+            image: "headshots/David-Ulloa.jpeg",
+            name: "David\nUlloa",
             role: "Backend Developer",
-            quote: `"I worked on..."`,
-            github: "http://github.com/gabsebas",
-            linkedin: "https://linkedin.com/in/gabriela-sebastian-"
+            github: "https://github.com/DavidUlloa6310",
+            linkedin: "https://www.linkedin.com/in/david-a-ulloa/"
         }
     ]
     
