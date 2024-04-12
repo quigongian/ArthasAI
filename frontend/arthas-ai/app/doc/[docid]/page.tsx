@@ -17,6 +17,7 @@ import { Toaster } from "@/components/ui/toaster";
 import ChatInterface from "@/app/doc/[docid]/chatInterface";
 import { useSearchParams } from "next/navigation";
 import { url } from "inspector";
+import MarkdownDisplay from "./markdownDisplay";
 
 const Editor = dynamic(() => import("./notes"), { ssr: false });
 const Flow = dynamic(() => import("./graphs"), { ssr: false });
@@ -28,6 +29,14 @@ function DocumentEditor({ params }: { params: { docid: string } }) {
     queryKey: [`/document/${params.docid}/api/test`],
     queryFn: async () => {
       const { data } = await axios.get(`/document/${params.docid}/api/tsest`);
+      return data;
+    },
+  });
+
+  const documentFetcher = useQuery({
+    queryKey: [`/document/${params.docid}/api/document`],
+    queryFn: async () => {
+      const { data } = await axios.get(`/chat/0805.2368`);
       return data;
     },
   });
@@ -60,7 +69,9 @@ function DocumentEditor({ params }: { params: { docid: string } }) {
             >
               <ListCollapse />
             </Button>
+            <div></div>
           </div>
+          <MarkdownDisplay />
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel
@@ -113,7 +124,7 @@ function DocumentEditor({ params }: { params: { docid: string } }) {
               defaultSize={20}
               ref={chatbotRef}
             >
-              <ChatInterface />
+              <ChatInterface params={params} />
             </ResizablePanel>
             <ResizableHandle withHandle />
             <div className="w-full flex justify-between items-center">
