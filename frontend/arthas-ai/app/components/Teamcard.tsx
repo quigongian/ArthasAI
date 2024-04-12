@@ -36,7 +36,7 @@ const TeamCard: React.FC<TeamCardProps> = ({
                 style={{ maxHeight: "250px" }}
             />
             <CardContent className="p-4 flex flex-col flex-grow">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between text-black">
                     <div>
                         {nameParts.map((part, index) => (
                             <span key={index} className="text-lg font-semibold mb-1">
@@ -58,7 +58,7 @@ const TeamCard: React.FC<TeamCardProps> = ({
                         </a>
                     </div>
                 </div>
-                <CardDescription className="text-sm mb-2 pt-2">{role}</CardDescription>
+                <CardDescription className="text-sm mb-2 pt-2 text-gray-600">{role}</CardDescription>
             </CardContent>
         </Card>
     );
