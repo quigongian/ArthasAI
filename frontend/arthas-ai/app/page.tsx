@@ -31,21 +31,21 @@ import { IoIosEyeOff, IoIosEye } from "react-icons/io";
 const slides = [
 	{
 		url: "https://images.pexels.com/photos/11857626/pexels-photo-11857626.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-		title: "One Some type of title about the Arthas AI here",
+		title: "Semantic Search",
 		description:
-			"One This can be a short description explaining what Arthas AI does random random random random random",
+			"Enhance search accuracy by understanding the context and meaning of user queries through text embeddings and deep learning models.",
 	},
 	{
 		url: "https://images.pexels.com/photos/12009316/pexels-photo-12009316.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-		title: "Two Some type of title about the Arthas AI here",
+		title: "Knowledge Graph Integration",
 		description:
-			" Two This can be a short description explaining what Arthas AI does",
+			"Organize research information into a graph structure for better understanding of relationships and trends, facilitating insightful exploration.",
 	},
 	{
 		url: "https://images.pexels.com/photos/3854478/pexels-photo-3854478.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-		title: "Three Some type of title about the Arthas AI here",
+		title: "Dynamic Web Crawling",
 		description:
-			"Three This can be a short description explaining what Arthas AI does",
+			"Continuously update the search engine's index with fresh web content using smart crawling techniques, ensuring up-to-date and relevant search results.",
 	},
 ];
 
