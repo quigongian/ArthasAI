@@ -26,6 +26,8 @@ export default function DashboardComp() {
     Document[]
   >([]);
 
+  const router = useRouter();
+
   const recentDocsFetcher = useQuery({
     queryKey: [`/dashboard/api/test/recentdocs`],
     queryFn: async () => {
@@ -86,8 +88,6 @@ export default function DashboardComp() {
   const handleAddToCollection = (collectionId: string, articleId: string) => {
     console.log(`Adding article ${articleId} to collection ${collectionId}`);
   };
-
-  const router = useRouter();
 
   const handleClick = (documentId: Document) => {
     // Prefetch the document page so that it loads faster
