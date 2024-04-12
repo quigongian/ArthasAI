@@ -59,7 +59,7 @@ const ChatInterface = ({ params }: { params: { docid: string } }) => {
     mutationKey: [`/document/chat`], // cache
     mutationFn: async (question: string) => {
       console.log("Question sending to API:", question)
-      const response = await axios.post(`https://bc05-131-94-186-12.ngrok-free.app/chat/0805.2368`, {
+      const response = await axios.post(`https://6612-131-94-186-12.ngrok-free.app/chat/0805.2368`, {
         question: question, // send question to ngrok
       });
       console.log("Response received:", response.data)
