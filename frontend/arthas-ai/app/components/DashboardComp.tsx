@@ -1,12 +1,14 @@
-import React from "react";
+"use client";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Folder } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Collection } from "../dashboard/Types/Type";
+import { Document, Collection } from "../dashboard/Types/Type";
 import AddToCollectionsPopover from "./AddToCollectionsPopover";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { DialogOverlay } from "@radix-ui/react-dialog";
 import CollectionsDialog from "./CollectionDialog";
+import { useRouter } from "next/navigation";
 
 function formatDateTime(dateString: string) {
   const options: Intl.DateTimeFormatOptions = {
@@ -20,10 +22,14 @@ function formatDateTime(dateString: string) {
 }
 
 export default function DashboardComp() {
-  const fetcher = useQuery({
-    queryKey: [`/dashboard/api/test`],
+  const [selectedCollectionDocs, setSelectedCollectionDocs] = useState<
+    Document[]
+  >([]);
+
+  const recentDocsFetcher = useQuery({
+    queryKey: [`/dashboard/api/test/recentdocs`],
     queryFn: async () => {
-      const response = await fetch(`/dashboard/api/test`);
+      const response = await fetch(`/dashboard/api/test/recentdocs`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -33,37 +39,61 @@ export default function DashboardComp() {
     },
   });
 
-  const isLoading = fetcher.isLoading;
-  const isError = fetcher.isError;
-  const data = fetcher.data;
+  const collectionFetcher = useQuery({
+    queryKey: [`/dashboard/api/test/collections`],
+    queryFn: async () => {
+      const response = await fetch(`/dashboard/api/test/collections`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log("API Response:", data); // Log the API response
+      return data;
+    },
+  });
+
+  const isLoadingRecentDocs = recentDocsFetcher.isLoading;
+  const isErrorRecentDocs = recentDocsFetcher.isError;
+  const recentDocsData = recentDocsFetcher.data;
+
+  const isLoadingCollections = collectionFetcher.isLoading;
+  const isErrorCollections = collectionFetcher.isError;
+  const collectionsData = collectionFetcher.data;
+
+  // Combine loading and error states for both fetchers
+  const isLoading = isLoadingRecentDocs || isLoadingCollections;
+  const isError = isErrorRecentDocs || isErrorCollections;
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
   if (isError) {
-    return <div>Error loading recently viewed documents</div>;
+    return <div>Error loading...</div>;
   }
 
-  const recentlyViewedDocs = data.data || [];
+  const recentlyViewedDocs = recentDocsData.data || [];
+  const collections = collectionsData.data || [];
 
-  interface Document {
-    id: string;
-    document_title: string;
-    created_at: string;
-    last_modified: string;
-  }
-
-  // Dummy data for AddToCollectionsPopover
-  const collections: Collection[] = [
-    { id: "1", name: "Collection 1" },
-    { id: "2", name: "Collection 2" },
-    { id: "3", name: "Collection 3" },
-    { id: "4", name: "Collection 4" },
-  ];
+  // // Dummy data for AddToCollectionsPopover
+  //  const collections: Collection[] = [
+  //   { id: "1", name: "Collection 1" },
+  //   { id: "2", name: "Collection 2" },
+  //   { id: "3", name: "Collection 3" },
+  //   { id: "4", name: "Collection 4" },
+  // ];
 
   const handleAddToCollection = (collectionId: string, articleId: string) => {
     console.log(`Adding article ${articleId} to collection ${collectionId}`);
+  };
+
+  const router = useRouter();
+
+  const handleClick = (documentId: Document) => {
+    // Prefetch the document page so that it loads faster
+    router.prefetch(`/document/4df63cc6-1918-45d0-a7df-aac5a62a54bc`);
+    // Redirect the user to the document page
+    router.push(`/document/4df63cc6-1918-45d0-a7df-aac5a62a54bc`);
   };
 
   return (
@@ -76,7 +106,7 @@ export default function DashboardComp() {
             Dashboard{" "}
           </h1>
         </div>
-        {/* Search Bar - Commemnted */}
+        {/* Search Bar - Commented */}
         {/* <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
           <form className="ml-auto flex-1 sm:flex-initial">
             <div className="relative">
@@ -101,25 +131,28 @@ export default function DashboardComp() {
                 Recently Viewed Docs
               </CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-4 gap-6">
-              {recentlyViewedDocs.map((doc: Document) => (
-                <Card
-                  key={doc.id}
-                  className=" cursor-pointer flex flex-col justify-start border h-60 bg-background hover:bg-accent hover:text-accent-foreground"
-                >
-                  <CardHeader className="flex-row gap-4">
-                    <CardTitle className="text-large font-medium dark:text-foreground">
-                      {doc.document_title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex flex-col justify-between h-full">
-                    <div className="flex flex-col justify-end dark:text-foreground">
-                      <p>Last Modified: {formatDateTime(doc.last_modified)}</p>
-                      <p>Created At: {formatDateTime(doc.created_at)}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+            <CardContent className="flex overflow-x-auto space-x-4 h-70">
+              <div className="flex flex-nowrap">
+                {recentlyViewedDocs.map((doc: Document) => (
+                  <div key={doc.id} onClick={() => handleClick(doc)}>
+                    <Card className="cursor-pointer flex flex-col justify-start border h-60 bg-background hover:bg-accent hover:text-accent-foreground w-60 mr-4">
+                      <CardHeader className="flex-row gap-4">
+                        <CardTitle className="text-base font-bold dark:text-foreground">
+                          {doc.document_title}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="flex flex-col justify-end h-full">
+                        <div className="flex flex-col justify-start dark:text-foreground">
+                          <p>
+                            Last Modified: {formatDateTime(doc.last_modified)}
+                          </p>
+                          <p>Created At: {formatDateTime(doc.created_at)}</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                ))}
+              </div>
             </CardContent>
           </div>{" "}
           {/* Docs Section End */}
@@ -136,25 +169,26 @@ export default function DashboardComp() {
                   collections={collections}
                   docs={recentlyViewedDocs}
                   onAddToCollection={handleAddToCollection}
+                  setSelectedCollectionDocs={setSelectedCollectionDocs} // Pass the setter function
                 />
               </div>
             </CardHeader>
             <CardContent className="grid grid-cols-4 gap-6">
-              {collections.map((collection) => (
+              {collections.map((collection: Collection) => (
                 <Dialog key={collection.id}>
                   <DialogTrigger>
                     <Card className="flex flex-col justify-center items-center bg-background hover:bg-accent hover:text-accent-foreground">
                       <CardHeader className="flex-row items-center gap-2 ">
                         <Folder className="h-5 stroke-[3px] " />
                         <CardTitle className="text-lg font-medium">
-                          {collection.name}
+                          {collection.collection_name}
                         </CardTitle>
                       </CardHeader>
                     </Card>
                   </DialogTrigger>
                   <DialogOverlay className="fixed inset-0 bg-black/60" />
                   {/* Render dialog content */}
-                  <CollectionsDialog docs={recentlyViewedDocs} />
+                  <CollectionsDialog selectedDocs={recentlyViewedDocs} />
                 </Dialog>
               ))}
             </CardContent>

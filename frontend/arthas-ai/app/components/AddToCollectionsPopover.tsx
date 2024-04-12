@@ -6,18 +6,18 @@ import {
   PopoverContent,
 } from "@/components/ui/popover";
 import { PlusIcon } from "lucide-react";
-import { Article, Collection } from "../dashboard/Types/Type";
+import { Document, Collection } from "../dashboard/Types/Type";
 import { Button } from "@/components/ui/button";
+import { SetStateAction } from 'react';
+import { Dispatch } from 'react';
+
+
 
 interface AddToCollectionsPopoverProps {
   collections: Collection[];
   docs: Document[];
   onAddToCollection: (collectionId: string, articleId: string) => void;
-}
-
-interface Document {
-  id: string;
-  document_title: string;
+  setSelectedCollectionDocs: Dispatch<SetStateAction<Document[]>>; // Add this line
 }
 
 const AddToCollectionsPopover: React.FC<AddToCollectionsPopoverProps> = ({
@@ -30,6 +30,8 @@ const AddToCollectionsPopover: React.FC<AddToCollectionsPopoverProps> = ({
 
   const handleCollectionClick = (collection: Collection) => {
     setSelectedCollection(collection);
+    // Set selected documents for the selected collection
+    setSelectedDocs(docs.filter(doc => doc.id === collection.id));
   };
 
   const handleAddToCollection = () => {
@@ -76,7 +78,7 @@ const AddToCollectionsPopover: React.FC<AddToCollectionsPopoverProps> = ({
                     }`}
                     onClick={() => handleCollectionClick(collection)}
                   >
-                    {collection.name}
+                    {collection.collection_name}
                   </li>
                 ))}
               </ul>
@@ -106,7 +108,7 @@ const AddToCollectionsPopover: React.FC<AddToCollectionsPopoverProps> = ({
               className=" bg-accent hover:bg-accent text-accent-foreground hover:bg-[#1F7A2F] dark:hover:bg-[#E66C14]"
               onClick={handleAddToCollection}
             >
-              Add to {selectedCollection.name}
+              Add to {selectedCollection.collection_name}
             </Button>
           )}
         </PopoverContent>

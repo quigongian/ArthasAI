@@ -5,15 +5,12 @@ import { createClient } from "@/app/utils/supabase/server";
 export async function GET(){
     // define a return type
     // fetch from supabase to get the whole document table (document_id, document_title, last_modified, created_At)
-
     const supabase = createClient();
-
     try {
       // Fetch recently viewed documents from the Supabase table
       const { data: documents, error } = await supabase
-        .from('document')
+        .from('document_collection')
         .select('*')
-        .order('last_modified', { ascending: false }) // Order by last modified date, descending
   
       if (error) {
         throw error;

@@ -6,22 +6,17 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Article } from "../dashboard/Types/Type";
+import { Document } from "../dashboard/Types/Type";
 import { useState } from "react";
 
 interface CollectionsDialogProps {
-  docs: Document[];
+  selectedDocs: Document[];
 }
 
-interface Document {
-  id: string;
-  document_title: string;
-}
-
-const CollectionsDialog: React.FC<CollectionsDialogProps> = () => {
-  const [selectedDocs, setSelectedDocs] = useState<Document[]>([]);
+const CollectionsDialog: React.FC<CollectionsDialogProps> = ({ selectedDocs }) => {
   const handleOpenDocs = () => {
     console.log("Opening selected documents:", selectedDocs);
+    // Implement your logic to open selected documents
   };
 
   return (
@@ -34,7 +29,7 @@ const CollectionsDialog: React.FC<CollectionsDialogProps> = () => {
       </DialogHeader>
       <div style={{ maxHeight: "350px", overflow: "auto" }}>
         <ul className="space-y-2">
-          {selectedDocs.map((doc) => (
+          {selectedDocs.map((doc: Document) => (
             <li
               key={doc.id}
               className={`cursor-pointer hover:bg-gray-100 rounded-md p-2 ${
