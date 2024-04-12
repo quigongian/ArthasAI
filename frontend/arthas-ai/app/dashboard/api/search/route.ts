@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     method: "GET",
     params: { query: searchQuery },
     headers: {},
-    url: "http://localhost:8000/search",  
+    url: "https://339b-98-42-218-55.ngrok-free.app/search",  
   })
     .then((res) => {
       result = res.data;
