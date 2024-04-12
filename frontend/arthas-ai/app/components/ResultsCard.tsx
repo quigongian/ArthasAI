@@ -42,8 +42,8 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ title, abstract }) => {
     //Pass the document data to the mutate function
     mutation.mutate({ title, abstract }, {
       onSuccess: () => {
-        router.prefetch(`/document/4df63cc6-1918-45d0-a7df-aac5a62a54bc`) // prefetches the document page so that it loads faster
-        router.push(`/document/4df63cc6-1918-45d0-a7df-aac5a62a54bc`); // redirects user to document page
+        router.prefetch(`/doc/4df63cc6-1918-45d0-a7df-aac5a62a54bc`) // prefetches the document page so that it loads faster
+        router.push(`/doc/4df63cc6-1918-45d0-a7df-aac5a62a54bc`); // redirects user to document page
       },
       onError: (error) => {
         console.error('Mutation error:', error);
