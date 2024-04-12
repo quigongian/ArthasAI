@@ -13,7 +13,7 @@ export async function GET() {
         },
         {
             id: "2",
-            image: "headshots/Jose-Pujol.jpeg",
+            image: "headshots/Jose-Pujol.jpg",
             name: "Jose Pujol",
             role: "Team Lead",
             github: "https://github.com/Jose-Codes",
@@ -63,7 +63,7 @@ export async function GET() {
         },
         {
             id: "8",
-            image: "headshots/David-Moreno.jpeg",
+            image: "headshots/David-Moreno.jpg",
             name: "David Moreno",
             role: "Frontend Developer",
             github: "https://github.com/dmoreno0716",
