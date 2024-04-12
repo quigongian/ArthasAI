@@ -8,13 +8,20 @@ export async function POST(req: NextRequest) {
 
     // parse the document data
     const documentData = req.json();
+
+    // get userid and other custom values 
+    const userid = req.nextUrl.searchParams.get("userid")
+    const collectionid = req.nextUrl.searchParams.get("collection_id")
+    const documentTitle = req.nextUrl.searchParams.get("documentTitle")
+    
+
     // transform the contents of the document into the format that the database expects
     const {data, error} = await supabase.from("document").insert({
-        collection_id: uuidv4(),
+        collection_id: collectionid,
         created_at: new Date().toISOString(),
-        document_title: "Document 1",
+        document_title: documentTitle,
         id: uuidv4(),
-        owner: uuidv4(),
+        owner: userid,
         last_modified: new Date().toISOString(),
     });
 

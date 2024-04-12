@@ -19,9 +19,9 @@ interface Result {
 const SearchResults = () => {
 	const [searchSubmitted, setSearchSubmitted] = useState(false);
 	const fetcher = useQuery({
-		queryKey: [`/dashboard/api/test/results`],
+		queryKey: [`/dashboard/api/search`],
 		queryFn: async () => {
-			const response = await fetch(`/dashboard/api/test/results`);
+			const response = await fetch(`/dashboard/api/search`);
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);
 			}

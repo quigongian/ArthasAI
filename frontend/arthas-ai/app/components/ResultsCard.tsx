@@ -1,6 +1,8 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
+import axios from "axios";
+import { useAuth } from '../utils/providers/authProvider';
 
 interface ResultsCardProps {
   title: string;
@@ -10,21 +12,28 @@ interface ResultsCardProps {
 
 const ResultsCard: React.FC<ResultsCardProps> = ({ title, abstract }) => {
   const router = useRouter();
+  const auth = useAuth();
 
   const mutation = useMutation({
     mutationFn: async (data: { title: string; abstract: string; }) => {
-      const response = await fetch(`/dashboard/api/test/edit`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+     await axios(`/dashboard/api/test/edit`, {
+        method: "POST",
+        params: { userID : auth.user!.id },
+        headers: {},
+        data: data,
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
+      }).then(
+        (res) => {
+          return res.data;
+        }
+      ).catch(
+        (e) =>{
+          console.error('Error in mutationFn:', e);
+          throw e; 
+        }
+
+      );
+
     },
   });
 
@@ -33,6 +42,7 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ title, abstract }) => {
     //Pass the document data to the mutate function
     mutation.mutate({ title, abstract }, {
       onSuccess: () => {
+        router.prefetch(`/document/4df63cc6-1918-45d0-a7df-aac5a62a54bc`) // prefetches the document page so that it loads faster
         router.push(`/document/4df63cc6-1918-45d0-a7df-aac5a62a54bc`); // redirects user to document page
       },
       onError: (error) => {
@@ -40,10 +50,6 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ title, abstract }) => {
       },
         
     });
-
-
-    // for now its just going to redirect to document page until i can fix error 
-    //router.push(`/document/4df63cc6-1918-45d0-a7df-aac5a62a54bc`);
   };
 
   return (

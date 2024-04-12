@@ -11,7 +11,7 @@ export default function SearchBar({ setSearchSubmitted }: searchBarProps) {
 
 	const handleSearchSubmit = async () => {
         try {
-            const response = await fetch('/api/onsearch', {
+            const response = await fetch('dashboard/api/search', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
