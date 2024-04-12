@@ -57,14 +57,13 @@ const ChatInterface = ({ params }: { params: { docid: string } }) => {
   };
 
   const sendMessageAPI = useMutation({    
-      mutationKey: [`/document/chat`], // cache
-      mutationFn: async (data: MessageProps[]) => {
-        await axios({
-          method: "post",
-          url: `/chat/${params.docid}`,
-          data: data,
-        })
-      },
+    mutationKey: [`/document/chat`], // cache
+    mutationFn: async (question: string) => {
+      const response = await axios.post(`https://339b-98-42-218-55.ngrok-free.app/chat/0805.2368`, {
+        question: question, // send question to ngrok
+      });
+      return response.data;
+    },
   });
 
   const sendMessage = async () => {
@@ -76,18 +75,16 @@ const ChatInterface = ({ params }: { params: { docid: string } }) => {
       timestamp: Date.now(),
     };
 
-    const updatedMessages = [...messages, newMessage];
-    setMessages([...messages, newMessage]);
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
     setInputText(""); // clear input
     //localhost:8000/chat/ {doc.id}
-    sendMessageAPI.mutate(updatedMessages); // send message to backend
 
     try{
-      const data = await sendMessageAPI.mutateAsync(updatedMessages);
+      const data = await sendMessageAPI.mutateAsync(inputText);
 
       const assistantMessage = {
         sender: "Assistant",
-        text: data.chat, // response is returned as "Chat" :
+        text: data.Chat, // get "Chat": response from ngrok
         timestamp: Date.now(),
       };
       setMessages((prevMessages) => [...prevMessages, assistantMessage]);
