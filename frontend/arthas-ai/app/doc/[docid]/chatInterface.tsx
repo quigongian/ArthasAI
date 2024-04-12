@@ -56,16 +56,16 @@ const ChatInterface = ({ params }: { params: { docid: string } }) => {
     setInputText(e.target.value);
   };
 
-  const sendMessageAPI = useMutation({    
-      mutationKey: [`/document/chat`], // cache
-      mutationFn: async (data: MessageProps[]) => {
-        await axios({
-          method: "post",
-          url: `/chat/${params.docid}`,
-          data: data,
-        })
-      },
-  });
+  // const sendMessageAPI = useMutation({    
+  //     mutationKey: [`/document/chat`], // cache
+  //     mutationFn: async (data: MessageProps[]) => {
+  //       await axios({
+  //         method: "post",
+  //         url: `/chat/${params.docid}`,
+  //         data: data,
+  //       })
+  //     },
+  // });
 
   const sendMessage = async () => {
     if (inputText === "") return; // cant send empty messages
@@ -76,26 +76,26 @@ const ChatInterface = ({ params }: { params: { docid: string } }) => {
       timestamp: Date.now(),
     };
 
-    const updatedMessages = [...messages, newMessage];
-    setMessages([...messages, newMessage]);
-    setInputText(""); // clear input
-    //localhost:8000/chat/ {doc.id}
-    sendMessageAPI.mutate(updatedMessages); // send message to backend
+  //   const updatedMessages = [...messages, newMessage];
+  //   setMessages([...messages, newMessage]);
+  //   setInputText(""); // clear input
+  //   //localhost:8000/chat/ {doc.id}
+  //   sendMessageAPI.mutate(updatedMessages); // send message to backend
 
-    try{
-      const data = await sendMessageAPI.mutateAsync(updatedMessages);
+  //   try{
+  //     const data = await sendMessageAPI.mutateAsync(updatedMessages);
 
-      const assistantMessage = {
-        sender: "Assistant",
-        text: data.chat, // response is returned as "Chat" :
-        timestamp: Date.now(),
-      };
-      setMessages((prevMessages) => [...prevMessages, assistantMessage]);
-    } catch (error){
+  //     const assistantMessage = {
+  //       sender: "Assistant",
+  //       // text: data.chat, // response is returned as "Chat" :
+  //       timestamp: Date.now(),
+  //     };
+  //     setMessages((prevMessages) => [...prevMessages, assistantMessage]);
+  //   } catch (error){
 
-      console.error("Api call failed", error);
-    }
-  }; 
+  //     console.error("Api call failed", error);
+  //   }
+  // }; 
 //
   const handleNewLine = (e: React.KeyboardEvent) => {
     // add new line on shift + enter
@@ -155,5 +155,6 @@ const ChatInterface = ({ params }: { params: { docid: string } }) => {
     </div>
   );
 };
+}
 
 export default ChatInterface;
