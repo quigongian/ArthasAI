@@ -1,4 +1,3 @@
-// MarkdownDisplay.js
 import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
