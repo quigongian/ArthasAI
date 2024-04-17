@@ -24,4 +24,4 @@ pandas>=1.0.0,<2.0.0
 
 # Dev dependencies
 ipykernel==6.29.4
-scipy==1.13.0
+scipy>=1.5.0,<1.10.0
