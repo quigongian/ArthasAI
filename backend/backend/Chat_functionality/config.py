@@ -1,8 +1,4 @@
 from pydantic_settings import BaseSettings
-from dotenv import load_dotenv
-import os
-
-load_dotenv()  # Manually load the .env file
 
 class Settings(BaseSettings):
     aws_access_key_id: str
@@ -10,6 +6,9 @@ class Settings(BaseSettings):
     together_api_key: str
     aws_region: str = "us-east-2"
     bucket: str = "arthasai"
+    neo4j_uri: str
+    neo4j_user: str
+    neo4j_password: str
 
     class Config:
         env_file = ".env"
