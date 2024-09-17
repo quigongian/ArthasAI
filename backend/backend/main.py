@@ -1,5 +1,7 @@
-from fastapi import FastAPI, HTTPException
 import dotenv
+dotenv.load_dotenv()
+
+from fastapi import FastAPI, HTTPException
 import os
 from utils.api.workspace import create_workspace, add_paper_to_workspace, get_all_workspaces, get_workspace
 from models.request_models import Workspace
@@ -7,8 +9,8 @@ from models.dto_models import Paper
 from utils.api.paper import upload_paper_with_metadata, get_all_papers
 from utils.api.search import top_k_abstract_query
 import together
+from utils.scripts.seed_db import seed_db
 
-dotenv.load_dotenv()
 together.api_key = os.getenv("TOGETHER_API_KEY")
 
 from pydantic import BaseModel
@@ -20,7 +22,10 @@ from Chat_functionality.chat import answer_question
 from typing import List
 from Chat_functionality.embeddings import get_embeddings
 from Chat_functionality.dependencies import get_s3_client, get_together_client
+from utils.cluster_papers import cluster_papers
+import math
 from models.chat_models import ChatInput
+
 settings = Settings()
 
 from fastapi import FastAPI
@@ -108,7 +113,7 @@ def chat( paper_id: str, chat_input: ChatInput):
         context = {'chat_history': []}
 
     
-    #updating context with new chat input and embeddings
+#     #updating context with new chat input and embeddings
     
     #Note: You'd also want to store the chat output here
     new_chat_input = chat_input.question
@@ -116,7 +121,7 @@ def chat( paper_id: str, chat_input: ChatInput):
     context['chat_history'].append({'input':new_chat_input, 'embedding': embeddings})
     #save updated context
 
-    concatenated_prompts = "\n".join([entry['input'] for entry in context['chat_history']]) + "\n" + new_chat_input
+#     concatenated_prompts = "\n".join([entry['input'] for entry in context['chat_history']]) + "\n" + new_chat_input
 
     save_to_storage(paper_id, context)
 
@@ -133,6 +138,18 @@ def chat( paper_id: str, chat_input: ChatInput):
 def get_graph():
     return {"Graph": "GET Request"}
 
+#NOTE: the only purpose of exposing these two methods as routes is to test them. this should be removed in production
+@app.get("/seed")
+def seed():
+    seed_db()
+    return {"message": "Database seeded successfully"}
+
+# @app.get("/cluster_papers")
+# def cluster_papers_route():
+#     papers = get_all_papers()
+#     cluster_papers(papers=papers, n_clusters=math.floor(math.sqrt(len(papers))))
+#     return {"message": "Papers clustered successfully"}
+
 
 if __name__ == "__main__":
     import uvicorn
@@ -141,5 +158,3 @@ if __name__ == "__main__":
     sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
     from backend.Chat_functionality.config import settings   
     uvicorn.run(app, host="0.0.0.0", port=8000)
-
-
