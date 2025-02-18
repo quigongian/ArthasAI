@@ -94,7 +94,7 @@ const LoginComp = (props: any) => {
 	});
 
 	const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-		console.log(data);
+		
 		await supabase.auth
 			.signInWithPassword({
 				email: data.email,
@@ -220,7 +220,7 @@ const SignUpComp = (props: any) => {
 	});
 
 	const onSubmit = async (data: z.infer<typeof registerSchema>) => {
-		console.log(data);
+		
 		await supabase.auth
 			.signUp({
 				email: data.email,
@@ -343,7 +343,7 @@ const ForgotPasswordComp = (props: any) => {
 		},
 	});
 	const onSubmit = async (data: z.infer<typeof forgotPasswordSchema>) => {
-		console.log(data);
+		
 		await supabase.auth
 			.resetPasswordForEmail(data.email, {
 				redirectTo: "https://example.com/update-password",
