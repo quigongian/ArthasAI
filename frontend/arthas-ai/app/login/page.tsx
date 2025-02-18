@@ -35,7 +35,6 @@ function Login() {
   const supabase = createClient();
 
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    console.log(data);
     await supabase.auth
       .signInWithPassword({
         email: data.email,
@@ -48,6 +47,7 @@ function Login() {
           navigate();
         }
       });
+    navigate();
   };
 
   return (

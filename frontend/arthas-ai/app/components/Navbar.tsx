@@ -18,10 +18,20 @@ const Navbar = () => {
   const auth = useAuth();
   const supabase = createClient();
   const [isNavbarVisible, setIsNavbarVisible] = useState(false); // Start with navbar hidden
+  const [isSession, setIsSession] = useState(false); //Starting considering session isn't active
 
   const toggleNavbar = () => {
     setIsNavbarVisible(!isNavbarVisible);
   };
+
+  const setIsSessionFlag = async () => {
+    let data = await supabase.auth.getSession()
+    if(data.data.session != null){
+      setIsSession(true)
+    } else {
+      setIsSession(false)
+    }
+  }
 
   return (
     <>
@@ -58,8 +68,12 @@ const Navbar = () => {
               </DropdownMenu>
               <div className="ml-4 flex items-center space-x-20">
                 <Link
-                  href="/"
+                  href={isSession != false ? "/dashboard" : "/"}
                   className="text-black hover:bg-secondary hover:text-black rounded-lg p-2"
+                  onMouseEnter={() => {
+                    setIsSessionFlag()
+                    }
+                  }
                 >
                   Home
                 </Link>
