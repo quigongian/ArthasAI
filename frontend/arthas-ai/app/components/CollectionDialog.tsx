@@ -36,7 +36,7 @@ const CollectionsDialog: React.FC<CollectionsDialogProps> = ({ selectedDocs }) =
                 selectedDocs.includes(doc) ? "" : ""
               }`}
             >
-              {doc.document_title}
+              {"This is a test title"}
             </li>
           ))}
         </ul>

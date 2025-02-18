@@ -132,7 +132,7 @@ export default function DashboardComp() {
                     <Card className="cursor-pointer flex flex-col justify-start border h-60 bg-background hover:bg-accent hover:text-accent-foreground w-60 mr-4">
                       <CardHeader className="flex-row gap-4">
                         <CardTitle className="text-base font-bold dark:text-foreground">
-                          {doc.document_title}
+                          {"Test Document"}
                         </CardTitle>
                       </CardHeader>
                       <CardContent className="flex flex-col justify-end h-full">
@@ -159,12 +159,12 @@ export default function DashboardComp() {
                 </CardTitle>
 
                 {/* Popover Feature */}
-                <AddToCollectionsPopover
+                {/* <AddToCollectionsPopover
                   collections={collections}
                   docs={recentlyViewedDocs}
                   onAddToCollection={handleAddToCollection}
                   setSelectedCollectionDocs={setSelectedCollectionDocs} // Pass the setter function
-                />
+                /> */}
               </div>
             </CardHeader>
             <CardContent className="grid grid-cols-4 gap-6">

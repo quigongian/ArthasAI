@@ -97,7 +97,7 @@ const AddToCollectionsPopover: React.FC<AddToCollectionsPopoverProps> = ({
                     }`}
                     onClick={() => handleArticleClick(doc)}
                   >
-                    {doc.document_title}
+                    {"test document"}
                   </li>
                 ))}
               </ul>
